@@ -9,7 +9,7 @@ class CancelConfirm extends Component
     public $color='purple'; // default if nothing
     public $title='Title';
     public $message="Empty";
-    public $cancelConfirmVisible=true;
+    public $cancelConfirmVisible=false;
 
     public function alertOn(){
         $this->cancelConfirmVisible=true;
