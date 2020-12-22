@@ -6,10 +6,5 @@
   </x-slot>
 
   @livewire('infocard-component')
-  @livewire('cancel-confirm',[
-    'title'=>'Live Alert',
-    'message'=>'Text of the message',
-    'color'=>'blue'
-    ])
 
 </x-app-layout>
