@@ -21,6 +21,10 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('/infocards', function () {
+Route::middleware(['auth:sanctum', 'verified'])->get('/infocards', function () {
     return view('infocards.index');
 })->name('infocards');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/configs', function () {
+    return view('configs.index');
+})->name('configs');

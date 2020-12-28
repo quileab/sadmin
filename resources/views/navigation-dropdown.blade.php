@@ -11,6 +11,11 @@ $nav_links=[
         'active'=>request()->routeIs('infocards')
     ],
     [
+        'name'=>'Configuración',
+        'route'=>route('configs'),
+        'active'=>request()->routeIs('configs')
+    ],
+    [
         'name'=>'Prueba',
         'route'=>'#',
         'active'=>false
