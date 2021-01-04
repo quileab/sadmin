@@ -28,3 +28,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/infocards', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/configs', function () {
     return view('configs.index');
 })->name('configs');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/careers', function () {
+    return view('careers.index');
+})->name('careers');
