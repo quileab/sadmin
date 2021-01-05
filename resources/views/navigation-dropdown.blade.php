@@ -16,6 +16,11 @@ $nav_links=[
         'active'=>request()->routeIs('configs')
     ],
     [
+        'name'=>'Carreras',
+        'route'=>route('careers'),
+        'active'=>request()->routeIs('careers')
+    ],
+    [
         'name'=>'Prueba',
         'route'=>'#',
         'active'=>false

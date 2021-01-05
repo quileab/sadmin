@@ -5,7 +5,6 @@
         </x-slot>
 
         <x-slot name="content">
-
             @if (strtolower($value) == 'true')
                 <x-jet-button color="green" wire:click="$set('value','false')"> Habilitado </x-jet-button>
             @elseif (strtolower($value)=='false')
@@ -13,8 +12,6 @@
             @else
                 <x-jet-input wire:model='value' value={{ $value }} />
             @endif
-
-
         </x-slot>
 
         <x-slot name="footer">
@@ -38,10 +35,8 @@
         <div class='d2c max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8'>
             $config->group
         </div>";
-
         $section=$config->group;
         }
-
         @endphp
 
         <x-jet-action-section>
