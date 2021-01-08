@@ -17,7 +17,7 @@ class CareerComponent extends Component
         return view('livewire.career-component',compact('careers'));
     }
 
-    public function saveChange(){
+    public function saveCareerChange(){
         $career=Career::find($this->uid);
         $career->name=$this->name;
         $career->resol=$this->resol;

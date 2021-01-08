@@ -32,3 +32,13 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/configs', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/careers', function () {
     return view('careers.index');
 })->name('careers');
+
+// funciona bien pero... ( $id a traves de __CONSTRUCT )
+// Route::middleware(['auth:sanctum', 'verified'])->get('/subjects/{career_id}', function ($career_id) {
+//     return view('subjects.index',['career_id'=>$career_id]);
+// })->name('subjects');
+
+// Route::middleware(['auth:sanctum', 'verified'])->get('/subjects/{id}', [\App\Http\Livewire\SubjectsComponent::class, [$career_id=>$id]])->name('subjects');
+
+// lo de abajo es un FullPage Livewire -> funciona a medias a través del MOUNT
+Route::middleware(['auth:sanctum', 'verified'])->get('/subjects/{career_id}', \App\Http\Livewire\SubjectsComponent::class)->name('subjects');
