@@ -11,7 +11,7 @@ class SubjectsComponent extends Component
     public $uid;
     public $name, $correl;
     public $career_id, $career_name;
-    public $formSubjectAction = "store";
+    public $formAction = "store";
     public $updateSubjectForm = false;
 
     // toma el valor enviado desde el Router (web.php) // livewire no utiliza __construct
@@ -29,7 +29,29 @@ class SubjectsComponent extends Component
         return view('livewire.subjects-component',compact('subjects'));
     }
 
+    public function store(){
+        Subject::create([
+            'id'=>$this->uid,
+            'name'=>$this->name,
+            'correl'=>$this->correl,
+            'career_id'=>$this->career_id
+        ]);
+        $this->reset(['uid','name','correl']);
+        $this->updateSubjectForm=false;
+    }
+
+    public function edit(Subject $subject){
+        $this->uid=$subject->id;
+        $this->name=$subject->name;
+        $this->correl=$subject->correl;
+
+        $this->formAction = "update";
+        $this->updateSubjectForm=true;
+    }
+
+
     public function saveSubjectChange(){
+        $this->formAction = "update";
         $subject=Subject::find($this->uid);
         $subject->career_id=$this->career_id;
         $subject->name=$this->name;
@@ -40,6 +62,13 @@ class SubjectsComponent extends Component
         $this->updateSubjectForm=false;
     }
 
+    public function create(){
+        $this->reset(['uid','name','correl']);
+
+        $this->formAction = "store";
+        $this->updateSubjectForm=true;
+    }
+
     public function showModalSubjectForm(Subject $subject){
         $this->uid=$subject->id;
         $this->name=$subject->name;
@@ -48,4 +77,9 @@ class SubjectsComponent extends Component
         // Modificar (Edit)-> true
         $this->updateSubjectForm=true;
     }
+
+    public function destroy(Subject $subject){
+        $subject->delete();
+    }
+
 }

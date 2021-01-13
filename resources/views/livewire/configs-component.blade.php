@@ -1,5 +1,5 @@
 <div>
-    <x-jet-confirmation-modal wire:model="updateForm">
+    <x-jet-confirmation-modal wire:model="updateForm" icon='edit'>
         <x-slot name="title">
             {{ $description }}<br /><small>{{ $uid }}</small>
         </x-slot>
@@ -47,7 +47,14 @@
                 <small>({{ $config->id }})</small>
             </x-slot>
             <x-slot name="content">
-                <x-jet-button wire:click="showModalForm({{ $config }})" class="mr-4">Cambiar</x-jet-button>
+                <x-jet-button wire:click="showModalForm({{ $config }})" class="mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+
+                </x-jet-button>
 
                 @if (strtolower($config->value) == 'true')
                     <x-jet-button disabled color="green"> Habilitado </x-jet-button>

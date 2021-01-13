@@ -1,32 +1,57 @@
 <div>
     {{-- Formulario de Carreras --}}
-    <x-jet-confirmation-modal wire:model="updateSubjectForm">
+    <x-jet-confirmation-modal icon='edit' wire:model="updateSubjectForm">
         <x-slot name="title">
             Materia
         </x-slot>
 
         <x-slot name="content">
-            ID <x-jet-input type='number' wire:model='uid' value={{ $uid }} /><br />
-            Nombre <x-jet-input wire:model='name' value={{ $name }} /><br />
-            IDs de Correlatividades <x-jet-input wire:model='correl' value={{ $correl }} /><br />
+            ID
+            <x-jet-input type='number' wire:model.lazy='uid' value='{{ $uid }}' /><br />
+            Nombre
+            <x-jet-input wire:model.lazy='name' value='{{ $name }}' /><br />
+            IDs de Correlatividades
+            <x-jet-input wire:model.lazy='correl' value={{ $correl }} /><br />
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('updateSubjectForm')" wire:loading.attr="disabled">
-                Cancelar
-            </x-jet-secondary-button>
+            <div class="flex justify-between">
+                <x-jet-secondary-button wire:click="$toggle('updateSubjectForm')" wire:loading.attr="disabled">
+                    Cancelar
+                </x-jet-secondary-button>
 
-            <x-jet-button class="ml-2" wire:click="saveSubjectChange" wire:loading.attr="disabled">
-                Modificar
-                </x-jet-danger-button>
+                @if ($formAction == 'store')
+                    <x-jet-button wire:click="store" color="green"
+                        class="text-white font-bold px-3 py-1 rounded text-xs">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg> Crear
+                    </x-jet-button>
+                @else
+                    <x-jet-button class="ml-2" wire:click="saveSubjectChange" wire:loading.attr="disabled">
+                        Modificar
+                        </x-jet-danger-button>
+                @endif
+            </div>
         </x-slot>
     </x-jet-confirmation-modal>
 
     <div class="bg-white rounded-md shadow-md overflow-hidden max-w-4xl mx-auto mb-2 mt-4">
         <div class="w-full d2c px-4 py-3 text-white">
-            <h1>Materias</h1> <small>{{ $career_id }} » <strong>{{ $career_name }}</strong></small>
+            <h1 class="inline-block">Materias</h1> <small> » {{ $career_id }} »
+                <strong>{{ $career_name }}</strong></small>
         </div>
         <div class="p-4">
+            {{-- NEW Career --}}
+            <x-jet-button color='green' wire:click="create">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg> Nueva
+            </x-jet-button>
+
 
             <table class="min-w-full bg-white rounded-lg overflow-hidden">
                 <thead class="bg-gray-700 text-white">
@@ -44,7 +69,7 @@
                             <td class="py-2 px-3 border-b">
                                 <div class="flex items-center justify-evenly">
                                     {{-- Edit Subject --}}
-                                    <x-jet-button wire:click="showModalSubjectForm({{ $subject }})">
+                                    <x-jet-button wire:click="edit({{ $subject }})">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke="currentColor" width="1rem" height="1rem">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -52,7 +77,7 @@
                                         </svg>
                                     </x-jet-button>
                                     {{-- Delete Subject --}}
-                                    <x-jet-danger-button>
+                                    <x-jet-danger-button wire:click="$emit('triggerDelete',{{ $subject }})">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke="currentColor" width="1rem" height="1rem">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -67,4 +92,39 @@
             </table>
         </div>
     </div>
+
+
+    {{-- //scripts stack --}}
+    @push('scripts')
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                @this.on('triggerDelete', subject => {
+                    Swal.fire({
+                        title: 'Eliminar?',
+                        text: subject.name,
+                        icon: "warning",
+                        showCancelButton: true,
+                        cancelButtonText: 'Cancelar',
+                        cancelButtonColor: '#1c64f2',
+                        confirmButtonText: 'Eliminar',
+                        confirmButtonColor: '#e02424',
+
+                    }).then((result) => {
+                        //if user clicks on delete
+                        if (result.value) {
+                            // calling destroy method to delete
+                            @this.call('destroy', subject)
+                            // success response
+                            Toast.fire('Eliminado', '', 'success');
+
+                        } else {
+                            Toast.fire('Cancelado', '', 'error');
+                        }
+                    });
+                });
+            })
+
+        </script>
+    @endpush
+
 </div>

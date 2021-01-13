@@ -17,7 +17,7 @@ class CreateSubjectsTable extends Migration
             $table->integer('id');
             $table->integer('career_id');
             $table->string('name',60);
-            $table->string('correl');
+            $table->string('correl')->nullable();
             
             $table->foreign('career_id')->references('id')->on('careers')
                 ->onUpdate('cascade')

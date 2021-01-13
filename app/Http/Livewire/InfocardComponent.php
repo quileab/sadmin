@@ -10,6 +10,7 @@ class InfocardComponent extends Component
     public $uid, $title, $text, $type;
 
     public $formAction = "store";
+    public $updateForm = false;
 
     public function render()
     {
@@ -27,6 +28,7 @@ class InfocardComponent extends Component
             'user_id'=>$user->id
         ]);
         $this->reset(['title','text','type']);
+        $this->updateForm=false;
     }
 
     public function edit(Infocard $infocard){
@@ -34,7 +36,16 @@ class InfocardComponent extends Component
         $this->text=$infocard->text;
         $this->type=$infocard->type;
         $this->uid=$infocard->id;
+        
         $this->formAction = "update";
+        $this->updateForm=true;
+    }
+
+    public function create(){
+        $this->reset(['uid','title','text']);
+
+        $this->formAction = "store";
+        $this->updateForm=true;
     }
 
     public function update(){
@@ -49,6 +60,7 @@ class InfocardComponent extends Component
             'user_id'=>$user->id
         ]);
         $this->reset(['title','text','type','uid','formAction']);
+        $this->updateForm=false;
     }
 
     public function default(){
