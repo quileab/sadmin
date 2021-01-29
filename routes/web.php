@@ -33,6 +33,11 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/careers', function () {
     return view('careers.index');
 })->name('careers');
 
+Route::middleware(['auth:sanctum', 'verified'])->get('/students', function () {
+    return view('students.index');
+})->name('students');
+
+
 // funciona bien pero... ( $id a traves de __CONSTRUCT )
 // Route::middleware(['auth:sanctum', 'verified'])->get('/subjects/{career_id}', function ($career_id) {
 //     return view('subjects.index',['career_id'=>$career_id]);

@@ -58,4 +58,15 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function student(){
+        return $this->hasOne('App\Models\Student')
+            ->withDefault([
+               "lastname"=>"",
+               "name"=>"",
+               "phone"=>"",
+               "enabled"=>1,
+               "career_id"=>1
+            ]);
+    }
 }

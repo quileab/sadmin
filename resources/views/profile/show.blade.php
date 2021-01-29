@@ -35,9 +35,12 @@
 
             <x-jet-section-border />
 
+            {{-- qb: Only admin can delete itself -> user --}}
+            @if (auth()->user()->name==="admin")
             <div class="mt-10 sm:mt-0">
                 @livewire('profile.delete-user-form')
             </div>
+            @endif
         </div>
     </div>
 </x-app-layout>

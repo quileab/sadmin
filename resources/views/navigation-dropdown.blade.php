@@ -21,9 +21,9 @@ $nav_links=[
         'active'=>request()->routeIs('careers')
     ],
     [
-        'name'=>'Prueba',
-        'route'=>'#',
-        'active'=>false
+        'name'=>'Alumnos',
+        'route'=>route('students'),
+        'active'=>request()->routeIs('students')
     ]
 
 ];
