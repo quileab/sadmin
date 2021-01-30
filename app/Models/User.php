@@ -59,14 +59,19 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function student(){
-        return $this->hasOne('App\Models\Student')
-            ->withDefault([
-               "lastname"=>"",
-               "name"=>"",
-               "phone"=>"",
-               "enabled"=>1,
-               "career_id"=>1
-            ]);
+    // *** Guardo como ejemplo ***
+    // public function student(){
+    //     return $this->hasOne('App\Models\Student')
+    //         ->withDefault([
+    //            "lastname"=>"",
+    //            "name"=>"",
+    //            "phone"=>"",
+    //            "enabled"=>1,
+    //            "career_id"=>1
+    //         ]);
+    // }
+    
+    public function career(){
+        return $this->hasOne('App\Models\Career');
     }
 }

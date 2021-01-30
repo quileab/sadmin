@@ -25,8 +25,9 @@ class StudentsComponent extends Component
     public function store(){
         Student::create([
             'user_id'=>$this->uid,
+            'pid'=>$this->pid,
             'lastname'=>$this->lastname,
-            'name'=>$this->name,
+            'firstname'=>$this->name,
             'phone'=>$this->phone,
             'enabled'=>$this->enabled,
             'career_id'=>$this->career_id,
@@ -40,7 +41,7 @@ class StudentsComponent extends Component
         
         $this->uid=$student->user_id;
         $this->lastname=$student->lastname;
-        $this->name=$student->name;
+        $this->firstname=$student->firstname;
         $this->phone=$student->phone;
         $this->enabled=$student->enabled;
         $this->career_id=$student->career_id;
@@ -50,7 +51,7 @@ class StudentsComponent extends Component
     }
 
     public function create(){
-        $this->reset(['uid','lastname','name','phone']);
+        $this->reset(['uid','pid','lastname','firstname','phone']);
 
         $this->formAction = "store";
         $this->updateForm=true;
@@ -63,7 +64,7 @@ class StudentsComponent extends Component
         $student=$user->student;
         // $student=Student::find($this->uid);
         $student->lastname=$this->lastname;
-        $student->name=$this->name;
+        $student->firstname=$this->firstname;
         $student->phone=$this->phone;
         $student->enabled=$this->enabled;
         $student->career_id=$this->career_id;
@@ -76,7 +77,7 @@ class StudentsComponent extends Component
     public function showModalForm(Student $student){
         $this->uid=$student->id;
         $this->lastname=$student->lastname;
-        $this->name=$student->name;
+        $this->firstname=$student->firstname;
         $this->phone=$student->phone;
         $this->enabled=$student->enabled;
         $this->career_id=$student->career_id;
