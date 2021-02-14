@@ -17,12 +17,12 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
 
-            $table->unsignedInteger('pid')->unique();
-            $table->string('lastname',30);
-            $table->string('firstname',30);
-            $table->string('phone',20);
-            $table->tinyInteger('enabled');
-            $table->unsignedBigInteger('career_id');
+            $table->unsignedInteger('pid')->unique()->default(1);
+            $table->string('lastname',30)->nullable();
+            $table->string('firstname',30)->nullable();
+            $table->string('phone',20)->nullable();
+            $table->tinyInteger('enabled')->default(0);
+            $table->unsignedBigInteger('career_id')->nullable();
             
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

@@ -23,7 +23,7 @@ class StudentsComponent extends Component
     }
 
     public function store(){
-        Student::create([
+        User::create([
             'user_id'=>$this->uid,
             'pid'=>$this->pid,
             'lastname'=>$this->lastname,
@@ -37,14 +37,13 @@ class StudentsComponent extends Component
     }
 
     public function edit(User $user){
-        $student=$user->student;
         
-        $this->uid=$student->user_id;
-        $this->lastname=$student->lastname;
-        $this->firstname=$student->firstname;
-        $this->phone=$student->phone;
-        $this->enabled=$student->enabled;
-        $this->career_id=$student->career_id;
+        $this->uid=$user->user_id;
+        $this->lastname=$user->lastname;
+        $this->firstname=$user->firstname;
+        $this->phone=$user->phone;
+        $this->enabled=$user->enabled;
+        $this->career_id=$user->career_id;
 
         $this->formAction = "update";
         $this->updateForm=true;
@@ -74,7 +73,7 @@ class StudentsComponent extends Component
         $this->updateForm=false;
     }
 
-    public function showModalForm(Student $student){
+    public function showModalForm(User $student){
         $this->uid=$student->id;
         $this->lastname=$student->lastname;
         $this->firstname=$student->firstname;
@@ -85,7 +84,7 @@ class StudentsComponent extends Component
         $this->updateForm=true;
     }
 
-    public function destroy(Student $student){
+    public function destroy(User $student){
         $student->delete();
     }
 

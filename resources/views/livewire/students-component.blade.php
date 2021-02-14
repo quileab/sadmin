@@ -53,11 +53,14 @@
         </x-slot>
     </x-jet-confirmation-modal>
 
-    {{-- NEW Student --}}
-    {{-- <x-jet-button color='green' wire:click="create">
-         Nuevo
+    {{-- Import Students --}}
+    <a href="{{route('students-import-form')}}">
+    <x-jet-button color='green'>
+         Importar Alumnos&nbsp;
+         <span class="inline-flex items-center justify-center px-2 py-1 text-xs leading-none text-red-100 bg-blue-600 rounded-full">.csv</span>
     </x-jet-button>
-    <hr /> --}}
+    </a>
+    <hr />
 
     {{-- Search Box --}}
     <div class="flex border-gray-300 border rounded-md mb-2 shadow">
@@ -85,7 +88,7 @@
             <tr>
                 <td class="w-1/7 text-left py-2 px-3 border-b">{{ $student->id }}</td>
                 <td class="w-1/7 text-left py-2 px-3 border-b">{{ $student->name }}</td>
-                <td class="w-4/7 text-left py-2 px-3 border-b">{{ $student->student->lastname }}, {{ $student->student->name }} // {{ $student->email }} // {{ $student->student->phone }}</td>
+                <td class="w-4/7 text-left py-2 px-3 border-b">{{ $student->lastname }}, {{ $student->name }} // {{ $student->email }} // {{ $student->phone }}</td>
                 <td class="py-2 px-3 border-b">
                 <div class="flex justify-between">
                     {{-- Edit Student --}}
