@@ -10,7 +10,7 @@
             Apellido/s
             <x-jet-input type='text' wire:model.lazy='lastname' value='{{ $lastname }}' /><br />
             Nombre/s
-            <x-jet-input type='text' wire:model.lazy='name' value='{{ $name }}' /><br />
+            <x-jet-input type='text' wire:model.lazy='firstname' value='{{ $name }}' /><br />
             Teléfono
             <x-jet-input type='tel' wire:model.lazy='phone' value='{{ $phone }}' /><br />
             Carrera » {{ $career_id }}
@@ -85,7 +85,7 @@
 
             @foreach ($students as $student)
 
-            <tr>
+            <tr class="@if ($student->enabled) text-black @else text-gray-500 @endif">
                 <td class="w-1/7 text-left py-2 px-3 border-b">{{ $student->id }}</td>
                 <td class="w-1/7 text-left py-2 px-3 border-b">{{ $student->name }}</td>
                 <td class="w-4/7 text-left py-2 px-3 border-b">{{ $student->lastname }}, {{ $student->name }} // {{ $student->email }} // {{ $student->phone }}</td>
@@ -123,6 +123,8 @@
 
         </tbody>
     </table>
+
+    {{ $students->links() }}
 
     {{-- //scripts stack --}}
     @push('scripts')

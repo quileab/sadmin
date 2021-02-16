@@ -54,6 +54,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('grades.index',compact('id'));
     })->name('grades');
 
+    Route::get('/calendars', function () {
+        return view('calendars.index');
+        // lo de abajo al no utilizar la directiva @livewire
+        // no funciona por eso use el .index para llamar al componente
+        // return view('livewire.calendars-component');
+    })->name('calendars');
+
     // ruta a un FullPage Livewire -> funciona a medias a través del MOUNT // No necesita subjects.index
     Route::get('/subjects/{career_id}', \App\Http\Livewire\SubjectsComponent::class)->name('subjects');
         

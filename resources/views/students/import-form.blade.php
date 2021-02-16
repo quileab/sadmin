@@ -25,7 +25,9 @@
 
       </form>
 
-
+      @isset($message)
+        {{ $message }}
+      @endisset
     </div>
 
 

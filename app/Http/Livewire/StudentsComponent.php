@@ -3,21 +3,20 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Models\Student;
 use App\Models\User;
 use App\Models\Career;
 
 class StudentsComponent extends Component
 {
 
-    public $uid, $name, $lastname, $phone, $enabled, $career_id;
+    public $uid, $name, $lastname, $firstname, $phone, $enabled, $career_id;
     public $formAction = "store";
     public $search='';
     public $updateForm = false;
 
     public function render()
     {
-        $students=User::all();
+        $students=User::orderBy('lastname', 'asc')->paginate(25);
         $careers=Career::all();
         return view('livewire.students-component',compact('students','careers'));
     }

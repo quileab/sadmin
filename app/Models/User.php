@@ -27,6 +27,10 @@ class User extends Authenticatable
         'name',
         'email',
         'pid',
+        'lastname',
+        'firstname',
+        'phone',
+        'enabled',
         'password',
     ];
 
@@ -73,6 +77,6 @@ class User extends Authenticatable
     // }
     
     public function career(){
-        return $this->hasOne('App\Models\Career');
+        return $this->hasMany('App\Models\Career');
     }
 }

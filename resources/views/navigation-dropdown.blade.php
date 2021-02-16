@@ -24,7 +24,12 @@ $nav_links=[
         'name'=>'Alumnos',
         'route'=>route('students'),
         'active'=>request()->routeIs('students')
-    ]
+    ],
+    [
+        'name'=>'Calendarios',
+        'route'=>route('calendars'),
+        'active'=>request()->routeIs('calendars')
+    ],
 
 ];
 @endphp

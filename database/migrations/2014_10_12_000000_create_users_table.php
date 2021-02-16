@@ -22,7 +22,6 @@ class CreateUsersTable extends Migration
             $table->string('firstname',30)->nullable();
             $table->string('phone',20)->nullable();
             $table->tinyInteger('enabled')->default(0);
-            $table->unsignedBigInteger('career_id')->nullable();
             
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
