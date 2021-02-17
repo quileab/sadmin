@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Schedule extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'user_id';
+    protected $guarded = [];
 
     public function user(){
         return $this->belongsTo('App\Models\User');
