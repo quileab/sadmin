@@ -30,9 +30,17 @@ class CalendarsComponent extends Component
         $this->render();
     }
 
-    public function edit(Schedule $schedule){
-        $this->user_id=$schedule->user_id;
-        $this->datetime=$schedule->datetime;
+    public function edit($user_id,$datetime){
+        $schedule=Schedule::where('user_id','=',$user_id)
+            ->where('datetime','=',$datetime)->first();
+
+        if($schedule->status=='N'){
+            $schedule->update(
+                ['status'=>'O']
+            );
+        }
+        $this->user_id=$user_id;
+        $this->datetime=$datetime;
         $this->fullname=$schedule->fullname;
         $this->email=$schedule->email;
         $this->phone=$schedule->phone;
@@ -54,5 +62,21 @@ class CalendarsComponent extends Component
         // $career->save();
         // // cerrar Update Modal
         // $this->updateCareerForm=false;
+    }
+
+    public function changeStatus($status){
+        $schedule=Schedule::where('user_id','=',$this->user_id)
+            ->where('datetime','=',$this->datetime)
+            ->update(
+                ['status'=>$status]
+            );
+            $this->status=$status;
+            $this->emit('saved');
+        // if($schedule){
+        //         session()->flash('message','Status Cambiado');
+        // } else{
+        //     session()->flash('message','Cambio de Status Error!!!');
+        // }
+        // session()->flash('message','Status Cambiado');
     }
 }

@@ -17,28 +17,38 @@
             Asunto:<br />
             <strong>{{ $subject }}</strong><br />
             <hr>
-            Estado: <strong>{{ $status }}</strong><br />
+            Estado<br />
+
+            <x-jet-button color='{{ $status=== "S" ? "red-600" : "gray-500" }}' class="ml-2"
+            wire:click="changeStatus('S')">
+                Trabado
+            </x-jet-button>
+            <x-jet-button color='{{ $status=== "P" ? "yellow-400" : "gray-500" }}' class="ml-2"
+            wire:click="changeStatus('P')">
+                Pausar
+            </x-jet-button>
+            <x-jet-button color='{{ $status=== "C" ? "purple-600" : "gray-500" }}' class="ml-2"
+            wire:click="changeStatus('C')">
+                Cancelar
+            </x-jet-button>
+            <x-jet-button color='{{ $status=== "D" ? "green-600" : "gray-500" }}' class="ml-2"
+            wire:click="changeStatus('D')">
+                Hecho!!
+            </x-jet-button>
+            <x-jet-button color='{{ $status=== "O" ? "green-400" : "gray-500" }}' class="ml-2"
+            wire:click="changeStatus('O')">
+                En curso
+            </x-jet-button>
+            <x-jet-action-message class='mt-2' on="saved">
+                Cambio realizado
+            </x-jet-action-message>
         </x-slot>
 
         <x-slot name="footer">
             <div class="flex justify-between">
             <x-jet-secondary-button wire:click="$toggle('updateForm')" wire:loading.attr="disabled">
-                Cancelar
+                Cerrar
             </x-jet-secondary-button>
-
-
-            @if ($formAction == 'store')
-                <x-jet-button wire:click="store" color="green"
-                class="text-white font-bold px-3 py-1 rounded text-xs">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg> Crear
-                </x-jet-button>
-            @else
-                <x-jet-button class="ml-2" wire:click="saveChange" wire:loading.attr="disabled">
-                    Modificar
-                    </x-jet-danger-button>
-            @endif
 
             </div>
         </x-slot>
@@ -71,16 +81,16 @@
         <tbody class="text-gray-700">
 
             @foreach ($schedules as $schedule)
-            @php
-            switch($schedule->status){
-                case 'C': $sttext="Cancelado"; $stcolor="bg-purple-500 text-white"; break;
-                case 'D': $sttext="Hecho"; $stcolor="bg-green-700 text-white"; break;
-                case 'N': $sttext="NUEVO"; $stcolor="bg-blue-700 text-white"; break;
-                case 'O': $sttext="En curso"; $stcolor="bg-green-300"; break;
-                case 'P': $sttext="Pausado"; $stcolor="bg-yellow-300"; break;
-                case 'S': $sttext="Trabado"; $stcolor="bg-red-600 text-white"; break;
-            }
-            @endphp
+                @php
+                switch($schedule->status){
+                    case 'C': $sttext="Cancelado"; $stcolor="bg-purple-500 text-white"; break;
+                    case 'D': $sttext="Hecho"; $stcolor="bg-green-700 text-white"; break;
+                    case 'N': $sttext="NUEVO"; $stcolor="bg-blue-700 text-white"; break;
+                    case 'O': $sttext="En curso"; $stcolor="bg-green-300"; break;
+                    case 'P': $sttext="Pausado"; $stcolor="bg-yellow-300"; break;
+                    case 'S': $sttext="Trabado"; $stcolor="bg-red-600 text-white"; break;
+                }
+                @endphp
 
                 <tr>
                     <td class="w-1/7 text-left py-2 px-3 border-b">{{ $schedule->user->name }}</td>
@@ -93,13 +103,12 @@
                     <td class="text-center py-2 px-3 border-b">
                         <div class="flex justify-between">
                             {{-- Edit Schedule --}}
-                            <x-jet-button wire:click="edit({{ $schedule }})">
+                            <x-jet-button wire:click="edit('{{ $schedule->user_id }}','{{ $schedule->datetime }}')">
                                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                 </svg>
                             </x-jet-button>
-
                         </div>
                     </td>
                 </tr>

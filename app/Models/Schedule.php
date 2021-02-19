@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Schedule extends Model
 {
     use HasFactory;
+    public $incrementing=false;
     protected $primaryKey = 'user_id';
     protected $guarded = [];
 
