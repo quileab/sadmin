@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Livewire;
 
 use App\Models\Office;
@@ -35,9 +34,14 @@ class CalendarsComponent extends Component
             ->where('datetime','=',$datetime)->first();
 
         if($schedule->status=='N'){
-            $schedule->update(
-                ['status'=>'O']
-            );
+            Schedule::where('user_id','=',$user_id)
+                ->where('datetime','=',$datetime)
+                ->update(
+                    ['status'=>'O']
+                );
+            $this->status='O';
+        }else{
+            $this->status=$schedule->status;
         }
         $this->user_id=$user_id;
         $this->datetime=$datetime;
@@ -45,7 +49,6 @@ class CalendarsComponent extends Component
         $this->email=$schedule->email;
         $this->phone=$schedule->phone;
         $this->subject=$schedule->subject;
-        $this->status=$schedule->status;
 
         $this->formAction = "update";
         $this->updateForm=true;
