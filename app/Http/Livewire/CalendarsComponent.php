@@ -14,6 +14,7 @@ class CalendarsComponent extends Component
         $email, $phone, $subject, $status;
 
     public $office=0;
+    public $target_file='';
     public $formAction = "store";
     public $updateForm=false;
 
@@ -42,6 +43,12 @@ class CalendarsComponent extends Component
             $this->status='O';
         }else{
             $this->status=$schedule->status;
+        }
+        $target_file='./storage/attachFiles/'.$schedule->created_at->format('Ymd-His').'-'.preg_replace("/[^a-zA-Z0-9]/","",$schedule->email).'.pdf';
+        if (file_exists($target_file)){
+            $this->target_file=$target_file;
+        }else{
+            $this->target_file='';
         }
         $this->user_id=$user_id;
         $this->datetime=$datetime;

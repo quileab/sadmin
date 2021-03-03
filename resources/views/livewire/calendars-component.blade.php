@@ -2,22 +2,36 @@
     {{-- Formulario de Carreras --}}
     <x-jet-confirmation-modal icon='edit' wire:model="updateForm">
         <x-slot name="title">
-            <strong>{{ $fullname }} » </strong>
-
-            <small>
                 {{ \Carbon\Carbon::parse($datetime)->format('d-m-Y') }} » 
                 {{ \Carbon\Carbon::parse($datetime)->format('H:i') }}
-            </small>
         </x-slot>
 
         <x-slot name="content">
-            Email: <strong>{{ $email }}</strong><br />
-            Teléfono: <strong>{{ $phone }}</strong><br />
-            <hr>
-            Asunto:<br />
+            <p class="mb-3 text-lg">
+            <strong>{{ $fullname }}</strong>
+            </p>
+            <span class="mr-4">
+            Email: <strong>{{ $email }}</strong>
+            </span>
+            <span class="mb-3">
+            Teléfono: <strong>{{ $phone }}</strong>
+            </span>
+            <p class="my-2">
+            Asunto:&nbsp;
             <strong>{{ $subject }}</strong><br />
-            <hr>
-            Estado<br />
+            </p>
+
+            @if ($target_file!='')
+                <p class="my-2">
+                    <a href="{{ $target_file }}" target="_blank">
+                    <x-jet-button>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-paperclip" viewBox="0 0 16 16">
+                            <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z"/>
+                        </svg> Archivo adjunto
+                    </x-jet-button>
+                    </a>
+                </p>
+            @endif
 
             <x-jet-button color='{{ $status=== "S" ? "red-600" : "gray-500" }}' class="ml-2"
             wire:click="changeStatus('S')">
