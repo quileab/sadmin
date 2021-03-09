@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 use App\Models\Office;
 use App\Models\Schedule;
 use Livewire\Component;
+use Illuminate\Support\Facades\Storage;
 
 class CalendarsComponent extends Component
 {
@@ -44,8 +45,10 @@ class CalendarsComponent extends Component
         }else{
             $this->status=$schedule->status;
         }
-        $target_file='./storage/attachFiles/'.$schedule->created_at->format('Ymd-His').'-'.preg_replace("/[^a-zA-Z0-9]/","",$schedule->email).'.pdf';
+        $target_file='../public/PDFs/'.$schedule->created_at->format('Ymd-His').'-'.preg_replace("/[^a-zA-Z0-9]/","",$schedule->email).'.pdf';
         if (file_exists($target_file)){
+            // A través del web:Route
+            $target_file='../PDFs/'.$schedule->created_at->format('Ymd-His').'-'.preg_replace("/[^a-zA-Z0-9]/","",$schedule->email).'.pdf';
             $this->target_file=$target_file;
         }else{
             $this->target_file='';
