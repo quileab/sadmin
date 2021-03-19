@@ -8,7 +8,6 @@ use App\Models\Career;
 
 class StudentsComponent extends Component
 {
-
     public $uid, $name, $lastname, $firstname, $phone, $enabled, $career_id;
     public $formAction = "store";
     public $search='';
@@ -26,7 +25,7 @@ class StudentsComponent extends Component
             'user_id'=>$this->uid,
             'pid'=>$this->pid,
             'lastname'=>$this->lastname,
-            'firstname'=>$this->name,
+            'firstname'=>$this->firstname,
             'phone'=>$this->phone,
             'enabled'=>$this->enabled,
             'career_id'=>$this->career_id,
@@ -36,10 +35,10 @@ class StudentsComponent extends Component
     }
 
     public function edit(User $user){
-        
-        $this->uid=$user->user_id;
+        $this->uid=$user->id;
         $this->lastname=$user->lastname;
         $this->firstname=$user->firstname;
+        $this->name=$user->name;
         $this->phone=$user->phone;
         $this->enabled=$user->enabled;
         $this->career_id=$user->career_id;
@@ -58,14 +57,14 @@ class StudentsComponent extends Component
     public function saveChange(){
         $this->formAction = "update";
         
-        $user=User::find($this->uid);
-        $student=$user->student;
+        $student=User::find($this->uid);
+        //$student=$user;
         // $student=Student::find($this->uid);
         $student->lastname=$this->lastname;
         $student->firstname=$this->firstname;
         $student->phone=$this->phone;
         $student->enabled=$this->enabled;
-        $student->career_id=$this->career_id;
+        //$student->career_id=$this->career_id;
         
         $student->save();
         // cerrar Update Modal

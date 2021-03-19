@@ -2,7 +2,7 @@
     {{-- Formulario de Datos de Estudiantes --}}
     <x-jet-confirmation-modal icon='edit' wire:model="updateForm">
         <x-slot name="title">
-            <small>{{ $uid }} » </small><strong>{{ $lastname }}, {{ $name }}</strong>
+            USUARIO <small>{{ $uid }} » </small><strong>{{ $name }}</strong>
         </x-slot>
 
         <x-slot name="content">
@@ -88,7 +88,7 @@
             <tr class="@if ($student->enabled) text-black @else text-gray-500 @endif">
                 <td class="w-1/7 text-left py-2 px-3 border-b">{{ $student->id }}</td>
                 <td class="w-1/7 text-left py-2 px-3 border-b">{{ $student->name }}</td>
-                <td class="w-4/7 text-left py-2 px-3 border-b">{{ $student->lastname }}, {{ $student->name }} // {{ $student->email }} // {{ $student->phone }}</td>
+                <td class="w-4/7 text-left py-2 px-3 border-b">{{ $student->lastname }}, {{ $student->firstname }} // {{ $student->email }} // {{ $student->phone }}</td>
                 <td class="py-2 px-3 border-b">
                 <div class="flex justify-between">
                     {{-- Edit Student --}}
