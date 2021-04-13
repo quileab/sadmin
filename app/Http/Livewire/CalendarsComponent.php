@@ -23,7 +23,7 @@ class CalendarsComponent extends Component
     {
         $offices=Office::all();
         //$schedules=Schedule::all();
-        $schedules=Schedule::where('user_id',$this->office)->get();
+        $schedules=Schedule::where('user_id',$this->office)->orderBy('datetime', 'desc')->get();
         return view('livewire.calendars-component',compact('offices','schedules'));
     }
 
