@@ -69,14 +69,14 @@
     </x-jet-confirmation-modal>
 
 
-    Oficina de Atención » {{ $office }}
+    Oficina de Atención
     <select wire:model.lazy="office" wire:change.lazy="officeChanged" name="office" id="office">
         {{-- opcion 0 por default --}}
         <option value="0">Seleccione una Opción</option>
 
         @foreach ($offices as $off)
             <option value="{{ $off->user_id }}">
-                {{ $off->description }}
+                {{ $off->title }}
             </option>
         @endforeach
     </select><br />
