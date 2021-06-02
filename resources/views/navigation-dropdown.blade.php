@@ -30,6 +30,11 @@ $nav_links=[
         'route'=>route('calendars'),
         'active'=>request()->routeIs('calendars')
     ],
+    [
+        'name'=>'Libros',
+        'route'=>route('books'),
+        'active'=>request()->routeIs('books')
+    ],
 
 ];
 @endphp

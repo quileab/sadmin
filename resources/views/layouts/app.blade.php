@@ -44,19 +44,56 @@
     @stack('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-        const Toast = Swal.mixin({
+        livewire.on('toast', function(message, icon) {
+          if (icon == '') { 
+            icon = 'success'
+          }
+          switch (icon) {
+            case 'success':
+              bgcolor = '#a9bd8a'; break;
+            case 'warning':
+              bgcolor = '#bdb68a'; break;
+            case 'error':
+              bgcolor = '#bd8a8a'; break;
+            case 'info':
+              bgcolor = '#8aa0bd'; break;
+            case 'question':
+              bgcolor = '#8abdb2'; break;
+          }
+          Swal.fire({
+            icon: icon,
+            iconColor: '#ffffff',
+            background: bgcolor,
+            title: message,
             toast: true,
             position: 'top-end',
-            showConfirmButton: false,
-            timer: 1000,
             timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
+            showConfirmButton: false,
+            timer: 2500
+          })
         });
-
-    </script>
+    
+        livewire.on('confirmDelete', function(message, uid) {
+            Swal.fire({
+                //title: 'Está seguro?',
+                text: "Eliminar "+message+"?",
+                icon: 'warning',
+                iconColor: '#ffc145',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText:'Cancelar',
+                confirmButtonText: 'Eliminar',
+                background: '#dddddd',
+                padding:'0.5rem'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.emit('delete',uid);
+                }
+              })
+            });
+      </script>
+    
 </body>
 
 </html>
