@@ -53,7 +53,7 @@
             <div class="flex flex-row flex-wrap">
                 <div class="mx-2">
                     <label for="title" class="block form-label">Título</label>
-                    <input wire:model.lazy="title" id="title" type="text" class="form-input">
+                    <x-jet-input wire:model.lazy="title" id="title" type="text" class="form-input" />
                     
                     <label for="type" class="block form-label mt-4">Color Énfasis</label>
                     <div style="background-color:{{ $type }} !important;" class="p-4 rounded-md">

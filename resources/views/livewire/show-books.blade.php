@@ -92,14 +92,14 @@
         <div class="mb-4">
           <x-jet-label value="Sinopsis" />
           <textarea wire:model.defer="synopsis"
-            class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+            class="w-full p-3 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
             rows="6"></textarea>
           <x-jet-input-error for="synopsis" />
         </div>
         <div class="mb-4">
           <x-jet-label value="Nota" />
           <textarea wire:model.defer="Note"
-            class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+            class="w-full p-3 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
             rows="6"></textarea>
           <x-jet-input-error for="Note" />
         </div>
@@ -126,7 +126,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- This example requires Tailwind CSS v2.0+ -->
       <x-table>
-        <div class="px-6 py-2 flex items-center">
+        <div class="px-6 py-2 flex items-center d2c">
           <div class="flex item center">
             <span class="mt-2">Mostrar&nbsp;</span>
             <select wire:model="cant"
@@ -255,7 +255,7 @@
           </tbody>
         </table>
         @if (count($books))
-          <div class="px-5 py-2">
+          <div class="px-5 py-2 bg-blue-400">
             {{ $books->links() }}
           </div>
         @endif
