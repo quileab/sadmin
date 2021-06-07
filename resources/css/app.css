@@ -8,14 +8,14 @@
 
 .d2c{
   background: #0573c0;
-  background: linear-gradient(90deg, #0572c0 15%, #92d050 100%);
+  background: linear-gradient(90deg, #0572c0 15%, #57a900 100%);
   text-shadow: 1px 1px 4px black;
   font-size: large;
   color: white !important;
 }
 .c2d{
   background: #0573c0;
-  background: linear-gradient(0deg, #0572c0 15%, #92d050 100%);
+  background: linear-gradient(0deg, #0572c0 15%, #57a900 100%);
   text-shadow: 1px 1px 4px black;
   color: white !important;
 }

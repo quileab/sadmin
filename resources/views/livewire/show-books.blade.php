@@ -128,7 +128,7 @@
       <x-table>
         <div class="px-6 py-2 flex items-center d2c">
           <div class="flex item center">
-            <span class="mt-2">Mostrar&nbsp;</span>
+            <span class="mt-3">Mostrar&nbsp;</span>
             <select wire:model="cant"
               class="mr-4 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
               <option value="10">10</option>
@@ -142,10 +142,10 @@
           <x-jet-danger-button wire:click="$set('openModal',true)">Nuevo Libro</x-jet-danger-button>
         </div>
         <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+          <thead class="text-gray-100 bg-cool-gray-700">
             <tr>
               <th scope="col"
-                class="cursor-pointer px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                class="cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
                 wire:click="order('id')">
                 ID
                 @if ($sort != 'id')
@@ -159,7 +159,7 @@
                 @endif
               </th>
               <th scope="col"
-                class="cursor-pointer px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                class="cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
                 wire:click="order('title')">
                 Title
                 @if ($sort != 'title')
@@ -173,7 +173,7 @@
                 @endif
               </th>
               <th scope="col"
-                class="cursor-pointer px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                class="cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
                 wire:click="order('author')">
                 Author
                 @if ($sort != 'author')
@@ -188,7 +188,7 @@
   
               </th>
               <th scope="col"
-                class="cursor-pointer px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                class="cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
                 wire:click="order('user_id')">
                 Stat
                 @if ($sort != 'user_id')
@@ -255,7 +255,7 @@
           </tbody>
         </table>
         @if (count($books))
-          <div class="px-5 py-2 bg-blue-400">
+          <div class="px-5 py-2 bg-gray-300">
             {{ $books->links() }}
           </div>
         @endif
