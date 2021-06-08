@@ -12,8 +12,8 @@ class Infocard extends Model
     protected $fillable = ['title','text','type','user_id'];
 
     public function user(){
-        /** Metodo largo */
-        // $user=User::find($this->usewr_id);
+        /*** Metodo largo ***/
+        // $user=User::find($this->user_id);
         // return $user;
 
         return $this->belongsTo('App\Models\User');

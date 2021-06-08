@@ -171,7 +171,6 @@ class ShowBooks extends Component
             'discharge_date', 'discharge_reason', 'synopsis',
             'note', 'user_id'
         ]);
-
     }
 
     public function edit($uid){ 

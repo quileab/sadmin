@@ -5,53 +5,136 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\User;
 use App\Models\Career;
+use Illuminate\Support\Facades\Hash;
+use Livewire\WithPagination;
 
 class StudentsComponent extends Component
 {
-    public $uid, $name, $lastname, $firstname, $phone, $enabled, $career_id;
+    use WithPagination;
+    // record
+    public $uid, $pid, $name, $lastname, $firstname;
+    public $phone, $email, $enabled, $career_id;
+    // Livewire utilities
+    public $search='';    
+    public $sort='id';
+    public $cant='10';
+    public $direction='asc';
+    public $openModal=false;
+    public $readyToLoad=false;
+    // TODO: leave just one
     public $formAction = "store";
-    public $search='';
-    public $updateForm = false;
+    public $updating=false;
+
+    // Listener para los EMIT - Conexión entre PHP-JS
+    protected $listeners=['delete']; 
+        
+    // Para este caso no es necesario PERO lo dejo como ejemplo
+    protected $queryString=[
+        'cant'=>['except'=>'10'],
+        'sort'=>['except'=>'id'],
+        'direction'=>['except'=>'asc'],
+        'search'=>['except'=>'']
+    ];
+    
+    protected $rules=[
+        'uid'=>'required|numeric',
+        'pid'=>'required|numeric',
+        'name'=>'required', 
+        'lastname'=>'required', 
+        'firstname'=>'required',
+        'phone'=>'required',
+        'email'=>'required|email',
+        // 'enabled'
+        // 'career_id'
+    ];
 
     public function render()
     {
-        $students=User::orderBy('lastname', 'asc')->paginate(25);
+        if ($this->readyToLoad)
+        {
+        $students=User::where('pid','=',$this->search)->
+            orwhere('lastname','like','%'.$this->search."%")->
+            orwhere('firstname','like','%'.$this->search."%")->
+            orderBy('lastname', $this->direction)->
+            paginate($this->cant);
         $careers=Career::all();
+        }
+        else {
+            $students=[];
+            $careers=[];
+        }
         return view('livewire.students-component',compact('students','careers'));
+    }
+
+    public function loadData(){
+        $this->readyToLoad=true;
+    }
+
+    public function updatingSearch(){ // livewire hook - cuando cambie la variable $search
+        // updating+Variable ---> $variable
+        // permite reiniciar el paginado para que
+        // funcione correctamente la búsqueda.
+        $this->resetPage(); 
+    }
+
+    public function order($sort){
+        if ($sort==$this->sort){
+            if ($this->direction=="desc"){
+                $this->direction="asc";
+            }else{
+                $this->direction="desc";
+            }
+        }
+        else{
+            $this->sort=$sort;
+        }
+        
     }
 
     public function store(){
         User::create([
             'user_id'=>$this->uid,
             'pid'=>$this->pid,
+            'name'=>$this->pid,
             'lastname'=>$this->lastname,
             'firstname'=>$this->firstname,
             'phone'=>$this->phone,
+            'email'=>$this->email,
             'enabled'=>$this->enabled,
             'career_id'=>$this->career_id,
+            'password' => Hash::make($this->pid),
         ]);
+
         // $this->reset(['uid','name','resol']);
-        $this->updateForm=false;
+        $this->openModal=false;
+        $this->emit('toast','Registro Guardado','success');
     }
 
     public function edit(User $user){
         $this->uid=$user->id;
+        $this->pid=$user->pid;
         $this->lastname=$user->lastname;
         $this->firstname=$user->firstname;
         $this->name=$user->name;
         $this->phone=$user->phone;
+        $this->email=$user->email;
         $this->enabled=$user->enabled;
         $this->career_id=$user->career_id;
 
         $this->formAction = "update";
-        $this->updateForm=true;
+        $this->updating=true;
+        $this->openModal=true;
     }
 
     public function create(){
-        $this->reset(['uid','pid','lastname','firstname','phone']);
+        $this->reset([
+            'name','uid','pid','lastname',
+            'firstname','phone','email'
+            ]);
 
         $this->formAction = "store";
-        $this->updateForm=true;
+        $this->updating=false;
+        $this->openModal=true;
     }
 
     public function saveChange(){
@@ -63,12 +146,12 @@ class StudentsComponent extends Component
         $student->lastname=$this->lastname;
         $student->firstname=$this->firstname;
         $student->phone=$this->phone;
+        $student->email=$this->email;
         $student->enabled=$this->enabled;
         //$student->career_id=$this->career_id;
-        
         $student->save();
         // cerrar Update Modal
-        $this->updateForm=false;
+        $this->openModal=false;
     }
 
     public function showModalForm(User $student){
@@ -76,14 +159,16 @@ class StudentsComponent extends Component
         $this->lastname=$student->lastname;
         $this->firstname=$student->firstname;
         $this->phone=$student->phone;
+        $this->email=$student->email;
         $this->enabled=$student->enabled;
         $this->career_id=$student->career_id;
         // Modificar (Edit)-> true
-        $this->updateForm=true;
+        $this->openModal=true;
     }
 
-    public function destroy(User $student){
+    public function delete(User $student){
         $student->delete();
+        $this->emit('toast','Registro eliminado','error');
     }
 
 }

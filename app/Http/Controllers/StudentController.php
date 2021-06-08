@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
+    public $errorInfo='';
+
     public function importBulk(Request $request){
         $request->validate(
             [
@@ -23,25 +25,28 @@ class StudentController extends Controller
         foreach ($rows as $row){
             $row=array_combine($header,$row); // convierte en array asociativo con los datos de $header
         
-            // user Student Creation
-            $user=User::create([
-                'name' => $row['name'],
-                'pid' => $row['pid'],
-                'lastname' => $row['lastname'],
-                'firstname' => $row['firstname'],
-                'phone' => $row['phone'],
-                'enabled' => $row['enabled'],
-                'email' => $row['email'],
-                'password' => Hash::make($row['pid']),
-            ]);
+            try {// user Student Creation
+                $user=User::create([
+                    'name' => $row['name'],
+                    'pid' => $row['pid'],
+                    'lastname' => $row['lastname'],
+                    'firstname' => $row['firstname'],
+                    'phone' => $row['phone'],
+                    'enabled' => $row['enabled'],
+                    'email' => $row['email'],
+                    'password' => Hash::make($row['pid']),
+                ]);
+            } catch (\Illuminate\Database\QueryException $exception) {
+                // Just Continue
+                //$this->errorInfo = $this->errorInfo.$exception->errorInfo;
+            }
 
             // TODO: Ver como agrego Carreras a los estudiantes
 
             // $user->career::create([
             //     'career'=>$rows['career'],
             // ]);
-        }
-        
+        }       
         // return redirect()->back()->with(['message'=>'Usuarios importados correctamente']);
         return redirect(route('students'));
     }

@@ -1,5 +1,5 @@
 <div wire:init="loadData">
-
+    {{-- Formulario CRUD Libros --}}
     <x-jet-dialog-modal wire:model="openModal">
       <x-slot name="title">
         @if ($updating)
@@ -139,7 +139,7 @@
           </div>
   
           <x-jet-input class="flex-1 mr-4" type="search" placeholder="Ingrese su búsqueda aquí" wire:model="search" />
-          <x-jet-danger-button wire:click="$set('openModal',true)">Nuevo Libro</x-jet-danger-button>
+          <x-jet-button wire:click="$set('openModal',true)" color="green">Nuevo Libro</x-jet-danger-button>
         </div>
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="text-gray-100 bg-cool-gray-700">
@@ -209,7 +209,7 @@
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             @foreach ($books as $book)
-              <tr>
+              <tr class="hover:bg-gray-100">
                 <td class="px-6 py-4">
                   <div class="text-sm text-gray-900">{{ $book->id }}</div>
                 </td>
@@ -222,17 +222,19 @@
                 <td class="px-6 py-4">
                   @if ($book->user_id == 0)
                     <span
-                      class="px-3 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                      Free
+                      class="text-center block text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      Libre
                     </span>
                   @else
-                    <span class="px-3 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                      {{ $book->user_id }}
+                    <span class="px-2 text-center block text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                      <a href="{{ route('students',['search'=>$book->user->pid])}}">
+                      {{ $book->user->pid }}
+                      </a>
                     </span>
                   @endif
   
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td class="w-28 bg-gray-100 px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   {{-- <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a> --}}
                   <button wire:click="edit('{{ $book->id }}')" class="mr-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -251,7 +253,7 @@
                 </td>
               </tr>
             @endforeach
-            <!-- More people... -->
+            <!-- More items... -->
           </tbody>
         </table>
         @if (count($books))
