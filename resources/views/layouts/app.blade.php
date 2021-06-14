@@ -244,22 +244,23 @@ $nav_links = [
       })
     });
 
-    livewire.on('confirmDelete', function(message, uid) {
+    livewire.on('confirmDelete', function(message, uid, callback) {
       Swal.fire({
         //title: 'Está seguro?',
         text: "Eliminar " + message + "?",
         icon: 'warning',
         iconColor: '#ffc145',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#065f46',
+        cancelButtonColor: '#b91c1c',
         cancelButtonText: 'Cancelar',
         confirmButtonText: 'Eliminar',
         background: '#dddddd',
         padding: '0.5rem'
       }).then((result) => {
         if (result.isConfirmed) {
-          Livewire.emit('delete', uid);
+          // Livewire.emit('delete', uid);
+          Livewire.emit(callback, uid);
         }
       })
     });

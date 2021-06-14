@@ -76,7 +76,12 @@ class User extends Authenticatable
     //         ]);
     // }
     
-    public function career(){
-        return $this->hasMany('App\Models\Career');
+    public function careers(){
+        return $this->belongsToMany(Career::class);
     }
+
+    public function book(){
+        return $this->hasMany('App\Models\Books');
+    }
+
 }

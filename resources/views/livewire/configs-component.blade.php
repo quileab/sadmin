@@ -1,14 +1,15 @@
 <div>
     <x-jet-confirmation-modal wire:model="updateForm" icon='edit'>
         <x-slot name="title">
-            {{ $description }}<br /><small>{{ $uid }}</small>
+            {{ $uid }}
         </x-slot>
 
         <x-slot name="content">
+            {{ $description }}&nbsp;
             @if (strtolower($value) == 'true')
-                <x-jet-button color="green" wire:click="$set('value','false')"> Habilitado </x-jet-button>
+                <x-jet-button color="green" wire:click="$set('value','false')">Habilitado</x-jet-button>
             @elseif (strtolower($value)=='false')
-                <x-jet-button color="red" wire:click="$set('value','true')"> Deshabilitado </x-jet-button>
+                <x-jet-button color="red" wire:click="$set('value','true')">Deshabilitado</x-jet-button>
             @else
                 <x-jet-input wire:model='value' value={{ $value }} />
             @endif
@@ -32,22 +33,24 @@
         @php
         if ($section!=$config->group){
         echo "
-        <div class='d2c max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8'>
+        <div class='bg-gray-700 text-gray-200 uppercase 
+            mx-auto py-2 px-4 sm:px-6 lg:px-8'>
             $config->group
         </div>";
         $section=$config->group;
         }
         @endphp
 
+        <div class="px-5 bg-gray-100">
         <x-jet-action-section>
             <x-slot name="title">
-                <small>{{ $config->description }}</small>
+                {{ $config->description }}
             </x-slot>
             <x-slot name="description">
                 <small>({{ $config->id }})</small>
             </x-slot>
             <x-slot name="content">
-                <x-jet-button wire:click="showModalForm({{ $config }})" class="mr-4">
+                <x-jet-button wire:click="showModalForm({{ $config }})" class="mr-4 pt-1 py-2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                     class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -57,14 +60,14 @@
                 </x-jet-button>
 
                 @if (strtolower($config->value) == 'true')
-                    <x-jet-button disabled color="green"> Habilitado </x-jet-button>
+                    <div class="bg-green-500 inline-flex items-center px-4 py-2 rounded-md font-semibold text-white uppercase"> Habilitado </div>
                 @elseif (strtolower($config->value)=='false')
-                    <x-jet-button disabled color="red"> Deshabilitado </x-jet-button>
+                    <div class="bg-red-500 inline-flex items-center px-4 py-2 rounded-md font-semibold text-white uppercase"> Deshabilitado </div>
                 @else
                     {{ $config->value }}
                 @endif
             </x-slot>
         </x-jet-action-section>
-
+        </div>
     @endforeach
 </div>

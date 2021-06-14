@@ -98,7 +98,7 @@
     </x-jet-confirmation-modal>
 
 
-    <div class="bg-gray-100 rounded-md shadow-md overflow-hidden max-w-4xl mx-auto mb-2 mt-4">
+    <div class="bg-gray-200 rounded-md shadow-md overflow-hidden max-w-6xl mx-auto mb-2 mt-4">
         <div class="w-full d2c px-4 py-3 text-white">
             <h1 class="inline-block">Tarjetas de Información</h1>
         </div>
@@ -128,7 +128,7 @@
                                 </p>
                             </div>
 
-                            <header class="items-center text-right px-2 border-b md:px-4 bg-gray-50">
+                            <header class="items-center text-right py-2 px-2 border-b md:px-4 bg-gray-100">
                                 <p class="text-xs"><small>{{ $infocard->updated_at->format('d-m-Y') }}</small></p>
                                 <p class="text-left">
                                     @php
@@ -137,9 +137,8 @@
                                 </p>
                             </header>
 
-
                             <footer
-                                class="bg-gray-200 border-t flex items-center justify-between leading-none p-1 md:p-2">
+                                class="bg-gray-300 border-t flex items-center justify-between leading-none p-1 md:p-2">
                                 <a class="flex items-center no-underline hover:underline text-black" href="#">
                                     <img class="h-8 w-8 rounded-full object-cover"
                                         src="{{ $infocard->user->profile_photo_url }}"

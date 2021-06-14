@@ -1,5 +1,5 @@
 <div>
-    {{-- Formulario de Carreras --}}
+     {{-- Formulario de Carreras --}}
     <x-jet-confirmation-modal icon='edit' wire:model="updateSubjectForm">
         <x-slot name="title">
             Materia

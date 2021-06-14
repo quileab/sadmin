@@ -12,6 +12,10 @@ class Career extends Model
     // protected $fillable = ['id','name','correl','user_id'];
     protected $guarded = [];
 
+    public function users(){
+        return $this->belongsToMany(User::class);
+    }
+
     public function subjects(){
         return $this->hasMany('App\Models\Subject');
     }

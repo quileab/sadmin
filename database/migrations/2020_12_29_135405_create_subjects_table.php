@@ -14,8 +14,8 @@ class CreateSubjectsTable extends Migration
     public function up()
     {
         Schema::create('subjects', function (Blueprint $table) {
-            $table->integer('id');
-            $table->integer('career_id');
+            $table->id();
+            $table->unsignedBigInteger('career_id');
             $table->string('name',60);
             $table->string('correl')->nullable();
             
@@ -23,8 +23,6 @@ class CreateSubjectsTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->timestamps();
-            
-            $table->primary('id');
         });
     }
 

@@ -16,7 +16,7 @@ class CreateGradesTable extends Migration
         Schema::create('grades', function (Blueprint $table) {
             $table->primary(['user_id', 'subject_id']);
             $table->unsignedBigInteger('user_id');
-            $table->Integer('subject_id');
+            $table->unsignedBigInteger('subject_id');
             // $table->unique(["user_id","subject_id"],"user_subject_unique");
             
             $table->tinyInteger('grade')->default(0);

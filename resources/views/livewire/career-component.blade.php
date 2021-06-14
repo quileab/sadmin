@@ -49,11 +49,9 @@
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-        </svg> Nueva
+        </svg>&nbsp;Nueva
     </x-jet-button>
     <hr />
-
-
 
     <table class="min-w-full bg-white rounded-lg overflow-hidden">
         <thead class="bg-gray-700 text-white">
@@ -71,7 +69,7 @@
                 <td class="w-1/6 text-left py-2 px-3 border-b">{{ $career->id }}</td>
                 <td class="w-4/6 text-left py-2 px-3 border-b">{{ $career->name }}</td>
                 <td class="py-2 px-3 border-b">
-                <div class="flex justify-between">
+                <div class="flex space-x-1">
                     {{-- Edit Career --}}
                     <x-jet-button wire:click="edit({{ $career }})">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -83,11 +81,11 @@
 
                     {{-- Add/Edit Materias --}}
                     <a href='subjects/{{ $career->id }}'>
-                        <x-jet-secondary-button>
+                        <x-jet-button color="blue">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg><small>Materias</small>
-                        </x-jet-secondary-button>
+                            </svg>&nbsp;<small>Materias</small>
+                        </x-jet-button>
                     </a>
                     {{-- Delete Career --}}
                     <x-jet-danger-button wire:click="$emit('triggerDelete',{{ $career }})">

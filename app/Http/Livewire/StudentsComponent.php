@@ -14,6 +14,7 @@ class StudentsComponent extends Component
     // record
     public $uid, $pid, $name, $lastname, $firstname;
     public $phone, $email, $enabled, $career_id;
+    public $student_careers=[];
     // Livewire utilities
     public $search='';    
     public $sort='id';
@@ -26,7 +27,7 @@ class StudentsComponent extends Component
     public $updating=false;
 
     // Listener para los EMIT - Conexión entre PHP-JS
-    protected $listeners=['delete']; 
+    protected $listeners=['delete','deleteCareer']; 
         
     // Para este caso no es necesario PERO lo dejo como ejemplo
     protected $queryString=[
@@ -48,8 +49,10 @@ class StudentsComponent extends Component
         // 'career_id'
     ];
 
+
     public function render()
     {
+        $careers=[];
         if ($this->readyToLoad)
         {
         $students=User::where('pid','=',$this->search)->
@@ -57,11 +60,14 @@ class StudentsComponent extends Component
             orwhere('firstname','like','%'.$this->search."%")->
             orderBy('lastname', $this->direction)->
             paginate($this->cant);
-        $careers=Career::all();
+
+            $careers=Career::all();
+            if($this->career_id==null){
+                $this->career_id=$careers[0]->id;
+            }
         }
         else {
             $students=[];
-            $careers=[];
         }
         return view('livewire.students-component',compact('students','careers'));
     }
@@ -88,7 +94,6 @@ class StudentsComponent extends Component
         else{
             $this->sort=$sort;
         }
-        
     }
 
     public function store(){
@@ -124,6 +129,8 @@ class StudentsComponent extends Component
         $this->formAction = "update";
         $this->updating=true;
         $this->openModal=true;
+        // Search SignedOnCareers
+        $this->student_careers = User::find($user->id)->careers()->get();
     }
 
     public function create(){
@@ -171,4 +178,28 @@ class StudentsComponent extends Component
         $this->emit('toast','Registro eliminado','error');
     }
 
+    public function addCareer(){
+        $text=$this->uid." / ".$this->career_id;
+
+        $user=User::find($this->uid);
+        $hasCareer = $user->careers()->where('id', $this->career_id)->exists();
+
+        if($hasCareer){
+            $this->emit('toast','Ya está cursando esa Carrera','warning');
+        }else{
+            // Add PIVOT relationship
+            $user->careers()->attach($this->career_id);
+            // update LiveWire list of Careers
+            $this->student_careers = User::find($user->id)->careers()->get();
+            $this->emit('toast','Carrera agregada!!','success');
+        }
+    }
+
+    public function deleteCareer($id){
+        $user=User::find($this->uid);
+        $user->careers()->detach($id);
+
+        $this->student_careers = User::find($user->id)->careers()->get();
+        $this->emit('toast',' Registro eliminado','error');
+    }
 }

@@ -6,30 +6,71 @@
         </x-slot>
 
         <x-slot name="content">
-            Personal ID
-            <x-jet-input type='number' wire:model.lazy='pid' value='{{ $pid }}' /><br />
-            Apellido/s
-            <x-jet-input type='text' wire:model.lazy='lastname' value='{{ $lastname }}' /><br />
-            Nombre/s
-            <x-jet-input type='text' wire:model.lazy='firstname' value='{{ $name }}' /><br />
-            EMail
-            <x-jet-input type='email' wire:model.lazy='email' value='{{ $email }}' /><br />
-            Teléfono
-            <x-jet-input type='tel' wire:model.lazy='phone' value='{{ $phone }}' /><br />
-            <small>Se muestran las carreras a las cuales está anotado</small>
-            Carrera/s » {{ $career_id }}
+
+          <div class="flex items-center">
+            <div class="w-1/3 ml-3">
+              <x-jet-label value="ID/DNI" />
+              <x-jet-input type="number" class="w-full" wire:model.defer='pid' />
+              <x-jet-input-error for="pid" />
+            </div>
+
+            <div class="w-1/3 mx-auto">
+              {{-- Habilitado --}}
+              <x-jet-label value="Condición en el Sistema" />
+              <input type="checkbox" value="@if ($enabled) 0 @else 1 @endif" wire:model.lazy="enabled"
+              class="form-checkbox h-5 w-5 text-green-500">&nbsp;Habilitado
+            </div>
+          </div>
+
+            <div class="flex">
+              <div class="w-1/3 ml-3">
+              <x-jet-label value="Apellido/s" />
+              <x-jet-input type='text' wire:model.lazy='lastname' value='{{ $lastname }}' class="w-full" />
+              <x-jet-input-error for="lastname" />
+              </div>
+              <div class="w-2/3 ml-3">
+              <x-jet-label value="Nombre/s" />
+              <x-jet-input type='text' wire:model.lazy='firstname' value='{{ $name }}' class="w-full" />
+              <x-jet-input-error for="firstname" />
+              </div>
+            </div>
+
+            <div class="flex">
+              <div class="w-full ml-3">
+                <x-jet-label value="EMail" />
+                <x-jet-input type='email' wire:model.lazy='email' value='{{ $email }}' class="w-full" />
+                <x-jet-input-error for="email" />
+              </div>
+              <div class="w-full ml-3">            
+                <x-jet-label value="Teléfono" />
+                <x-jet-input type='tel' wire:model.lazy='phone' value='{{ $phone }}' class="w-full" />
+                <x-jet-input-error for="phone" />
+              </div>
+            </div>
+
+            <div class="flex justify-between border-gray-400 my-2 border-2">
+              <div class="w-full">
+                @foreach ($student_careers as $item)
+                <div class="inline-flex w-3/4 p-2 bg-gradient-to-b from-gray-50">
+                    {{ $item->name }}
+                </div>
+                <x-jet-button wire:click="$emit('confirmDelete','{{$item->name}}','{{$item->id}}','deleteCareer')" color="red" class="w-4/4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                  </svg>&nbsp;
+                  Borrar
+                </x-jet-button>
+                @endforeach
+              </div>
+            </div>
+
+            <x-jet-label value="Agregar Carrera/s » {{ $career_id }}" />
             <select wire:model.lazy="career_id" name="career_id" id="career_id">
                 @foreach ($careers as $career)
-                    <option value="{{ $career->id }}"
-                        @if ($career->id==$career_id) selected @endif
-                        >{{ $career->name}}</option>
+                    <option value="{{ $career->id }}">{{ $career->name}}</option>
                 @endforeach
-            </select><br />
-            
-            {{-- Habilitado --}}
-            <input type="checkbox" value="@if ($enabled) 0 @else 1 @endif" wire:model.lazy="enabled"
-            class="form-checkbox h-5 w-5 text-green-500">&nbsp;Habilitado<br />
-
+            </select>
+            <x-jet-button wire:click="addCareer">Agregar</x-jet-button>
 
         </x-slot>
 
@@ -45,7 +86,7 @@
                 class="text-white font-bold px-3 py-1 rounded text-xs">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg> Crear
+                      </svg>&nbsp;Crear
                 </x-jet-button>
             @else
                 <x-jet-button class="ml-2" wire:click="saveChange" wire:loading.attr="disabled">
@@ -136,7 +177,7 @@
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
           @foreach ($students as $student)
-            <tr class="hover:bg-gray-100 {{ $student->enabled ? 'bg-blue-100' : '' }}">
+            <tr class="hover:bg-gray-100 {{ !$student->enabled ? 'bg-red-50' : '' }}">
               <td class="px-6 py-4">
                 <div class="text-sm text-gray-900">{{ $student->id }}</div>
               </td>
@@ -168,7 +209,7 @@
                           </svg>&nbsp;<small>Materias</small>
                     </x-jet-secondary-button>
                 </a>
-                <button wire:click="$emit('confirmDelete','{{$student->lastname}}, {{ $student->firstname }}','{{ $student->id }}')">
+                <button wire:click="$emit('confirmDelete','{{$student->lastname}}, {{ $student->firstname }}','{{ $student->id }}','delete')">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                     stroke="red">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

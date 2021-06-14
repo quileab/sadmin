@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Livewire;
 
 use App\Models\Career;

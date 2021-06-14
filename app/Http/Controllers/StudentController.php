@@ -1,4 +1,6 @@
 <?php
+// *** Controlador de Laravel para importar
+// *** Estudiantes
 
 namespace App\Http\Controllers;
 

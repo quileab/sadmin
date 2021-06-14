@@ -14,15 +14,13 @@ class CreateCareersTable extends Migration
     public function up()
     {
         Schema::create('careers', function (Blueprint $table) {
-            $table->integer('id');
+            $table->id();
             $table->string('name',80);
             $table->string('resol',40)->nullable();
             $table->boolean('active_suscribe');
             $table->boolean('active_eval');
 
             $table->timestamps();
-
-            $table->primary('id');
         });
     }
 
