@@ -9,7 +9,7 @@
             ID
             <x-jet-input type='number' wire:model.lazy='uid' value='{{ $uid }}' /><br />
             Nombre
-            <x-jet-input wire:model.lazy='name' value='{{ $name }}' /><br />
+            <x-jet-input wire:model.lazy='name' value='{{ $name }}' class="w-full"/><br />
             IDs de Correlatividades
             <x-jet-input wire:model.lazy='correl' value={{ $correl }} /><br />
         </x-slot>

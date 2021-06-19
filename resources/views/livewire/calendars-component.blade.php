@@ -33,29 +33,21 @@
                 </p>
             @endif
 
-            <x-jet-button color='{{ $status=== "S" ? "red-600" : "gray-500" }}' class="ml-2"
-            wire:click="changeStatus('S')">
-                Trabado
+            <x-jet-button color='{{ $status=== "S" ? "red" : "gray" }}' class="ml-2"
+            wire:click="changeStatus('S')">Trabado
             </x-jet-button>
-            <x-jet-button color='{{ $status=== "P" ? "yellow-400" : "gray-500" }}' class="ml-2"
-            wire:click="changeStatus('P')">
-                Pausar
+            <x-jet-button color='{{ $status=== "P" ? "yellow" : "gray" }}' class="ml-2"
+            wire:click="changeStatus('P')">Pausar
             </x-jet-button>
-            <x-jet-button color='{{ $status=== "C" ? "purple-600" : "gray-500" }}' class="ml-2"
-            wire:click="changeStatus('C')">
-                Cancelar
+            <x-jet-button color='{{ $status=== "C" ? "purple" : "gray" }}' class="ml-2"
+            wire:click="changeStatus('C')">Cancelar
             </x-jet-button>
-            <x-jet-button color='{{ $status=== "D" ? "green-600" : "gray-500" }}' class="ml-2"
-            wire:click="changeStatus('D')">
-                Hecho!!
+            <x-jet-button color='{{ $status=== "D" ? "green" : "gray" }}' class="ml-2"
+            wire:click="changeStatus('D')">Hecho!!
             </x-jet-button>
-            <x-jet-button color='{{ $status=== "O" ? "green-400" : "gray-500" }}' class="ml-2"
-            wire:click="changeStatus('O')">
-                En curso
+            <x-jet-button color='{{ $status=== "O" ? "green" : "gray" }}' class="ml-2"
+            wire:click="changeStatus('O')">En curso
             </x-jet-button>
-            <x-jet-action-message class='mt-2' on="saved">
-                Cambio realizado
-            </x-jet-action-message>
         </x-slot>
 
         <x-slot name="footer">
@@ -63,7 +55,9 @@
             <x-jet-secondary-button wire:click="$toggle('updateForm')" wire:loading.attr="disabled">
                 Cerrar
             </x-jet-secondary-button>
-
+            <x-jet-action-message class='mt-2' on="saved">
+                Cambio realizado
+            </x-jet-action-message>
             </div>
         </x-slot>
     </x-jet-confirmation-modal>

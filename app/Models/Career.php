@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Subject;
 
 class Career extends Model
 {
@@ -17,6 +18,6 @@ class Career extends Model
     }
 
     public function subjects(){
-        return $this->hasMany('App\Models\Subject');
+        return $this->hasMany(Subject::class);
     }
 }
