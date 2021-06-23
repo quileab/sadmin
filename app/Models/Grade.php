@@ -9,6 +9,7 @@ class Grade extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'date_id';
     protected $guarded = [];
 
     public function subject(){
@@ -17,6 +18,10 @@ class Grade extends Model
 
     public function user(){
         return $this->belongsTo('App\Models\User');
+    }
+
+    public function getDateIdAttribute(){
+        return \Carbon\Carbon::createFromFormat('Y-m-d', $this->attributes['date_id'])->format('d-m-Y');
     }
 
 }

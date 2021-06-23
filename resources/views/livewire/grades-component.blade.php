@@ -1,69 +1,125 @@
 <div wire:init="loadData">
 
-    {{-- Formulario --}}
-{{-- 
-    <x-jet-confirmation-modal icon='edit' wire:model="updateForm">
-      <x-slot name="title">
-              {{ \Carbon\Carbon::parse($datetime)->format('d-m-Y') }} » 
-              {{ \Carbon\Carbon::parse($datetime)->format('H:i') }}
-      </x-slot>
+  {{-- Formulario --}}
+  <x-jet-dialog-modal icon='edit' wire:model="openModal">
+    <x-slot name="title">Notas » <small>{{ $subjID }} » {{ $subjName }}</small> </x-slot>
+    <x-slot name="content">
+      {{-- Altas --}}
+      <div class="flex mb-2">
+        <div class="w-1/3 ml-3">
+        <x-jet-label value="Fecha" />
+        <x-jet-input type='date' wire:model.defer='date' value='{{ $date }}' class="w-full" />
+        <x-jet-input-error for="date" />
+        </div>
+        <div class="w-2/3 ml-3">
+        <x-jet-label value="Descripción" />
+        <x-jet-input type='text' wire:model.defer='name' value='{{ $name }}' class="w-full" />
+        <x-jet-input-error for="name" />
+        </div>
+      </div>
 
-      <x-slot name="content">
-          <p class="mb-3 text-lg">
-          <strong>{{ $fullname }}</strong>
-          </p>
-          <span class="mr-4">
-          Email: <strong>{{ $email }}</strong>
-          </span>
-          <span class="mb-3">
-          Teléfono: <strong>{{ $phone }}</strong>
-          </span>
-          <p class="my-2">
-          Asunto:&nbsp;
-          <strong>{{ $subject }}</strong><br />
-          </p>
+      <div class="flex mb-2">
+        <div class="w-1/3 ml-3">
+        <x-jet-label value="Calificación" />
+        <x-jet-input type='text' wire:model.defer='grade' value='{{ $grade }}' class="w-full" />
+        <x-jet-input-error for="grade" />
+        </div>
 
-          @if ($target_file!='')
-              <p class="my-2">
-                  <a href="{{ $target_file }}" target="_blank">
-                  <x-jet-button>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-paperclip" viewBox="0 0 16 16">
-                          <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z"/>
-                      </svg> Archivo adjunto
-                  </x-jet-button>
-                  </a>
-              </p>
-          @endif
+        <div class="w-1/3 mx-auto">
+          {{-- Approved --}}
+          <x-jet-label value="Aprobado" />
+          <input type="checkbox" value="@if ($approved) 0 @else 1 @endif" wire:model.defer="approved"
+          class="border-4 focus:border-gray-700 form-checkbox h-5 w-5 text-green-600">
+        </div>
+        
+        @if ($edittingGrade)
+        <x-jet-button color="indigo" wire:click="updateGrade">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>&nbsp;Corregir
+        </x-jet-button>
+        <x-jet-button wire:click="$set('edittingGrade',false)" class="ml-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>&nbsp;Cancelar
+        </x-jet-button>
 
-          <x-jet-button color='{{ $status=== "S" ? "red" : "gray" }}' class="ml-2"
-          wire:click="changeStatus('S')">Trabado
+        @else
+          <x-jet-button wire:click="addGrade">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>&nbsp;Agregar
           </x-jet-button>
-          <x-jet-button color='{{ $status=== "P" ? "yellow" : "gray" }}' class="ml-2"
-          wire:click="changeStatus('P')">Pausar
-          </x-jet-button>
-          <x-jet-button color='{{ $status=== "C" ? "purple" : "gray" }}' class="ml-2"
-          wire:click="changeStatus('C')">Cancelar
-          </x-jet-button>
-          <x-jet-button color='{{ $status=== "D" ? "green" : "gray" }}' class="ml-2"
-          wire:click="changeStatus('D')">Hecho!!
-          </x-jet-button>
-          <x-jet-button color='{{ $status=== "O" ? "green" : "gray" }}' class="ml-2"
-          wire:click="changeStatus('O')">En curso
-          </x-jet-button>
-      </x-slot>
+        @endif
 
-      <x-slot name="footer">
-          <div class="flex justify-between">
-          <x-jet-secondary-button wire:click="$toggle('updateForm')" wire:loading.attr="disabled">
-              Cerrar
-          </x-jet-secondary-button>
-          <x-jet-action-message class='mt-2' on="saved">
-              Cambio realizado
-          </x-jet-action-message>
-          </div>
-      </x-slot>
-  </x-jet-confirmation-modal>
- --}}
+
+      </div>
+
+
+      <div class="mx-6 px-0">
+      <x-table>
+        <table class="w-full divide-y divide-gray-200">
+          <thead class="text-gray-100 bg-cool-gray-700">
+            <tr>
+              <th class="py-2" scope="col">Fecha</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Calificación</th>
+              <th scope="col" class="relative px-4">
+                <span class="sr-only">Edit</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            @foreach ($grades as $grade)
+              <tr class="hover:bg-gray-100">
+                <td class="px-6 py-4">
+                  {{ $grade->date_id }}<br />
+                </td>
+                <td class="px-6 py-4">
+                  {{$grade->name}}
+                </td>
+                <td class="px-6 py-4">
+                  {{$grade->grade}}
+                </td>
+                <td class="w-28 bg-gray-100 px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  {{-- Edit --}}
+                  <button wire:click="editGrade('{{ $grade->date_id }}')" class="mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </button>
+                  {{-- Delete --}}
+                  <button wire:click="$emit('confirmDelete','{{$grade->date_id}}, {{ $grade->name }}','{{ $grade->date_id }}','deleteGrade')">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="red">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  </button>
+                </td>
+              </tr>
+            @endforeach
+            <!-- More items... -->
+          </tbody>
+        </table>
+      </x-table>
+      </div>
+    </x-slot>
+
+    <x-slot name="footer">
+      <div class="flex justify-between">
+        <x-jet-secondary-button wire:click="$toggle('openModal')" wire:loading.attr="disabled">
+          Cerrar
+        </x-jet-secondary-button>
+        <x-jet-action-message class='mt-2' on="saved">
+          Cambio realizado
+        </x-jet-action-message>
+      </div>
+    </x-slot>
+  </x-jet-dialog-modal>
+
 
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <x-table>
@@ -74,14 +130,14 @@
             <small>({{ $uid }})</small>
           </span>
           <span>Carrera&nbsp;
-          <select wire:model.lazy="selectedCareer">
-            {{-- opcion 0 por default --}}
-            @foreach ($careers as $career)
-              <option value="{{ $career->id }}">
-                {{ $career->name }}
-              </option>
-            @endforeach
-          </select>
+            <select wire:model.lazy="selectedCareer">
+              {{-- opcion 0 por default --}}
+              @foreach ($careers as $career)
+                <option value="{{ $career->id }}">
+                  {{ $career->name }}
+                </option>
+              @endforeach
+            </select>
           </span>
         </div>
 
@@ -90,15 +146,13 @@
         </x-jet-button> --}}
 
       </div>
+
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="text-gray-100 bg-cool-gray-700">
           <tr>
             <th scope="col">ID</th>
             <th scope="col">Materia</th>
             <th scope="col">Calif.</th>
-            <th scope="col" class="relative px-4 py-3">
-              <span class="sr-only">Edit</span>
-            </th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
@@ -110,11 +164,8 @@
               <td class="px-6 py-4">
                 {{ $subject->name }}
               </td>
-              <td class="px-6 py-4">
-                Nota
-              </td>
               <td class="w-28 bg-gray-100 px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                Acciones
+                <x-jet-button wire:click="setGrades('{{ $subject->id }}','{{ $subject->name }}')">Modal</x-jet-button>
               </td>
             </tr>
           @endforeach
