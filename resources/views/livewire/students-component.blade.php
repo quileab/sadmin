@@ -1,4 +1,5 @@
 <div wire:init="loadData">
+  <x-jet-button wire:click="testme">Alertme</x-jet-button>
     {{-- Formulario CRUD Estudiantes --}}
     <x-jet-dialog-modal icon='edit' wire:model="openModal">
         <x-slot name="title">
@@ -48,6 +49,7 @@
               </div>
             </div>
 
+            @if ($updating)
             <div class="flex justify-between border-gray-400 my-2 border-2">
               <div class="w-full">
                 @foreach ($student_careers as $item)
@@ -64,13 +66,14 @@
               </div>
             </div>
 
-            <x-jet-label value="Agregar Carrera/s » {{ $career_id }}" />
-            <select wire:model.lazy="career_id" name="career_id" id="career_id">
-                @foreach ($careers as $career)
-                    <option value="{{ $career->id }}">{{ $career->name}}</option>
-                @endforeach
-            </select>
-            <x-jet-button wire:click="addCareer">Agregar</x-jet-button>
+              <x-jet-label value="Agregar Carrera/s » {{ $career_id }}" />
+              <select wire:model.lazy="career_id" name="career_id" id="career_id">
+                  @foreach ($careers as $career)
+                      <option value="{{ $career->id }}">{{ $career->name}}</option>
+                  @endforeach
+              </select>
+              <x-jet-button wire:click="addCareer">Agregar</x-jet-button>
+            @endif
 
         </x-slot>
 
@@ -105,7 +108,7 @@
          <span class="inline-flex items-center justify-center px-2 py-1 text-xs leading-none text-red-100 bg-blue-600 rounded-full">.csv</span>
     </x-jet-button>
     </a>
-    <hr />
+
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- This example requires Tailwind CSS v2.0+ -->
@@ -123,7 +126,7 @@
         </div>
 
         <x-jet-input class="flex-1 mr-4" type="search" placeholder="Ingrese su búsqueda aquí" wire:model="search" />
-        <x-jet-button wire:click="create()" color="green">Nuevo Ingreso</x-jet-danger-button>
+        <x-jet-button wire:click="create" color="green">Nuevo Ingreso</x-jet-danger-button>
       </div>
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="text-gray-100 bg-cool-gray-700">

@@ -28,7 +28,7 @@ class GradesComponent extends Component
     public $edittingGrade=false;
 
     // Listener para los EMIT - Conexión entre PHP-JS
-    protected $listeners = ['delete'];
+    protected $listeners = ['delete','deleteGrade'];
 
     // toma el valor enviado desde el Router (web.php) // livewire no utiliza __construct
     public function mount($id)
@@ -59,6 +59,12 @@ class GradesComponent extends Component
                 $subjects = [];
                 $this->emit('toast', 'No se encuentran Carreras', 'error');
             }
+            // Si el Modal se abre cargo las notas
+            if ($this->openModal == true) {
+                $this->grades = Grade::where('user_id', $this->uid)
+                    ->where('subject_id', $this->subjID)
+                    ->get();
+            }
         }
         return view('livewire.grades-component', compact('careers', 'subjects'));
     }
@@ -74,19 +80,13 @@ class GradesComponent extends Component
         Grade::create([
             'user_id' => $this->uid,
             'subject_id' => $this->subjID,
-            'date_id' => $this->date_id,
+            'date_id' => $this->date,
             'name' => $this->name,
             'grade' => $this->grade,
             'approved' => $this->approved ? 1 : 0,
         ]);
 
-        // $this->reset(['uid','name','resol']);
-        // $this->openModal=false;
-        // update Grades in form
-        $this->grades=Grade::where('user_id',$this->uid)
-        ->where('subject_id',$this->subjID)
-        ->get();
-        $this->reset(['date_id','name','grade','approved']);
+        $this->reset(['date','name','grade','approved']);
         $this->emit('toast', 'Registro Guardado', 'success');
     }
 
@@ -95,12 +95,14 @@ class GradesComponent extends Component
         $this->subjID = $subjID;
         $this->subjName = $subjName;
 
-        if ($this->openModal == false) {
-            $this->grades = Grade::where('user_id', $this->uid)
-                ->where('subject_id', $this->subjID)
-                ->get();
-        }
         $this->openModal = true;
+    }
+
+    public function cancelEditGrades()
+    {
+        $this->reset(['date','name','grade','approved']);
+        //$this->openModal = false;
+        $this->edittingGrade=false;
     }
 
     public function editGrade($date_id){
@@ -116,5 +118,31 @@ class GradesComponent extends Component
         $this->grade=$grade->grade;
         $this->approved=$grade->approved;
         $this->edittingGrade=true;
+    }
+
+    public function updateGrade(){
+        $grade=Grade::where('user_id', $this->uid)
+            ->where('subject_id', $this->subjID)
+            ->where('date_id',$this->date)
+            ->first(); // first() return model
+        $grade->user_id=$this->uid;
+        $grade->subject_id=$this->subjID;
+        $grade->date_id=$this->date;
+        $grade->name=$this->name;
+        $grade->grade=$this->grade;
+        $grade->approved=$this->approved;
+
+        $grade->save();
+        $this->emit('toast','Actualizado correctamente','success');
+    }
+
+    public function deleteGrade($date_id){
+        $date_id=\Carbon\Carbon::createFromFormat('d-m-Y', $date_id)->format('Y-m-d');
+        $grade=Grade::where('user_id', $this->uid)
+            ->where('subject_id', $this->subjID)
+            ->where('date_id',$date_id)
+            ->first(); // first() return model
+        $grade->delete();
+        $this->emit('toast','Registro eliminado','error');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\User;
 use App\Models\Career;
+use Exception;
 use Illuminate\Support\Facades\Hash;
 use Livewire\WithPagination;
 
@@ -76,6 +77,12 @@ class StudentsComponent extends Component
         $this->readyToLoad=true;
     }
 
+    public function testme(){
+        $this->emit('toast','lorem ipsum dolor est','question');
+    }
+    
+
+
     public function updatingSearch(){ // livewire hook - cuando cambie la variable $search
         // updating+Variable ---> $variable
         // permite reiniciar el paginado para que
@@ -110,7 +117,6 @@ class StudentsComponent extends Component
             'password' => Hash::make($this->pid),
         ]);
 
-        // $this->reset(['uid','name','resol']);
         $this->openModal=false;
         $this->emit('toast','Registro Guardado','success');
     }
@@ -139,6 +145,7 @@ class StudentsComponent extends Component
             'firstname','phone','email'
             ]);
 
+        $this->enabled=true;
         $this->formAction = "store";
         $this->updating=false;
         $this->openModal=true;
@@ -174,8 +181,13 @@ class StudentsComponent extends Component
     }
 
     public function delete(User $student){
-        $student->delete();
-        $this->emit('toast','Registro eliminado','error');
+        try{
+            $student->delete();
+            $this->emit('toast','Registro eliminado','error');
+        } catch(Exception $exeption){
+            $this->emit('toast','Error: Existe información relacionada a este Usuario','error');
+        }
+
     }
 
     public function addCareer(){

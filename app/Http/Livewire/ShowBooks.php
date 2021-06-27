@@ -103,6 +103,19 @@ class ShowBooks extends Component
         }
         
     }
+    
+    public function newBook(){
+        $this->reset([
+            'uid', 'title', 'publisher', 'author', 'gender',
+            'extent', 'edition', 'isbn', 'container', 'signature',
+            'digital', 'origin', 'date_added', 'price',
+            'discharge_date', 'discharge_reason', 'synopsis',
+            'note', 'user_id'
+        ]);
+        $this->updating=false;
+        $this->openModal=true;
+        $this->emit('toast','Nuevo Libro','success');
+    }
 
     public function save(){ 
         $this->validate($this->rules);

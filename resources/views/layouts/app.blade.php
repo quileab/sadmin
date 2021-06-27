@@ -52,7 +52,12 @@ $nav_links = [
 
   <!-- Styles -->
   <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-
+  <style>
+    .swal2-title{
+      color:aliceblue !important;
+      font-size: 1.2rem !important;
+    }
+  </style>
   @livewireStyles
 
   <!-- Scripts -->
@@ -215,21 +220,11 @@ $nav_links = [
         icon = 'success'
       }
       switch (icon) {
-        case 'success':
-          bgcolor = '#a9bd8a';
-          break;
-        case 'warning':
-          bgcolor = '#bdb68a';
-          break;
-        case 'error':
-          bgcolor = '#bd8a8a';
-          break;
-        case 'info':
-          bgcolor = '#8aa0bd';
-          break;
-        case 'question':
-          bgcolor = '#8abdb2';
-          break;
+        case 'success':  bgcolor = '#237539'; break;
+        case 'warning':  bgcolor = '#d67200'; break;
+        case 'error':    bgcolor = '#b80000'; break;
+        case 'info':     bgcolor = '#0a3f80'; break;
+        case 'question': bgcolor = '#8a0a61'; break;
       }
       Swal.fire({
         icon: icon,
@@ -240,7 +235,7 @@ $nav_links = [
         position: 'top-end',
         timerProgressBar: true,
         showConfirmButton: false,
-        timer: 2500
+        timer: 4000,
       })
     });
 
@@ -249,7 +244,7 @@ $nav_links = [
         //title: 'Está seguro?',
         text: "Eliminar " + message + "?",
         icon: 'warning',
-        iconColor: '#ffc145',
+        iconColor: '#ffaa00',
         showCancelButton: true,
         confirmButtonColor: '#065f46',
         cancelButtonColor: '#b91c1c',

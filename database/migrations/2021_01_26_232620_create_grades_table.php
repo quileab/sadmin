@@ -15,9 +15,11 @@ class CreateGradesTable extends Migration
     {
         Schema::create('grades', function (Blueprint $table) {
             $table->primary(['user_id', 'subject_id','date_id']);
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('subject_id');
+            //$table->unsignedBigInteger('user_id');
+            //$table->unsignedBigInteger('subject_id');
             // $table->unique(["user_id","subject_id"],"user_subject_unique");
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('subject_id')->constrained();
             $table->date('date_id')->key();
             $table->tinyText('name');
             
@@ -25,10 +27,6 @@ class CreateGradesTable extends Migration
             $table->tinyInteger('approved')->default(0);
             $table->timestamps();
             
-            $table->foreign('user_id')->references('id')->on('users')
-            ->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('subject_id')->references('id')->on('subjects')
-            ->onDelete('cascade')->onUpdate('cascade');
             
         });
     }

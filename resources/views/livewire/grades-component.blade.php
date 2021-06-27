@@ -2,13 +2,17 @@
 
   {{-- Formulario --}}
   <x-jet-dialog-modal icon='edit' wire:model="openModal">
-    <x-slot name="title">Notas » <small>{{ $subjID }} » {{ $subjName }}</small> </x-slot>
+    <x-slot name="title">Calificaciones » <small>{{ $subjID }} »</small> {{ $subjName }}</x-slot>
     <x-slot name="content">
       {{-- Altas --}}
       <div class="flex mb-2">
-        <div class="w-1/3 ml-3">
+        <div class="w-1/3">
         <x-jet-label value="Fecha" />
-        <x-jet-input type='date' wire:model.defer='date' value='{{ $date }}' class="w-full" />
+        @if ($edittingGrade)
+          <x-jet-input disabled wire:model.defer="date" class="w-full" />
+        @else
+          <x-jet-input type='date' wire:model.defer='date' value='{{ $date }}' class="w-full" />
+        @endif
         <x-jet-input-error for="date" />
         </div>
         <div class="w-2/3 ml-3">
@@ -18,27 +22,28 @@
         </div>
       </div>
 
-      <div class="flex mb-2">
-        <div class="w-1/3 ml-3">
-        <x-jet-label value="Calificación" />
-        <x-jet-input type='text' wire:model.defer='grade' value='{{ $grade }}' class="w-full" />
-        <x-jet-input-error for="grade" />
+      <div class="flex mb-2 justify-between">
+        <div class="w-2/4">
+          <x-jet-label value="Calificación" />
+          <x-jet-input type='text' wire:model.defer='grade' value='{{ $grade }}' class="w-full" />
+          <x-jet-input-error for="grade" />
         </div>
 
-        <div class="w-1/3 mx-auto">
+        <div class="w-2/4 mx-2">
           {{-- Approved --}}
           <x-jet-label value="Aprobado" />
           <input type="checkbox" value="@if ($approved) 0 @else 1 @endif" wire:model.defer="approved"
           class="border-4 focus:border-gray-700 form-checkbox h-5 w-5 text-green-600">
         </div>
         
+        <div class="w-full text-right">
         @if ($edittingGrade)
         <x-jet-button color="indigo" wire:click="updateGrade">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>&nbsp;Corregir
         </x-jet-button>
-        <x-jet-button wire:click="$set('edittingGrade',false)" class="ml-2">
+        <x-jet-button wire:click="cancelEditGrades" class="ml-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>&nbsp;Cancelar
@@ -51,7 +56,7 @@
             </svg>&nbsp;Agregar
           </x-jet-button>
         @endif
-
+        </div>
 
       </div>
 
@@ -165,7 +170,13 @@
                 {{ $subject->name }}
               </td>
               <td class="w-28 bg-gray-100 px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <x-jet-button wire:click="setGrades('{{ $subject->id }}','{{ $subject->name }}')">Modal</x-jet-button>
+                <x-jet-button wire:click="setGrades('{{ $subject->id }}','{{ $subject->name }}')">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+                  </svg>
+
+                </x-jet-button>
               </td>
             </tr>
           @endforeach
