@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Livewire;
 
-use App\Models\Career;
 use App\Models\Subject;
 use Livewire\Component;
 
@@ -14,6 +13,13 @@ class SubjectsComponent extends Component
     public $updateSubjectForm = false;
 
     // toma el valor enviado desde el Router (web.php) // livewire no utiliza __construct
+    private function cleanDates($dates){
+        $dates=str_replace('  ', ' ', $dates);
+        $dates=str_replace([':', '\\', '  ', '*'], '', $dates);
+        $dates=str_replace(['/', '.'], '-', $dates);
+        return $dates;
+    }
+
     public function mount($career_id){
         $this->career_id=$career_id;
         $career=\App\Models\Career::find($career_id);
@@ -29,6 +35,8 @@ class SubjectsComponent extends Component
     }
 
     public function store(){
+        $this->exam_dates=$this->cleanDates($this->exam_dates);
+
         Subject::create([
             'id'=>$this->uid,
             'name'=>$this->name,
@@ -52,6 +60,8 @@ class SubjectsComponent extends Component
 
 
     public function saveSubjectChange(){
+        $this->exam_dates=$this->cleanDates($this->exam_dates);
+
         $this->formAction = "update";
         $subject=Subject::find($this->uid);
         $subject->career_id=$this->career_id;

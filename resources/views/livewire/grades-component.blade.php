@@ -125,7 +125,6 @@
     </x-slot>
   </x-jet-dialog-modal>
 
-
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <x-table>
       <div class="px-6 py-2 flex items-center d2c">
@@ -163,13 +162,13 @@
         <tbody class="bg-white divide-y divide-gray-200">
           @foreach ($subjects as $subject)
             <tr class="hover:bg-gray-100">
-              <td class="px-6 py-4">
+              <td class="px-6 py-1">
                 {{ $subject->id }}
               </td>
-              <td class="px-6 py-4">
+              <td class="px-6 py-1">
                 {{ $subject->name }}
               </td>
-              <td class="w-28 bg-gray-100 px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <td class="w-28 bg-gray-100 px-6 py-1 whitespace-nowrap text-right text-sm font-medium">
                 <x-jet-button wire:click="setGrades('{{ $subject->id }}','{{ $subject->name }}')">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
