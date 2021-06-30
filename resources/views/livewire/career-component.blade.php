@@ -1,6 +1,6 @@
 <div>
     {{-- Formulario de Carreras --}}
-    <x-jet-confirmation-modal icon='edit' wire:model="updateCareerForm">
+    <x-jet-dialog-modal icon='edit' wire:model="updateCareerForm">
         <x-slot name="title">
             <small>{{ $uid }} » </small><strong>{{ $name }}</strong>
         </x-slot>
@@ -42,7 +42,7 @@
 
             </div>
         </x-slot>
-    </x-jet-confirmation-modal>
+    </x-jet-dialog-modal>
 
     {{-- NEW Career --}}
     <x-jet-button color='green' wire:click="create">

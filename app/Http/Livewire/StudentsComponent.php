@@ -77,12 +77,6 @@ class StudentsComponent extends Component
         $this->readyToLoad=true;
     }
 
-    public function testme(){
-        $this->emit('toast','lorem ipsum dolor est','question');
-    }
-    
-
-
     public function updatingSearch(){ // livewire hook - cuando cambie la variable $search
         // updating+Variable ---> $variable
         // permite reiniciar el paginado para que

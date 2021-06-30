@@ -133,6 +133,8 @@ class GradesComponent extends Component
         $grade->approved=$this->approved;
 
         $grade->save();
+        $this->reset(['date','name','grade','approved']);
+        $this->edittingGrade=false;
         $this->emit('toast','Actualizado correctamente','success');
     }
 

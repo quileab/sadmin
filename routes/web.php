@@ -49,6 +49,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('students.index');
     })->name('students');
 
+    Route::get('/exams', function () {
+        return view('exams.index');
+    })->name('exams');
+
     Route::get('/students-import-form', function () {
         return view('students.import-form');
     })->name('students-import-form');

@@ -8,7 +8,7 @@ use Livewire\Component;
 class SubjectsComponent extends Component
 {
     public $uid;
-    public $name, $correl;
+    public $name, $correl, $exam_dates;
     public $career_id, $career_name;
     public $formAction = "store";
     public $updateSubjectForm = false;
@@ -33,9 +33,10 @@ class SubjectsComponent extends Component
             'id'=>$this->uid,
             'name'=>$this->name,
             'correl'=>$this->correl,
+            'exam_dates'=>$this->exam_dates,
             'career_id'=>$this->career_id
         ]);
-        $this->reset(['uid','name','correl']);
+        $this->reset(['uid','name','correl','exam_dates']);
         $this->updateSubjectForm=false;
     }
 
@@ -43,6 +44,7 @@ class SubjectsComponent extends Component
         $this->uid=$subject->id;
         $this->name=$subject->name;
         $this->correl=$subject->correl;
+        $this->exam_dates=$subject->exam_dates;
 
         $this->formAction = "update";
         $this->updateSubjectForm=true;
@@ -55,6 +57,7 @@ class SubjectsComponent extends Component
         $subject->career_id=$this->career_id;
         $subject->name=$this->name;
         $subject->correl=$this->correl;
+        $subject->exam_dates=$this->exam_dates;
         
         $subject->save();
         // cerrar Update Modal
@@ -62,7 +65,7 @@ class SubjectsComponent extends Component
     }
 
     public function create(){
-        $this->reset(['uid','name','correl']);
+        $this->reset(['uid','name','correl','exam_dates']);
 
         $this->formAction = "store";
         $this->updateSubjectForm=true;
@@ -72,6 +75,7 @@ class SubjectsComponent extends Component
         $this->uid=$subject->id;
         $this->name=$subject->name;
         $this->resol=$subject->correl;
+        $this->exam_dates=$subject->exam_dates;
         
         // Modificar (Edit)-> true
         $this->updateSubjectForm=true;

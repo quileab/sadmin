@@ -36,7 +36,7 @@
           class="border-4 focus:border-gray-700 form-checkbox h-5 w-5 text-green-600">
         </div>
         
-        <div class="w-full text-right">
+        <div class="w-full mt-6 text-right">
         @if ($edittingGrade)
         <x-jet-button color="indigo" wire:click="updateGrade">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

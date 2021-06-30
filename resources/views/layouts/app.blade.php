@@ -1,14 +1,9 @@
 @php
 $nav_links = [
     [
-        'name' => 'Dashboard',
-        'route' => route('dashboard'),
-        'active' => request()->routeIs('dashboard'),
-    ],
-    [
-        'name' => 'Info Tarjetas',
-        'route' => route('infocards'),
-        'active' => request()->routeIs('infocards'),
+      'name' => 'Dashboard',
+      'route' => route('dashboard'),
+      'active' => request()->routeIs('dashboard'),
     ],
     [
       'name' => 'Carreras',
@@ -21,6 +16,11 @@ $nav_links = [
       'active' => request()->routeIs('students'),
     ],
     [
+      'name' => 'Mesas',
+      'route' => route('exams'),
+      'active' => request()->routeIs('exams'),
+    ],
+    [
       'name' => 'Calendarios',
       'route' => route('calendars'),
       'active' => request()->routeIs('calendars'),
@@ -31,32 +31,38 @@ $nav_links = [
       'active' => request()->routeIs('books'),
     ],
     [
-        'name' => 'Configuración',
-        'route' => route('configs'),
-        'active' => request()->routeIs('configs'),
+      'name' => 'Info Tarjetas',
+      'route' => route('infocards'),
+      'active' => request()->routeIs('infocards'),
     ],
-  ];
-  @endphp
+    [
+      'name' => 'Configuración',
+      'route' => route('configs'),
+      'active' => request()->routeIs('configs'),
+    ],
+];
+@endphp
 <!DOCTYPE html>
 <html lang="en">
-  
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ config('app.name', 'Laravel') }}</title>
-    <!-- Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{{ config('app.name', 'Laravel') }}</title>
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
   <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!-- Styles -->
   <link rel="stylesheet" href="{{ mix('css/app.css') }}">
   <style>
-    .swal2-title{
-      color:aliceblue !important;
+    .swal2-title {
+      color: aliceblue !important;
       font-size: 1.2rem !important;
     }
+
   </style>
   @livewireStyles
 
@@ -176,8 +182,7 @@ $nav_links = [
               <!-- Authentication -->
               <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <x-jet-dropdown-link href="{{ route('logout') }}" 
-                  onclick="event.preventDefault();
+                <x-jet-dropdown-link href="{{ route('logout') }}" onclick="event.preventDefault();
                   this.closest('form').submit();">
                   {{ __('Logout') }}
                 </x-jet-dropdown-link>
@@ -220,11 +225,21 @@ $nav_links = [
         icon = 'success'
       }
       switch (icon) {
-        case 'success':  bgcolor = '#237539'; break;
-        case 'warning':  bgcolor = '#d67200'; break;
-        case 'error':    bgcolor = '#b80000'; break;
-        case 'info':     bgcolor = '#0a3f80'; break;
-        case 'question': bgcolor = '#8a0a61'; break;
+        case 'success':
+          bgcolor = '#237539';
+          break;
+        case 'warning':
+          bgcolor = '#d67200';
+          break;
+        case 'error':
+          bgcolor = '#b80000';
+          break;
+        case 'info':
+          bgcolor = '#0a3f80';
+          break;
+        case 'question':
+          bgcolor = '#8a0a61';
+          break;
       }
       Swal.fire({
         icon: icon,
@@ -235,7 +250,7 @@ $nav_links = [
         position: 'top-end',
         timerProgressBar: true,
         showConfirmButton: false,
-        timer: 4000,
+        timer: 3500,
       })
     });
 
@@ -259,7 +274,6 @@ $nav_links = [
         }
       })
     });
-
   </script>
 </body>
 
