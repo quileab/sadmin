@@ -27,8 +27,7 @@ class SubjectsComponent extends Component
         //dd('mount',$career_id);
     }
 
-    public function render()
-    {
+    public function render(){
         $subjects=Subject::where('career_id',$this->career_id)->get();
         // fullpage livewire por lo tanto no uso "index"
         return view('livewire.subjects-component',compact('subjects'));
@@ -57,7 +56,6 @@ class SubjectsComponent extends Component
         $this->formAction = "update";
         $this->updateSubjectForm=true;
     }
-
 
     public function saveSubjectChange(){
         $this->exam_dates=$this->cleanDates($this->exam_dates);
