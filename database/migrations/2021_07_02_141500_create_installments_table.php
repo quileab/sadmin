@@ -14,13 +14,14 @@ class CreateInstallmentsTable extends Migration
     public function up()
     {
         Schema::create('installments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->date('date');
-            $table->date('paydate')->nullable();
-            $table->string('title')->nullable();
-            $table->decimal('debt',9,2);
-            $table->decimal('payment',9,2)->nullable();
+            $table->primary(['user_id', 'type_id','point_id','number_id']);
+            $table->foreignId('user_id')->constrained();
+            $table->string('type_id')->key();
+            $table->unsignedSmallInteger('point_id')->key();
+            $table->unsignedInteger('number_id')->key();
+            $table->tinyText('text');
+            $table->decimal('debit',10,2)->default(0);
+            $table->decimal('credit',10,2)->default(0);
             $table->timestamps();
         });
     }
