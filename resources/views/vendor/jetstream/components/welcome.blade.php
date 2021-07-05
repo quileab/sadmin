@@ -16,35 +16,18 @@
 <div class="bg-gray-200 bg-opacity-25 grid grid-cols-1 md:grid-cols-2">
   <div class="p-6">
     <div class="flex items-center">
-      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        viewBox="0 0 24 24" class="w-8 h-8 text-gray-400">
-        <path
-          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
-        </path>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
       </svg>
-      <div class="ml-4 text-lg text-gray-600 leading-7 font-semibold"><a
-          href="https://laravel.com/docs">Documentation</a></div>
+      <div class="ml-4 text-lg text-gray-600 leading-7 font-semibold">
+        Estudiantes Registrados</div>
     </div>
 
     <div class="ml-12">
-      <div class="mt-2 text-sm text-gray-500">
-        Laravel has wonderful documentation covering every aspect of the framework. Whether you're new to the framework
-        or have previous experience, we recommend reading all of the documentation from beginning to end.
+      <div class="mt-2 text-xl text-gray-500">
+        {{ Auth::user()->userCount() }}
       </div>
 
-      <a href="https://laravel.com/docs">
-        <div class="mt-3 flex items-center text-sm font-semibold text-indigo-700">
-          <div>Explore the documentation</div>
-
-          <div class="ml-1 text-indigo-500">
-            <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
-              <path fill-rule="evenodd"
-                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                clip-rule="evenodd"></path>
-            </svg>
-          </div>
-        </div>
-      </a>
     </div>
   </div>
 

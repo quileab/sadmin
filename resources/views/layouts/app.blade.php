@@ -91,7 +91,7 @@ $nav_links = [
     </div>
 
     {{-- sidebar --}}
-    <div class="sidbar bg-gray-500 text-gray-100 w-56 absolute inset-y-0 left-0
+    <div class="sidbar shadow-2xl bg-gray-600 text-gray-50 w-56 absolute inset-y-0 left-0
         transform -translate-x-full transition duration-200 ease-in-out
         md:relative md:translate-x-0
         ">
@@ -192,7 +192,7 @@ $nav_links = [
         </div>
       </div>
 
-      <nav class="text-gray-200">
+      <nav class="text-gray-50">
         @foreach ($nav_links as $nav_link)
 
           <x-jet-nav-link class="block py-2 px-4 w-full" href="{{ $nav_link['route'] }}"
