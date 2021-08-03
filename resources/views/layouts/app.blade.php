@@ -36,6 +36,11 @@ $nav_links = [
       'active' => request()->routeIs('infocards'),
     ],
     [
+      'name' => 'Planes de Pago',
+      'route' => route('payplans'),
+      'active' => request()->routeIs('payplans'),
+    ],
+    [
       'name' => 'Configuración',
       'route' => route('configs'),
       'active' => request()->routeIs('configs'),

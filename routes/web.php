@@ -49,6 +49,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('students.index');
     })->name('students');
 
+    Route::get('/payplans', function () {
+        return view('payplans');
+    })->name('payplans');
+
     Route::get('/exams', function () {
         return view('exams.index');
     })->name('exams');
