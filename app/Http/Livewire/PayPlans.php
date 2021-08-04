@@ -19,6 +19,9 @@ class PayPlans extends Component
 
     public $payplan=1;
     public $openModal=false;
+    public $updatePayPlanForm=false;
+    public $updatePaymentForm=false;
+
     public $readyToLoad=false;
 
     public function render()
