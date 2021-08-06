@@ -7,7 +7,6 @@ use App\Models\PlansMaster;
 use App\Models\PlansDetail;
 use Livewire\WithPagination;
 
-
 class PayPlans extends Component
 {
     use WithPagination;
@@ -46,4 +45,22 @@ class PayPlans extends Component
         $this->payplan=$id;
         $this->PlansDetail=PlansDetail::where('plans_master_id','=',$this->payplan)->get();
     }
+
+    public function populateDetailData($id){
+        $detail=PlansDetail::find($id);
+        //dd($detail);
+        $this->detail_date=$detail->date;
+        $this->detail_title=$detail->title;
+        $this->detail_amount=$detail->amount;
+        $this->updatePaymentForm=true;
+    }
+
+    public function populateMasterData($id){
+        $master=PlansMaster::find($id);
+        //dd($master);
+        $this->master_uid=$master->uid;
+        $this->master_title=$master->title;
+        $this->updatePayPlanForm=true;
+    }
+    
 }

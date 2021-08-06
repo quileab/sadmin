@@ -1,109 +1,128 @@
 <div wire:init="loadData">
-{{-- Formulario de Planes --}}
-<x-jet-dialog-modal icon='edit' wire:model="updatePayPlanForm">
-    <x-slot name="title">
-            Title PayPlan
-    </x-slot>
+  {{-- Formulario de Planes --}}
+  <x-jet-dialog-modal icon='edit' wire:model="updatePayPlanForm">
+    <x-slot name="title">Plan de Pago » <small>Plan {{ $payplan }}</small></x-slot>
 
     <x-slot name="content">
-        <p class="mb-3 text-lg">
-        <strong>Some Text</strong>
-        </p>
-        <span class="mr-4">
-        Email: <strong>some data</strong>
-        </span>
-        <span class="mb-3">
-        Teléfono: <strong>some data</strong>
-        </span>
-        <p class="my-2">
-        Asunto:&nbsp;
-        <strong>some long text</strong><br />
-        </p>
-
+      <p class="mb-3">
+        Descripción
+        <x-jet-input type="text" wire:model="master_title" class="w-full" />
+      </p>
     </x-slot>
 
     <x-slot name="footer">
-        <div class="flex justify-between">
+      <div class="flex justify-between">
         <x-jet-secondary-button wire:click="$toggle('updatePayPlanForm')">
-            Cerrar
+          Cerrar
         </x-jet-secondary-button>
-        <x-jet-secondary-button wire:loading.attr="disabled">
-            Guardar
-        </x-jet-secondary-button>
+        <x-jet-button wire:click="$toggle('updatePayPlanForm')" color="red">
+          Borrar
+        </x-jet-button>
+        <x-jet-button wire:loading.attr="disabled" color="blue">
+          Guardar
+        </x-jet-button>
         <x-jet-action-message class='mt-2' on="saved">
-            Cambio realizado
+          Cambio realizado
         </x-jet-action-message>
-        </div>
+      </div>
     </x-slot>
-</x-jet-dialog-modal>
+  </x-jet-dialog-modal>
 
-{{-- Formulario de Cuotas --}}
-<x-jet-dialog-modal icon='edit' wire:model="updatePaymentForm">
-    <x-slot name="title">
-            Title PayPlan - Payments
-    </x-slot>
+  {{-- Formulario de Cuotas --}}
+  <x-jet-dialog-modal icon='edit' wire:model="updatePaymentForm">
+    <x-slot name="title">Detalle de Pagos » <small>Plan {{ $payplan }}</small></x-slot>
 
     <x-slot name="content">
-        <p class="mb-3 text-lg">
-        <strong>Some Text</strong>
-        </p>
-        <span class="mr-4">
-        Email: <strong>some data</strong>
+      <div class="flex justify-between">
+        <span class="mb-3 text-lg">
+          Cuota ID: <strong>{{ $detail_uid }}</strong>
         </span>
         <span class="mb-3">
-        Teléfono: <strong>some data</strong>
+          Fecha
+          <x-jet-input type="date" wire:model="detail_date" />
         </span>
-        <p class="my-2">
-        Asunto:&nbsp;
-        <strong>some long text</strong><br />
-        </p>
+      </div>
+      <p class="mb-3">
+        Descripción
+        <x-jet-input type="text" wire:model="detail_title" class="w-2/3" />
+      </p>
+      <p class="mb-3">
+        Importe
+        <x-jet-input type="number" wire:model="detail_amount" />
+      </p>
 
     </x-slot>
 
     <x-slot name="footer">
-        <div class="flex justify-between">
+      <div class="flex justify-between">
         <x-jet-secondary-button wire:click="$toggle('updatePaymentForm')">
-            Cerrar
+          Cerrar
         </x-jet-secondary-button>
-        <x-jet-secondary-button wire:loading.attr="disabled">
-            Guardar
-        </x-jet-secondary-button>
+        <x-jet-button wire:click="$toggle('updatePayPlanForm')" color="red">
+          Borrar
+        </x-jet-button>
+        <x-jet-button wire:loading.attr="disabled" color="blue">
+          Guardar
+        </x-jet-button>
         <x-jet-action-message class='mt-2' on="saved">
-            Cambio realizado
+          Cambio realizado
         </x-jet-action-message>
-        </div>
+      </div>
     </x-slot>
-</x-jet-dialog-modal>
+  </x-jet-dialog-modal>
 
-<x-jet-button wire:click="$toggle('updatePayPlanForm')">Open Pay Plan Modal</x-jet-button>
-<x-jet-button wire:click="$toggle('updatePaymentForm')">Open Payments</x-jet-button>
+  <div class="flex flex-wrap">
+    @foreach ($PlansMasters as $plan)
+      <!-- Plans Master -->
+      {{-- <div class="mx-2 my-1"> --}}
+      <?php $payplan == $plan->id ? ($color = 'yellow-500') : ($color = 'gray-800'); ?>
+      <div class="md:w-52 sm:w-full rounded overflow-hidden shadow bg-{{ $color }} text-white m-1">
+        <div class="p-2">
+          <small>Plan {{ $plan->id }} »</small> {{ $plan->title }}
+        </div>
+        <div class="w-52 flex justify-evenly text-center">
+          <button wire:click="payplanChanged('{{ $plan->id }}')" class="w-1/2 bg-green-700 text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto p-1 h-7 w-7" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </button>
+          <button wire:click="populateMasterData('{{ $plan->id }}')" class="w-1/2 bg-blue-700 text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto p-1 h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                <path fill-rule="evenodd"
+                  d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                  clip-rule="evenodd" />
+              </svg>
+          </button>
+        </div>
 
-
-    <div class="flex flex-wrap">
-        @foreach ($PlansMasters as $plan)
-            <!-- Plans Master -->
-            <div class="mx-2 my-1">
-              <?php ($payplan==$plan->id) ? $color="green" : $color="gray"; ?>
-                <x-jet-button wire:click="payplanChanged('{{ $plan->id }}')" color="{{ $color }}">
-
-                    <small>Plan {{ $plan->id }} »</small> {{ $plan->title }}</span>&nbsp;
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </x-jet-button>
-            </div>
-        @endforeach
-    </div>
-  <hr class="border-2 shadow-md my-1" />
-    {{-- List payments of selected plan --}}
-    <div class="flex flex-wrap">
-        @foreach ($PlansDetail as $detail)
-            <div class="md:w-52 sm:w-full rounded overflow-hidden shadow border-2 bg-gray-50 m-1 p-2">
-                <span class="font-bold text-gray-800 text-sm">{{ $detail->title }}</span><br />
-                <p class="w-full text-right">$ {{ $detail->amount }}</p>
-            </div>
-        @endforeach
-    </div>
+      </div>
+    @endforeach
+  </div>
+  <hr class="border-2 border-black shadow my-2 w-full" />
+  {{-- List payments of selected plan --}}
+  <div class="flex flex-wrap">
+    @foreach ($PlansDetail as $detail)
+      <div class="md:w-52 sm:w-full rounded overflow-hidden shadow bg-gray-50 m-1">
+        <div class="flex justify-between text-white bg-blue-800">
+          <div class="mx-2 my-1">
+            <span class="font-bold text-sm">{{ $detail->title }}</span>
+          </div>
+          <div class="mx-2 my-1">
+            <button wire:click="populateDetailData({{ $detail->id }})">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                <path fill-rule="evenodd"
+                  d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                  clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <p class="w-full text-right">$ {{ $detail->amount }}</p>
+      </div>
+    @endforeach
+  </div>
 </div>
