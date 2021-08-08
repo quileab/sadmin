@@ -1,7 +1,7 @@
 <div wire:init="loadData">
   {{-- Formulario de Planes --}}
   <x-jet-dialog-modal icon='edit' wire:model="updatePayPlanForm">
-    <x-slot name="title">Plan de Pago » <small>Plan {{ $payplan }}</small></x-slot>
+    <x-slot name="title">Plan de Pago » <small>Plan {{ $master_uid }}</small></x-slot>
 
     <x-slot name="content">
       <p class="mb-3">
@@ -15,10 +15,10 @@
         <x-jet-secondary-button wire:click="$toggle('updatePayPlanForm')">
           Cerrar
         </x-jet-secondary-button>
-        <x-jet-button wire:click="$toggle('updatePayPlanForm')" color="red">
+        <x-jet-button wire:click="deleteMasterData({{ $master_uid }})" color="red">
           Borrar
         </x-jet-button>
-        <x-jet-button wire:loading.attr="disabled" color="blue">
+        <x-jet-button wire:click="updateMasterData({{ $master_uid }})" wire:loading.attr="disabled" color="blue">
           Guardar
         </x-jet-button>
         <x-jet-action-message class='mt-2' on="saved">
@@ -58,10 +58,10 @@
         <x-jet-secondary-button wire:click="$toggle('updatePaymentForm')">
           Cerrar
         </x-jet-secondary-button>
-        <x-jet-button wire:click="$toggle('updatePayPlanForm')" color="red">
+        <x-jet-button wire:click="deleteDetailData({{ $detail_uid }})" color="red">
           Borrar
         </x-jet-button>
-        <x-jet-button wire:loading.attr="disabled" color="blue">
+        <x-jet-button wire:click="updateDetailData({{ $master_uid }})" wire:loading.attr="disabled" color="blue">
           Guardar
         </x-jet-button>
         <x-jet-action-message class='mt-2' on="saved">
@@ -80,7 +80,7 @@
         <div class="p-2">
           <small>Plan {{ $plan->id }} »</small> {{ $plan->title }}
         </div>
-        <div class="w-52 flex justify-evenly text-center">
+        <div class="w-52 flex">
           <button wire:click="payplanChanged('{{ $plan->id }}')" class="w-1/2 bg-green-700 text-white">
             <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto p-1 h-7 w-7" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
@@ -121,7 +121,7 @@
             </button>
           </div>
         </div>
-        <p class="w-full text-right">$ {{ $detail->amount }}</p>
+        <p class="w-full text-right p-2">$ {{ $detail->amount }}</p>
       </div>
     @endforeach
   </div>

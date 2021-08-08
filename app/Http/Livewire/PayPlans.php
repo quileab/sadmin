@@ -25,7 +25,7 @@ class PayPlans extends Component
 
     public function render()
     {
-        $PlansMasters=$this->PlansMasters;
+    $PlansMasters=$this->PlansMasters;
         $PlansDetail=$this->PlansDetail;
         if ($this->readyToLoad)
         {
@@ -49,6 +49,7 @@ class PayPlans extends Component
     public function populateDetailData($id){
         $detail=PlansDetail::find($id);
         //dd($detail);
+        $this->detail_uid=$detail->id;
         $this->detail_date=$detail->date;
         $this->detail_title=$detail->title;
         $this->detail_amount=$detail->amount;
@@ -58,9 +59,40 @@ class PayPlans extends Component
     public function populateMasterData($id){
         $master=PlansMaster::find($id);
         //dd($master);
-        $this->master_uid=$master->uid;
+        $this->master_uid=$master->id;
         $this->master_title=$master->title;
         $this->updatePayPlanForm=true;
     }
+
+    public function updateMasterData($id){
+        $master=PlansMaster::find($id);
+        $master->title=$this->master_title;
+        $master->save();
+        $this->updatePayPlanForm=false;
+    }
+    public function deleteMasterData($id){
+        $master=PlansMaster::find($id);
+        $master->delete();
+        $this->updatePayPlanForm=false;
+        $this->render();
+    }
+    
+    public function updateDetailData($id){
+        $detail=PlansDetail::find($id);
+        $detail->date=$this->detail_date;        
+        $detail->title=$this->detail_title;
+        $detail->amount=$this->detail_amount;
+        $detail->save();
+        $this->updatePaymentForm=false;
+    }
+
+    public function deleteDetailData($id){
+        $detail=PlansDetail::find($id);
+        $detail->delete();
+        $this->updatePaymentForm=false;
+    }
+
+        
+
     
 }
