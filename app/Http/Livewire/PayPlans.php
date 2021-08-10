@@ -23,6 +23,9 @@ class PayPlans extends Component
 
     public $readyToLoad=false;
 
+    // Listener para los EMIT - Conexión entre PHP-JS
+    protected $listeners = ['deleteMasterData','deleteDetailData'];
+
     public function render()
     {
     $PlansMasters=$this->PlansMasters;
@@ -30,7 +33,6 @@ class PayPlans extends Component
         if ($this->readyToLoad)
         {
             $this->PlansMasters=PlansMaster::all();
-
         }
 
         return view('livewire.pay-plans',compact('PlansMasters','PlansDetail'));
@@ -43,7 +45,8 @@ class PayPlans extends Component
 
     public function payplanChanged($id){
         $this->payplan=$id;
-        $this->PlansDetail=PlansDetail::where('plans_master_id','=',$this->payplan)->get();
+        $this->PlansDetail=PlansDetail::where('plans_master_id','=',$this->payplan)->
+            orderBy('date')->get();
     }
 
     public function populateDetailData($id){
@@ -90,9 +93,40 @@ class PayPlans extends Component
         $detail=PlansDetail::find($id);
         $detail->delete();
         $this->updatePaymentForm=false;
+        // livewire render
+        $this->payplanChanged($this->payplan);
     }
 
-        
+    public function createMasterData(){
+        $master=new PlansMaster;
+        $master->title=$this->master_title;
+        $master->save();
+        $this->updatePayPlanForm=false;
+    }
 
-    
+    public function createDetailData(){
+        $detail=new PlansDetail;
+        $detail->date=$this->detail_date;
+        $detail->title=$this->detail_title;
+        $detail->amount=$this->detail_amount;
+        $detail->plans_master_id=$this->payplan;
+        $detail->save();
+        $this->payplanChanged($this->payplan);
+        $this->updatePaymentForm=false;
+    }
+
+    public function openCreateMasterForm(){
+        $this->master_uid=0;
+        $this->master_title='';
+        $this->updatePayPlanForm=true;
+    }
+
+    public function openCreateDetailForm(){
+        $this->detail_uid=0;
+        $this->detail_date='';
+        $this->detail_title='';
+        $this->detail_amount='';
+        $this->updatePaymentForm=true;
+    }
+
 }

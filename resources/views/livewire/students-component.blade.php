@@ -104,7 +104,7 @@
     <a href="{{route('students-import-form')}}">
     <x-jet-button>
          Importar Alumnos&nbsp;
-         <span class="inline-flex items-center justify-center px-2 py-1 text-xs leading-none text-red-100 bg-blue-600 rounded-full">.csv</span>
+         <span class="inline-flex items-center justify-center px-2 py-1 text-xs leading-none text-gray-50 bg-blue-600 rounded-full">.csv</span>
     </x-jet-button>
     </a>
 
@@ -176,22 +176,22 @@
             </th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody class="bg-white text-black divide-y divide-gray-400">
           @foreach ($students as $student)
-            <tr class="hover:bg-gray-100 {{ !$student->enabled ? 'bg-red-50' : '' }}">
+            <tr class="hover:bg-yellow-100 {{ !$student->enabled ? 'bg-red-200' : '' }}">
               <td class="px-6 py-4">
-                <div class="text-sm text-gray-900">{{ $student->id }}</div>
+                <div>{{ $student->id }}</div>
               </td>
               <td class="px-6 py-4">
                 <div class="text-sm text-gray-900">{{ $student->pid }}</div>
               </td>
               <td class="px-6 py-4">
-                <div class="text-sm text-gray-900"><b>{{ $student->lastname }}</b>, {{ $student->firstname }}<br />
+                <div><b>{{ $student->lastname }}</b>, {{ $student->firstname }}<br />
                 {{ $student->email }} | {{ $student->phone }}
                 </div>
               </td>
 
-              <td class="w-80 bg-gray-100 px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <td class="w-80 px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 {{-- <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a> --}}
                 <button wire:click="edit('{{ $student->id }}')" class="mr-2">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
