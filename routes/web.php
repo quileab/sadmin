@@ -4,16 +4,26 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\StudentController;
+use App\Models\Config;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
 
+    Route::get('/dashboard', function () {
+        // get first record from config table
+        $shortname = Config::where('id', 'shortname')->first()->value;
+        $longname = Config::where('id', 'longname')->first()->value;
+        $institution = $shortname.' '.$longname;
+        $inscriptions = Config::where('id', 'inscriptions')->first()->value;
+        $modalities = Config::where('id', 'modalities')->first()->value;
+        $exams = Config::where('id', 'exams')->first()->value;
+
+        // dd($institution, $inscriptions);
+        return view('dashboard',compact('institution', 'inscriptions', 'modalities','exams'));
+    })->name('dashboard');
 
     Route::get('PDFs/{filename}', function ($filename)
     {

@@ -189,6 +189,9 @@
               @endif
 
             </th>
+            <th class="text-center px-4 py-3 text-xs font-medium uppercase tracking-wider">
+              Ubicación
+            </th>
             <th scope="col" class="cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
               wire:click="order('user_id')">
               Stat
@@ -219,6 +222,9 @@
               </td>
               <td class="px-6 py-4">
                 <div class="text-sm text-gray-900">{{ $book->author }}</div>
+              </td>
+              <td class="px-6 py-4 text-center">
+                <div class="text-sm text-gray-900">{{ $book->signature }}</div>
               </td>
               <td class="px-6 py-4">
                 @if ($book->user)

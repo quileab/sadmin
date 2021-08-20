@@ -61,7 +61,6 @@ class PayPlans extends Component
 
     public function populateMasterData($id){
         $master=PlansMaster::find($id);
-        //dd($master);
         $this->master_uid=$master->id;
         $this->master_title=$master->title;
         $this->updatePayPlanForm=true;
@@ -87,6 +86,7 @@ class PayPlans extends Component
         $detail->amount=$this->detail_amount;
         $detail->save();
         $this->updatePaymentForm=false;
+        $this->payplanChanged($this->payplan);
     }
 
     public function deleteDetailData($id){
