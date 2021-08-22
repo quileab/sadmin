@@ -63,6 +63,7 @@
                             @else
                               <span class="font-bold text-red-600">Cerradas</span>  
                             @endif
+
                           </div>
                   
                       </div>

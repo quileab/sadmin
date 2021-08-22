@@ -14,12 +14,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/dashboard', function () {
         // get first record from config table
-        $shortname = Config::where('id', 'shortname')->first()->value;
-        $longname = Config::where('id', 'longname')->first()->value;
+        $shortname = Config::where('id', 'shortname')->first()->value ?? 'false';
+        $longname = Config::where('id', 'longname')->first()->value ?? 'false';
         $institution = $shortname.' '.$longname;
-        $inscriptions = Config::where('id', 'inscriptions')->first()->value;
-        $modalities = Config::where('id', 'modalities')->first()->value;
-        $exams = Config::where('id', 'exams')->first()->value;
+        $inscriptions = Config::where('id', 'inscriptions')->first()->value ?? 'false';
+        $modalities = Config::where('id', 'modalities')->first()->value ?? 'false';
+        $exams = Config::where('id', 'exams')->first()->value ?? 'false';
 
         // dd($institution, $inscriptions);
         return view('dashboard',compact('institution', 'inscriptions', 'modalities','exams'));

@@ -129,4 +129,12 @@ class PayPlans extends Component
         $this->updatePaymentForm=true;
     }
 
+    // show items joined master-detail
+    public function showMasterDetail(){
+
+        $this->PlansMasters=PlansMaster::all();
+        $this->PlansDetail=PlansDetail::all();
+        return view('livewire.pay-plans-master-detail',compact('this->PlansMasters','this->PlansDetail'));
+    }
+
 }
