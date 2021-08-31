@@ -50,7 +50,6 @@ class StudentsComponent extends Component
         // 'career_id'
     ];
 
-
     public function render()
     {
         $careers=[];

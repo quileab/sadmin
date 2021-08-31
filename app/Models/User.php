@@ -85,6 +85,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Books');
     }
 
+    public function payments(){
+        return $this->hasMany('App\Models\UserPayments');
+    }
+
     public function userCount(){
         return User::where('pid','>','1000000')->count();
     }

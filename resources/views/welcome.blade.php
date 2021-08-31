@@ -424,7 +424,7 @@
 
 
         <div class="ml-4 text-center text-sm text-gray-500 sm:text-center sm:ml-0">
-            <x-jet-application-logo class="block h-auto w-full" />
+            <x-jet-application-mark class="text-gray-400 h-auto w-96" />
             <h1>SAdmin</h1>
             Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
         </div>

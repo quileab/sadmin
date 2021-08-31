@@ -82,6 +82,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('grades.index',compact('id'));
     })->name('grades');
 
+    Route::get('/userpayments/{id}', function ($id) {
+        return view('userpayments',compact('id'));
+    })->name('userpayments');
+
     Route::get('/calendars', function () {
         return view('calendars.index');
         // lo de abajo al no utilizar la directiva @livewire

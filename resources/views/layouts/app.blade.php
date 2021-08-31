@@ -96,7 +96,7 @@ $nav_links = [
     </div>
 
     {{-- sidebar --}}
-    <div class="sidbar shadow-2xl bg-gray-600 text-gray-50 w-56 absolute inset-y-0 left-0
+    <div class="sidbar bg-gray-600 text-gray-50 w-56 absolute inset-y-0 left-0
         transform -translate-x-full transition duration-200 ease-in-out
         md:relative md:translate-x-0
         ">
@@ -211,10 +211,11 @@ $nav_links = [
     </div>
 
     {{-- content --}}
-    <div class="flex-1 mx-auto py-5 bg-gray-400">
+    <div class="flex-1 mx-auto py-0 bg-gray-500">
       <!-- Page Content -->
       <main>
         {{ $slot }}
+        <br>
       </main>
 
     </div>
