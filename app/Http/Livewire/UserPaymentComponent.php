@@ -47,15 +47,11 @@ class UserPaymentComponent extends Component
         $this->uid=$uid;
         $this->user=User::find($uid);
         $this->payplans=PlansMaster::all();
-            // $this->userPayments=UserPayments::where('user_id',$uid)->orderBy('date')->get() ?? [];
-            // foreach ($this->userPayments as $payment) {
-            //     $this->totalDebt+=$payment->amount;
-            //     $this->totalPaid+=$payment->paid;
-            // }
+
         $this->updateInfo();
         $this->readyToLoad=true;
         $this->selectedPlan=0;
-        //dd($this->userPayments);
+
     }
 
     public function render()
@@ -131,30 +127,49 @@ class UserPaymentComponent extends Component
         }
 
         // mientras haya dinero pagar siguiente cuota
-        while ($this->payment > 0) {
-            // buscar siguiente cuota
+        $this->paymentDescription="";
+        $money=$this->payment;
+        while ($money > 0) {
+            // buscar siguiente cuota impaga
+            $this->userPayments=UserPayments::where('user_id',$this->uid)->orderBy('date')->get();
             $paymentID=$this->addPaymentToUser(false);
 
             // registrar pago en plan
             $payment=UserPayments::find($paymentID);
             //$payment->date=$paimentRecord->created_at; //date('Y-m-d');
 
-            // revisar este cálculo porque no está bien
-            $payment->paid=$payment->paid+$this->payment;
-            $payment->save();
-            $this->payment=$this->payment-$payment->amount;
+            // Calcula si sobra para pagar la/s cuota/s
+            if ($money > $payment->amount-$payment->paid) {
+                $money=$money-($payment->amount-$payment->paid);
+                // armar la "descripción" del pago
+                if ($payment->paid == 0) {
+                    $this->paymentDescription=$this->paymentDescription.$payment->title."/ ";
+                }else{
+                    $this->paymentDescription=$this->paymentDescription."saldo ".$payment->title."/ ";
+                }
+                $payment->paid=$payment->amount;
+                $payment->save();
+                
+                // descuento del dinero disponible
+            } else { // sino... salda o entrega a cuenta
+                // armar la "descripción" del pago
+                $this->paymentDescription=$this->paymentDescription."a cta. ".$payment->title;
+                $payment->paid=$payment->paid+$money;
+                $payment->save();
+                // pongo el dinero disponible en cero
+                $money=0;
+            }
         }
-        // si sobra "algo" registrarlo como pago adicional a cuenta
-        // hacer si no registra correctamente    
-        
-        // registrar pago individual
-        $paimentRecord=new PaymentRecord();
-        $paimentRecord->user_id=$this->uid;
-        $paimentRecord->userpayments_id=$paymentID;
-        $paimentRecord->paymentBox=Auth::user()->email;
-        $paimentRecord->paymentAmount=$this->payment;
-        $paimentRecord->description=$this->paymentDescription;
-        $paimentRecord->save();
+        $this->paymentDescription=$this->paymentDescription.".";
+
+        // registrar pago individual en PaymentRecord
+        $paymentRecord=new PaymentRecord();
+        $paymentRecord->user_id=$this->uid;
+        $paymentRecord->userpayments_id=$paymentID;
+        $paymentRecord->paymentBox=Auth::user()->email;
+        $paymentRecord->paymentAmount=$this->payment;
+        $paymentRecord->description=$this->paymentDescription;
+        $paymentRecord->save();
 
         // cerar modal y actualizar valores
         $this->paymentModal=false;

@@ -92,8 +92,8 @@
       $color = ($userPayment->paid < $userPayment->amount && $userPayment->paid > 0) ? 'yellow' : $color;
       @endphp
        
-        <div class="w-32 inline-block rounded-md bg-{{$color}}-700 text-sm text-white uppercase m-1 overflow-hidden">
-          <div class="bg-gray-900 w-full text-center p-1">{{ $userPayment->title }}
+        <div class="w-32 shadow-lg inline-block rounded-md bg-{{$color}}-700 text-sm text-white uppercase m-1 overflow-hidden">
+          <div class="bg-gradient-to-b from-black to-{{$color}}-700 w-full text-center p-1">{{ $userPayment->title }}
             <p class="text-xs text-gray-400">{{ \Carbon\Carbon::parse($userPayment->date)->format('m-Y') }}</p>
           </div>
           <div class="px-2 py-1">
@@ -106,11 +106,10 @@
       @endforeach
     </div>
     <div class="container my-3 mx-auto px-3 py-1 md:px-6 text-right text-xl bg-indigo-200">
-      <p>Deuda Total <span class="inline-block w-44 bg-gray-300 font-bold">$ {{ number_format($totalDebt,2) }}</span></p>
-      <p>Total de Pagos <span class="inline-block w-44 bg-gray-300 font-bold">$ {{ number_format($totalPaid,2) }}</span></p>
-      <p>Saldo <span class="inline-block w-44 bg-gray-300 font-bold">$ {{ number_format($totalDebt - $totalPaid, 2) }}</span></p>
+      <p>Deuda Total <span class="inline-block w-44 bg-gray-200 font-bold">$ {{ number_format($totalDebt,2) }}</span></p>
+      <p>Total de Pagos <span class="inline-block w-44 bg-gray-200 font-bold">$ {{ number_format($totalPaid,2) }}</span></p>
+      <p>Saldo <span class="inline-block w-44 bg-blue-300 font-bold">$ {{ number_format($totalDebt - $totalPaid, 2) }}</span></p>
     </div>
-
-
+    {{$paymentDescription}}
   </div>
 </div>
