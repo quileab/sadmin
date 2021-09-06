@@ -42,14 +42,17 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return $response;
     });
 
-
-    Route::get('/infocards', function () {
-        return view('infocards.index');
-    })->name('infocards');
+    Route::get('/permissions', function () {
+        return view('permissions.index');
+    })->name('permissions');
 
     Route::get('/configs', function () {
         return view('configs.index');
     })->name('configs');
+
+    Route::get('/infocards', function () {
+        return view('infocards.index');
+    })->name('infocards');
 
     Route::get('/careers', function () {
         return view('careers.index');

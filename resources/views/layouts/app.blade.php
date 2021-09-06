@@ -41,6 +41,11 @@ $nav_links = [
       'active' => request()->routeIs('payplans'),
     ],
     [
+      'name' => 'Roles & Permisos',
+      'route' => route('permissions'),
+      'active' => request()->routeIs('permissions'),
+    ],
+    [
       'name' => 'Configuración',
       'route' => route('configs'),
       'active' => request()->routeIs('configs'),
