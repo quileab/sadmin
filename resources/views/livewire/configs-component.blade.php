@@ -1,4 +1,4 @@
-<div>
+<div class="mb-3">
     <x-jet-dialog-modal wire:model="updateForm" icon='edit'>
         <x-slot name="title">
             {{ $description }}
@@ -36,14 +36,14 @@
         if ($section!=$config->group){
         echo "
         <div class='bg-gray-700 text-gray-200 uppercase rounded-t-md
-            mx-auto py-2 px-4 sm:px-6 lg:px-8 mb-2'>
+            mx-auto py-2 px-4 sm:px-6 lg:px-8 mt-3'>
             $config->group
         </div>";
         $section=$config->group;
         }
         @endphp
 
-        <div class="px-5 bg-gray-100">
+        <div class="pl-5 bg-gray-200">
         <x-jet-action-section>
             <x-slot name="title">
                 {{ $config->description }}

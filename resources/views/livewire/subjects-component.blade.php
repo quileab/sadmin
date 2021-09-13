@@ -18,8 +18,6 @@
       </div>
       Nombre
       <x-jet-input wire:model.lazy='name' value='{{ $name }}' class="w-full" /><br />
-      Fechas de Mesas <small>(Separadas por comas)</small>
-      <x-jet-input wire:model.lazy='exam_dates' value='{{ $exam_dates }}' class="w-full" /><br />
     </x-slot>
 
     <x-slot name="footer">
@@ -73,10 +71,6 @@
               <td class="w-1/6 text-left py-2 px-3 border-b">{{ $subject->id }}</td>
               <td class="w-2/6 text-left py-2 px-3 border-b">
                 <div class="text-lg font-bold">{{ $subject->name }}</div>
-                <div class="text-blue-600 text-sm">
-                <small>Mesas Exámen »&nbsp;</small>{{ $subject->exam_dates }}
-                </div>
-                
               </td>
               <td class="w-1/6 py-2 px-3 border-b">
                 <div class="flex items-center justify-evenly">

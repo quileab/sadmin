@@ -30,6 +30,16 @@ class GradesComponent extends Component
     // Listener para los EMIT - Conexión entre PHP-JS
     protected $listeners = ['delete','deleteGrade'];
 
+    // Rules of validation
+    protected $rules=[
+        'uid'=>['required','exists:users,id'],
+        'subjID'=>['required','exists:subjects,id'],
+        'date'=>['required'],
+        //'name'=>['required'],
+        'grade'=>['required'], //,'integer'
+        'approved'=>['required','boolean'],
+        ];
+
     // toma el valor enviado desde el Router (web.php) // livewire no utiliza __construct
     public function mount($id)
     {
@@ -74,8 +84,11 @@ class GradesComponent extends Component
         $this->readyToLoad = true;
     }
 
-    public function addGrade()
+    public function addGrade(Request $request)
     {
+        dd($request);
+        // validar que el campo no este vacio
+        $this->validate();
         //dd($this->approved);
         Grade::create([
             'user_id' => $this->uid,
@@ -92,6 +105,7 @@ class GradesComponent extends Component
 
     public function setGrades($subjID, $subjName)
     {
+        $this->date=date('Y-m-d');
         $this->subjID = $subjID;
         $this->subjName = $subjName;
 
@@ -100,7 +114,8 @@ class GradesComponent extends Component
 
     public function cancelEditGrades()
     {
-        $this->reset(['date','name','grade','approved']);
+        $this->reset(['name','grade','approved']);
+        $this->date=date('Y-m-d');
         //$this->openModal = false;
         $this->edittingGrade=false;
     }

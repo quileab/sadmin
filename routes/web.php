@@ -1,10 +1,11 @@
 <?php
 
+use App\Models\Config;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\StudentController;
-use App\Models\Config;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,15 +15,18 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/dashboard', function () {
         // get first record from config table
-        $shortname = Config::where('id', 'shortname')->first()->value ?? 'false';
-        $longname = Config::where('id', 'longname')->first()->value ?? 'false';
-        $institution = $shortname.' '.$longname;
-        $inscriptions = Config::where('id', 'inscriptions')->first()->value ?? 'false';
-        $modalities = Config::where('id', 'modalities')->first()->value ?? 'false';
-        $exams = Config::where('id', 'exams')->first()->value ?? 'false';
-
-        // dd($institution, $inscriptions);
-        return view('dashboard',compact('institution', 'inscriptions', 'modalities','exams'));
+        $temp = new NumberFormatter("es", NumberFormatter::SPELLOUT);
+        
+        $dashInfo=[
+            'shortname' => Config::where('id', 'shortname')->first()->value ?? 'false',
+            'longname' => Config::where('id', 'longname')->first()->value ?? 'false',
+            'inscriptions' => Config::where('id', 'inscriptions')->first()->value ?? 'false',
+            'modalities' => Config::where('id', 'modalities')->first()->value ?? 'false',
+            'exams' => Config::where('id', 'exams')->first()->value ?? 'false',
+            'careers'=>Auth::user()->careers()->get(),
+            'number'=> $temp->format(Auth::user()->userCount()),
+        ];
+        return view('dashboard',compact('dashInfo'));
     })->name('dashboard');
 
     Route::get('PDFs/{filename}', function ($filename)
@@ -46,6 +50,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('permissions.index');
     })->name('permissions');
 
+    Route::get('/assignrole/{id}', function ($id) {
+        return view('permissions.assignroles', compact('id'));
+    })->name('assignroles');
+
     Route::get('/configs', function () {
         return view('configs.index');
     })->name('configs');
@@ -66,9 +74,18 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('payplans');
     })->name('payplans');
 
-    Route::get('/exams', function () {
-        return view('exams.index');
-    })->name('exams');
+    Route::get('/inscriptions', function () {
+        $inscriptions = Config::where('group','inscriptions')->get();
+        return view('students.inscriptions', compact('inscriptions'));
+    })->name('studentsinsc');
+
+    Route::get('/inscriptionsData/{id}', function ($id) {
+        $inscription = Config::find($id) ?? [];
+        if ($inscription == []){
+            return redirect()->route('studentsinsc');
+        }
+            return view('students.inscriptionsData', compact('inscription'));
+    })->name('studentsinscdata');
 
     Route::get('/students-import-form', function () {
         return view('students.import-form');

@@ -207,4 +207,5 @@ class StudentsComponent extends Component
         $this->student_careers = User::find($user->id)->careers()->get();
         $this->emit('toast',' Registro eliminado','error');
     }
+
 }

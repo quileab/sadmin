@@ -4,51 +4,61 @@ $nav_links = [
       'name' => 'Dashboard',
       'route' => route('dashboard'),
       'active' => request()->routeIs('dashboard'),
-    ],
-    [
-      'name' => 'Carreras',
-      'route' => route('careers'),
-      'active' => request()->routeIs('careers'),
+      'permission'=>'menu.dashboard',
     ],
     [
       'name' => 'Alumnos',
       'route' => route('students'),
       'active' => request()->routeIs('students'),
+      'permission'=>'menu.students',
     ],
     [
-      'name' => 'Mesas',
-      'route' => route('exams'),
-      'active' => request()->routeIs('exams'),
+      'name' => 'Carreras',
+      'route' => route('careers'),
+      'active' => request()->routeIs('careers'),
+      'permission'=>'menu.careers',
+    ],
+    [
+      'name' => 'Inscripciones',
+      'route' => route('studentsinsc'),
+      'active' => request()->routeIs('studentsinsc'),
+      'permission'=>'menu.exams',
     ],
     [
       'name' => 'Calendarios',
       'route' => route('calendars'),
       'active' => request()->routeIs('calendars'),
+      'permission'=>'menu.calendars',
     ],
     [
       'name' => 'Libros',
       'route' => route('books'),
       'active' => request()->routeIs('books'),
+      'permission'=>'menu.books',
     ],
     [
       'name' => 'Info Tarjetas',
       'route' => route('infocards'),
       'active' => request()->routeIs('infocards'),
+      'permission'=>'menu.infocards',
     ],
     [
       'name' => 'Planes de Pago',
       'route' => route('payplans'),
       'active' => request()->routeIs('payplans'),
+      'permission'=>'menu.payplans',
     ],
     [
       'name' => 'Roles & Permisos',
       'route' => route('permissions'),
       'active' => request()->routeIs('permissions'),
+      'permission'=>'menu.security',
     ],
     [
       'name' => 'Configuración',
       'route' => route('configs'),
       'active' => request()->routeIs('configs'),
+      'permission'=>'menu.config',
     ],
 ];
 @endphp
@@ -204,12 +214,12 @@ $nav_links = [
 
       <nav class="text-gray-50">
         @foreach ($nav_links as $nav_link)
-
-          <x-jet-nav-link class="block py-2 px-4 w-full" href="{{ $nav_link['route'] }}"
-            :active="$nav_link['active']">
-            {{ __($nav_link['name']) }}
-          </x-jet-nav-link><br />
-
+          @can($nav_link['permission'])
+            <x-jet-nav-link class="block py-2 px-4 w-full" href="{{ $nav_link['route'] }}"
+              :active="$nav_link['active']">
+              {{ __($nav_link['name']) }}
+            </x-jet-nav-link><br />
+          @endcan
         @endforeach
       </nav>
 
@@ -224,6 +234,10 @@ $nav_links = [
       </main>
 
     </div>
+
+    {{-- float information --}}    
+    @livewire('book-marks')
+
   </div>
   {{-- end qb template --}}
   @stack('modals')
@@ -231,6 +245,10 @@ $nav_links = [
   @stack('scripts')
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <script>
+    livewire.on('bookmark', function(message) {
+      document.getElementById('bookmark').innerHTML = message;
+    });
+
     livewire.on('toast', function(message, icon) {
       if (icon == '') {
         icon = 'success'

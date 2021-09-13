@@ -7,7 +7,7 @@ use Livewire\Component;
 class SubjectsComponent extends Component
 {
     public $uid;
-    public $name, $correl, $exam_dates;
+    public $name, $correl;
     public $career_id, $career_name;
     public $formAction = "store";
     public $updateSubjectForm = false;
@@ -34,16 +34,16 @@ class SubjectsComponent extends Component
     }
 
     public function store(){
-        $this->exam_dates=$this->cleanDates($this->exam_dates);
+        //$this->exam_dates=$this->cleanDates($this->exam_dates);
 
         Subject::create([
             'id'=>$this->uid,
             'name'=>$this->name,
             'correl'=>$this->correl,
-            'exam_dates'=>$this->exam_dates,
+            //'exam_dates'=>$this->exam_dates,
             'career_id'=>$this->career_id
         ]);
-        $this->reset(['uid','name','correl','exam_dates']);
+        $this->reset(['uid','name','correl']);
         $this->updateSubjectForm=false;
     }
 
@@ -51,21 +51,21 @@ class SubjectsComponent extends Component
         $this->uid=$subject->id;
         $this->name=$subject->name;
         $this->correl=$subject->correl;
-        $this->exam_dates=$subject->exam_dates;
+        //$this->exam_dates=$subject->exam_dates;
 
         $this->formAction = "update";
         $this->updateSubjectForm=true;
     }
 
     public function saveSubjectChange(){
-        $this->exam_dates=$this->cleanDates($this->exam_dates);
+        //$this->exam_dates=$this->cleanDates($this->exam_dates);
 
         $this->formAction = "update";
         $subject=Subject::find($this->uid);
         $subject->career_id=$this->career_id;
         $subject->name=$this->name;
         $subject->correl=$this->correl;
-        $subject->exam_dates=$this->exam_dates;
+        //$subject->exam_dates=$this->exam_dates;
         
         $subject->save();
         // cerrar Update Modal
@@ -73,7 +73,7 @@ class SubjectsComponent extends Component
     }
 
     public function create(){
-        $this->reset(['uid','name','correl','exam_dates']);
+        $this->reset(['uid','name','correl']);
 
         $this->formAction = "store";
         $this->updateSubjectForm=true;
@@ -83,7 +83,7 @@ class SubjectsComponent extends Component
         $this->uid=$subject->id;
         $this->name=$subject->name;
         $this->resol=$subject->correl;
-        $this->exam_dates=$subject->exam_dates;
+        //$this->exam_dates=$subject->exam_dates;
         
         // Modificar (Edit)-> true
         $this->updateSubjectForm=true;

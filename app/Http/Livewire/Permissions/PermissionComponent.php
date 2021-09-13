@@ -17,16 +17,14 @@ class PermissionComponent extends Component
         'selectedpermissions'=>['required','exists:permissions,id']
         ];
 
-    public function render()
-    {
+    public function render() {
         $roles = Role::all();
         $permissions = Permission::all()->sortBy('name');
         //->pluck('name', 'id');
         return view('livewire.permissions.index', compact('roles', 'permissions'));
     }
 
-    public function updatedSelectedRole($value)
-    {
+    public function updatedSelectedRole($value) {
         $this->selectedpermissions=[];
         $role=Role::find($value);
         if($role) {
@@ -34,28 +32,30 @@ class PermissionComponent extends Component
         }
     }
 
-    public function Updatedcheckall($value)
-    {
+    public function Updatedcheckall($value) {
         if($value) {
-            $role=Role::find($value);
+            $role=Role::find($this->selectedrole);
             if ($role) {
-                $this->selectedpermissions=$role->permissions->pluck('id','id')->toArray();
+                $this->selectedpermissions=Permission::pluck('id','id')->toArray();
             }
-        }
-        else {
+        } else {
             $this->selectedpermissions=[];
         }
     }
 
-    public function saveRolePermissions()
-    {
+    public function saveRolePermissions() {
         if($this->selectedpermissions){
             // remove unchecked values that comes with false assign it
             $this->selectedpermissions=array_filter($this->selectedpermissions);
+            foreach ($this->selectedpermissions as $key=>$permission) {
+                $this->selectedpermissions[$key]=$key;
+            }
+
         }
 
         $this->validate();
         $role=Role::find($this->selectedrole);
+        //dd($this->selectedpermissions, $this->selectedrole);
         if ($role) {
             $role->syncPermissions(Permission::find(array_keys($this->selectedpermissions))->pluck('name'));
             $this->selectedpermissions=$role->permissions->pluck('id','id')->toArray();
