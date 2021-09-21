@@ -75,7 +75,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('payplans');
 
     Route::get('/inscriptions', function () {
-        $inscriptions = Config::where('group','inscriptions')->get();
+        // busca en config las inscripciones que el ID NO terminen "-data"
+        $inscriptions = Config::where('group','inscriptions')->where('id','not like','%-data')->get();
         return view('students.inscriptions', compact('inscriptions'));
     })->name('studentsinsc');
 

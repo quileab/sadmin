@@ -2,12 +2,87 @@
 
 namespace App\Http\Livewire\Inscription;
 
+use App\Models\Studentinscription;
 use Livewire\Component;
 
 class InscriptionAdmin extends Component
 {
+    public $adminID=null;
+    public $inscription;
+    public $inscriptionValues;
+    public $inscriptionUpdated;
+    public $career;
+    public $inputType;
+    public $careers;
+    public $subjects=[];
+
+    protected $rules = [
+        'subjects.*.value' => 'string',
+    ];
+
+    public function getSubjects($id)
+    {
+        return $this->subjects = \App\Models\Subject::where('career_id', $id)->get();
+    }
+
+    public function mount($inscription)
+    {
+        $this->inscription = $inscription;
+        $this->adminID=\App\Models\User::where('name', 'admin') -> first()->id;
+        
+        $this->careers = \App\Models\Career::all();
+        if ($this->career==null) {
+            $this->career = $this->careers[0]->id;
+        }
+        $this->inputType=\App\Models\Config::find($this->inscription->id.'-data');
+        $this->updatedCareer();
+    }
+
     public function render()
     {
-        return view('livewire.inscription.inscription-admin');
+        return view('livewire.inscription.inscription-admin')
+            ->with('inputType', $this->inputType)
+            ->with('inscriptionValues', $this->inscriptionValues)
+            ->with('inscriptionUpdated', $this->inscriptionUpdated)
+            ->with('careers', $this->careers)
+            ->with('subjects', $this->subjects);
+    }
+
+    public function updatedCareer()
+    {
+        // Obtenemos las materias de la carrera seleccionada
+        $this->getSubjects($this->career);
+        // Seteamos arrays de trabajo
+        foreach ($this->subjects as $subject) {
+            //dd($subject,$this->inscription->id);
+            $this->inscriptionValues[$subject->id]=\App\Models\Studentinscription::where('user_id', $this->adminID)->
+                where('subject_id', $subject->id)->first()->value ?? 'N/A'; //$this->inscription;
+            $this->inscriptionUpdated[$subject->id]=$this->inscriptionValues[$subject->id];
+        }
+    }
+
+    public function updateOrCreateValue($key)
+    {
+        $value=$this->inscriptionValues[$key];
+        //$subject=\App\Models\Subject::find($key);
+        //$this->validate();
+        $studentinscription=\App\Models\Studentinscription::where('user_id', $this->adminID)
+            ->where('subject_id', $key)->first();
+
+        if ($studentinscription!=null) {
+            $studentinscription->value=$value;
+            $studentinscription->save();
+        } else { // create Studentinscription
+            Studentinscription::create([
+                'user_id' => $this->adminID,
+                'subject_id' => $key,
+                'name' => $key, // default
+                'type' => $this->inputType->type,
+                'value' => $value,
+            ]);
+        }
+
+        $this->inscriptionUpdated[$key]=$value;
+        $this->emit('toast',$value,'info');
     }
 }

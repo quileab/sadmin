@@ -13,7 +13,7 @@ class ConfigsComponent extends Component
     
     public function render()
     {
-        $configs=Config::orderBy('group','asc')->get();
+        $configs=Config::orderBy('group','asc')->orderBy('id','asc')->get();
         return view('livewire.configs-component',compact('configs'));
     }
 

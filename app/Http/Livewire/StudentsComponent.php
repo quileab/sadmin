@@ -39,9 +39,9 @@ class StudentsComponent extends Component
     ];
     
     protected $rules=[
-        'uid'=>'required|numeric',
+        //'uid'=>'required|numeric',
         'pid'=>'required|numeric',
-        'name'=>'required', 
+        //'name'=>'required', 
         'lastname'=>'required', 
         'firstname'=>'required',
         'phone'=>'required',
@@ -97,6 +97,7 @@ class StudentsComponent extends Component
     }
 
     public function store(){
+        $this->validate();
         User::create([
             'user_id'=>$this->uid,
             'pid'=>$this->pid,
