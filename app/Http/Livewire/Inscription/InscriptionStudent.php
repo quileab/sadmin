@@ -2,10 +2,11 @@
 
 namespace App\Http\Livewire\Inscription;
 
-use App\Models\Studentinscription;
 use Livewire\Component;
+use App\Models\Studentinscription;
+use Illuminate\Support\Facades\Auth;
 
-class InscriptionAdmin extends Component
+class InscriptionStudent extends Component
 {
     public $adminID=null;
     public $inscription;
@@ -28,9 +29,9 @@ class InscriptionAdmin extends Component
     public function mount($inscription)
     {
         $this->inscription = $inscription;
-        $this->adminID=\App\Models\User::where('name', 'admin') -> first()->id;
+        $this->adminID=Auth::user()->id;
         
-        $this->careers = \App\Models\Career::all();
+        $this->careers = Auth::user()->careers()->get();
         if ($this->career==null) {
             $this->career = $this->careers[0]->id;
         }
@@ -40,7 +41,7 @@ class InscriptionAdmin extends Component
 
     public function render()
     {
-        return view('livewire.inscription.inscription-admin')
+        return view('livewire.inscription.inscription-student')
             ->with('inputType', $this->inputType)
             ->with('inscriptionValues', $this->inscriptionValues)
             ->with('inscriptionUpdated', $this->inscriptionUpdated)
@@ -56,7 +57,7 @@ class InscriptionAdmin extends Component
         foreach ($this->subjects as $subject) {
             //dd($subject,$this->inscription->id);
             $this->inscriptionValues[$subject->id]=\App\Models\Studentinscription::where('user_id', $this->adminID)->
-                where('subject_id', $subject->id)->first()->value ?? 'N/A'; //$this->inscription;
+                where('subject_id', $subject->id)->first()->value ?? null; //$this->inscription;
             $this->inscriptionUpdated[$subject->id]=$this->inscriptionValues[$subject->id];
         }
     }

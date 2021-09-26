@@ -17,11 +17,15 @@ class PermissionComponent extends Component
         'selectedpermissions'=>['required','exists:permissions,id']
         ];
 
+        // Listener para los EMIT - Conexión entre PHP-JS
+    protected $listeners=['bookmarkCleared'=>'render']; 
+
     public function render() {
         $roles = Role::all();
         $permissions = Permission::all()->sortBy('name');
+        $selectedUser = \App\Models\User::find(session('bookmark'));
         //->pluck('name', 'id');
-        return view('livewire.permissions.index', compact('roles', 'permissions'));
+        return view('livewire.permissions.index', compact('roles', 'permissions', 'selectedUser'));
     }
 
     public function updatedSelectedRole($value) {
@@ -50,9 +54,7 @@ class PermissionComponent extends Component
             foreach ($this->selectedpermissions as $key=>$permission) {
                 $this->selectedpermissions[$key]=$key;
             }
-
         }
-
         $this->validate();
         $role=Role::find($this->selectedrole);
         //dd($this->selectedpermissions, $this->selectedrole);
@@ -85,6 +87,18 @@ class PermissionComponent extends Component
             $this->emit('toast', 'Registro Guardado', 'success');
         } else {
             $this->emit('toast', 'Permiso existente', 'warning');
+        }
+    }
+
+    //asignar rol a usuario
+    public function assignRole() {
+        $user=\App\Models\User::find(session('bookmark'));
+        $role=Role::find($this->selectedrole);
+        if ($user && $role) {
+            $user->assignRole($role);
+            $this->emit('toast', 'Rol asignado', 'success');
+        } else {
+            $this->emit('toast', 'Error al asignar rol', 'error');
         }
     }
 

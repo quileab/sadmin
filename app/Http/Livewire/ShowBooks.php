@@ -28,7 +28,7 @@ class ShowBooks extends Component
     // *** VARIOS PROTECTED de Livewire ***
 
     // Listener para los EMIT - Conexión entre PHP-JS
-    protected $listeners=['delete']; 
+    protected $listeners=['delete','bookmarkCleared']; 
         
     // Para este caso no es necesario PERO lo dejo como ejemplo
     protected $queryString=[
@@ -216,6 +216,22 @@ class ShowBooks extends Component
     public function delete(book $book){
         $book->delete();
         $this->emit('toast','Registro eliminado','error');
+    }
+
+    public function bookmarkCleared(){
+        $this->render();
+    }
+
+    public function bookLendReturn(book $book, bool $action){
+        if ($action) {
+            $book->user_id=session('bookmark');
+            $this->emit('toast', 'Libro Prestado', 'success');
+        } else {
+            $book->user_id=null;
+            $this->emit('toast', 'Libro Devuelto', 'success');
+        }
+        $book->save();
+        $this->render();
     }
 
 }

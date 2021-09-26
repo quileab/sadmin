@@ -111,19 +111,19 @@
 
     </x-slot>
     <x-slot name="footer">
-        <div class="flex justify-between">
-            @if($errors->any())
-                <div class="text-yellow-300">Verifique la información ingresada</div>
-            @endif
-            <x-jet-button wire:click="save" wire:loading.attr="disabled" wire:target="save">
-                @if($updating)
-                    Actualizar
-                @else
-                    Guardar
-                @endif
-            </x-jet-button>
-            <x-jet-danger-button wire:click="$set('openModal',false)">Cancelar</x-jet-danger-button>
-        </div>
+      <div class="flex justify-between">
+        @if ($errors->any())
+          <div class="text-yellow-300">Verifique la información ingresada</div>
+        @endif
+        <x-jet-button wire:click="save" wire:loading.attr="disabled" wire:target="save">
+          @if ($updating)
+            Actualizar
+          @else
+            Guardar
+          @endif
+        </x-jet-button>
+        <x-jet-danger-button wire:click="$set('openModal',false)">Cancelar</x-jet-danger-button>
+      </div>
     </x-slot>
   </x-jet-dialog-modal>
 
@@ -228,23 +228,21 @@
               </td>
               <td class="px-6 py-4">
                 @if ($book->user)
-                  <span
-                    class="px-2 text-center block text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                  <span class="px-2 text-center block text-xs leading-5 font-semibold rounded-full bg-red-200 text-red-900">
                     <a href="{{ route('students', ['search' => $book->user->pid]) }}">
-                      {{ $book->user->pid }}
+                      Prestado
                     </a>
                   </span>
                 @else
-                  <span
-                    class="text-center block text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  <span class="text-center block text-xs leading-5 font-semibold rounded-full bg-green-200 text-green-900">
                     Libre
                   </span>
                 @endif
 
               </td>
-              <td class="w-28 bg-gray-100 px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <td class="bg-gray-100 px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 {{-- <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a> --}}
-                <button wire:click="edit('{{ $book->id }}')" class="mr-2">
+                <button wire:click="edit('{{ $book->id }}')" class="mx-1">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -252,11 +250,30 @@
                   </svg>
                 </button>
                 <button wire:click="$emit('confirmDelete','{{ $book->title }}','{{ $book->id }}','delete')">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="red">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="red">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                 </button>
+                @if ($book->user_id == 0)
+                  @if (session()->has('bookmark'))
+                    <button wire:click="bookLendReturn('{{ $book->id }}',true)">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" stroke="green" fill="currentColor" class="bi bi-person-check" viewBox="0 0 16 16">
+                        <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
+                        <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+                      </svg>
+                    </button>
+                  @endif
+                @else
+                  <button wire:click="bookLendReturn('{{ $book->id }}',false)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </button>
+                @endif
               </td>
             </tr>
           @endforeach

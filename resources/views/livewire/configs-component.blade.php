@@ -6,13 +6,31 @@
 
         <x-slot name="content">
             <small>{{ $uid }}</small>&nbsp;
-            @if (strtolower($value) == 'true')
-                <x-jet-button color="green" wire:click="$set('value','false')">Habilitado</x-jet-button>
-            @elseif (strtolower($value)=='false')
-                <x-jet-button color="red" wire:click="$set('value','true')">Deshabilitado</x-jet-button>
+            @if ($type == 'bool')
+                @if (strtolower($value) == 'true')
+                    <x-jet-button color="green" wire:click="$set('value','false')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </x-jet-button>
+                @else
+                    <x-jet-button color="red" wire:click="$set('value','true')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </x-jet-button>
+                @endif
             @else
-                <x-jet-input wire:model='value' value={{ $value }} class="w-full" />
+                <x-jet-input wire:model='value' value={{ $value }} />
             @endif
+            <br>
+            <select name="type" wire:model.lazy='type' class="border border-gray-400 shadow-md">
+                <option value="bool" @if ($type == 'bool') selected @endif>Bool</option>
+                <option value="text" @if ($type == 'text') selected @endif>Texto</option>
+                <option value="int" @if ($type == 'int') selected @endif>Número Entero</option>
+                <option value="csv-1" @if ($type == 'csv-1') selected @endif>Opciones Separadas por Coma, solo seleccionar UNA</option>
+                <option value="csv-n" @if ($type == 'csv-n') selected @endif>Opciones Separadas por Coma, seleccionar VARIAS</option>
+            </select>
         </x-slot>
 
         <x-slot name="footer">
@@ -62,13 +80,24 @@
                 </svg>
                 </x-jet-button>
 
+                @if ($config->type == 'bool')
                 @if (strtolower($config->value) == 'true')
-                    <div class="bg-green-600 inline-flex items-center px-4 py-2 rounded-md font-semibold text-white uppercase"> Habilitado </div>
-                @elseif (strtolower($config->value)=='false')
-                    <div class="bg-red-600 inline-flex items-center px-4 py-2 rounded-md font-semibold text-white uppercase"> Deshabilitado </div>
+                    <x-jet-button color="green">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </x-jet-button>
                 @else
-                    <span class="mt-2">{{ $config->value }}</span>
+                    <x-jet-button color="red">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </x-jet-button>
                 @endif
+            @else
+            <span class="mt-2">{{ $config->value }}</span>
+            @endif
+                
                 </div>
             </x-slot>
         </x-jet-action-section>

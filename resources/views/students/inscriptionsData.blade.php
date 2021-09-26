@@ -12,7 +12,7 @@
       @if(Auth::user()->hasRole('admin'))
         @livewire('inscription.inscription-admin', ['inscription' => $inscription])
       @else
-        @include('students.inscriptionStudent')
+        @livewire('inscription.inscription-student', ['inscription' => $inscription])
       @endif
   </div>
 

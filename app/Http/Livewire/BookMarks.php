@@ -35,5 +35,6 @@ class BookMarks extends Component
     public function removeBookmark(){
         session()->forget('bookmark');
         $this->bkmk=null;
+        $this->emit('bookmarkCleared');
     }
 }

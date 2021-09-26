@@ -24,8 +24,6 @@
       </x-jet-button>
       </div>
 
-
-
     </x-slot>
     <x-slot name="form">
       @include('livewire.permissions.roles')

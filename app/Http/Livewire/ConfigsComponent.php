@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class ConfigsComponent extends Component
 {
-    public $uid, $group, $description, $value;
+    public $uid, $group, $description, $value, $type;
     public $formAction = "store";
     public $updateForm = false;
     
@@ -20,6 +20,7 @@ class ConfigsComponent extends Component
     public function saveChange(){
         $config=Config::find($this->uid);
         $config->value=$this->value;
+        $config->type=$this->type;
         
         $config->save();
         $this->updateForm=false;
@@ -30,6 +31,7 @@ class ConfigsComponent extends Component
         $this->group=$config->group;
         $this->description=$config->description;
         $this->value=$config->value;
+        $this->type=$config->type;
         $this->updateForm=true;
     }
 

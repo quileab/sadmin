@@ -47,7 +47,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
 
     Route::get('/permissions', function () {
-        return view('permissions.index');
+        if (auth()->user()->can('menu.security')) {
+            return view('permissions.index');
+        }
+        return abort(403);
     })->name('permissions');
 
     Route::get('/assignrole/{id}', function ($id) {
@@ -75,17 +78,27 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('payplans');
 
     Route::get('/inscriptions', function () {
-        // busca en config las inscripciones que el ID NO terminen "-data"
-        $inscriptions = Config::where('group','inscriptions')->where('id','not like','%-data')->get();
-        return view('students.inscriptions', compact('inscriptions'));
+        if (auth()->user()->can('menu.exams')) {
+            // busca en config las inscripciones que el ID NO terminen "-data"
+            $inscriptions = Config::where('group', 'inscriptions')->where('id', 'not like', '%-data')->get();
+            if (auth()->user()->hasRole('student')) {
+                $careers = auth::user()->careers()->get();
+                if ($careers->count() == 0) {
+                    $inscriptions = [];
+                }
+            }
+            return view('students.inscriptions', compact('inscriptions'));
+        } 
     })->name('studentsinsc');
 
     Route::get('/inscriptionsData/{id}', function ($id) {
-        $inscription = Config::find($id) ?? [];
-        if ($inscription == []){
-            return redirect()->route('studentsinsc');
-        }
+        if (auth()->user()->can('menu.exams')) {
+            $inscription = Config::find($id) ?? [];
+            if ($inscription == []) {
+                return redirect()->route('studentsinsc');
+            }
             return view('students.inscriptionsData', compact('inscription'));
+        }
     })->name('studentsinscdata');
 
     Route::get('/students-import-form', function () {
