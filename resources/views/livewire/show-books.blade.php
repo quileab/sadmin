@@ -144,7 +144,9 @@
         </div>
 
         <x-jet-input class="flex-1 mr-4" type="search" placeholder="Ingrese su búsqueda aquí" wire:model="search" />
-        <x-jet-button wire:click="newBook" color="green">Nuevo Libro</x-jet-danger-button>
+        @hasanyrole('librarian|admin')
+        <x-jet-button wire:click="newBook" color="green">Nuevo Libro</x-jet-button>
+        @endhasanyrole
       </div>
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="text-gray-100 bg-cool-gray-700">
@@ -241,6 +243,7 @@
 
               </td>
               <td class="bg-gray-100 px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                @hasanyrole('librarian|admin')
                 {{-- <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a> --}}
                 <button wire:click="edit('{{ $book->id }}')" class="mx-1">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -274,6 +277,7 @@
                     </svg>
                   </button>
                 @endif
+                @endhasanyrole
               </td>
             </tr>
           @endforeach

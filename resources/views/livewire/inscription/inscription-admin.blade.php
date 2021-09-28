@@ -1,4 +1,6 @@
 <div class="m-4">
+  <div class="flex">
+    <div>
   Carrera&nbsp; 
   <select wire:model.lazy="career" name="career" id="career">
     {{-- opcion 0 por default --}}
@@ -9,27 +11,16 @@
     @endforeach
   </select>
 
-  <div class="flex mr-3">
-  @switch($inputType->type)
-    @case('csv-1')
-      Texto Separado por comas, Selecciona solo Un valor
-      @break
-    @case('csv-n')
-      Texto Separado por comas, Selecciona varios valores
-      @break
-    @case('text')
-      Texto Plano Simple
-      @break
-    @case('int')
-      Numero Entero
-      @break
-    @case('bool')
-      Si/No
-      @break
-    @default
-    Texto Plano Simple / Default
-      @break
-  @endswitch
+  &nbsp; » Tipo de ingreso
+  <select wire:model.lazy="inputType" name="inputtype" id="">
+    <option value="text">Texto Simple</option>
+    <option value="csv-1">Texto separado por comas, Selecciona solo Un valor</option>
+    <option value="csv-n">Texto separado por comas, Selecciona varios valores</option>
+    <option value="bool">Si/No</option>
+    <option value="num">Valor numerico</option>
+  </select>
+  </div>
+
   </div>
 
   <section class="container mx-auto p-4">

@@ -34,8 +34,9 @@ class InscriptionAdmin extends Component
         if ($this->career==null) {
             $this->career = $this->careers[0]->id;
         }
-        $this->inputType=\App\Models\Config::find($this->inscription->id.'-data');
         $this->updatedCareer();
+        //obtengo inputtype de updatedCareer
+        //$this->inputType=\App\Models\Config::find($this->inscription->id.'-data');
     }
 
     public function render()
@@ -50,8 +51,14 @@ class InscriptionAdmin extends Component
 
     public function updatedCareer()
     {
+      $this->inscriptionValues=[];
+      $this->inscriptionUpdated=[];
         // Obtenemos las materias de la carrera seleccionada
-        $this->getSubjects($this->career);
+        $subjects=$this->getSubjects($this->career);
+        // Seteo el valor del InputType Default
+        $this->inputType=\App\Models\Studentinscription::where('user_id', $this->adminID)->
+          where('subject_id',$subjects[0]->id)->first()->type ?? 'text';
+
         // Seteamos arrays de trabajo
         foreach ($this->subjects as $subject) {
             //dd($subject,$this->inscription->id);
@@ -70,18 +77,19 @@ class InscriptionAdmin extends Component
 
         if ($studentinscription!=null) {
             $studentinscription->value=$value;
+            $studentinscription->type=$this->inputType;
             $studentinscription->save();
         } else { // create Studentinscription
             Studentinscription::create([
                 'user_id' => $this->adminID,
                 'subject_id' => $key,
                 'name' => $key, // default
-                'type' => $this->inputType->type,
+                'type' => $this->inputType,
                 'value' => $value,
             ]);
         }
         $this->inscriptionUpdated[$key]=$value;
-        $this->emit('toast',$value,'info');
+        $this->emit('toast','📀'.$value,'info');
     }
 
     public function clearValue($key)

@@ -51,13 +51,15 @@
     </div>
 
     <div class="container my-3 mx-auto px-4 md:px-12">
+      @hasanyrole('secretary|admin')
       {{-- NEW Infocard --}}
       <x-jet-button color='green' wire:click="create">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
         </svg> Nueva
       </x-jet-button>
+      @endhasanyrole
 
       <div class="flex flex-wrap -mx-1 lg:-mx-4">
         @foreach ($infocards as $infocard)
@@ -92,6 +94,7 @@
                     {{ $infocard->user->name }}
                   </p>
                 </a>
+                @hasanyrole('secretary|admin')
                 <a class="no-underline text-grey-darker hover:text-red-dark" href="#">
                   <button wire:click="edit({{ $infocard }})"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded text-xs">Editar</button>
@@ -100,6 +103,7 @@
                   <button wire:click="$emit('triggerDelete',{{ $infocard }})"
                     class="bg-red-500 hover:bg-red-700 text-white font-bold px-4 py-2 rounded text-xs">Borrar</button>
                 </a>
+                @endhasanyrole
               </footer>
 
             </article>
