@@ -8,7 +8,7 @@
         </option>
       @endforeach
     </select>
-    {{ $inputType }}
+    {{-- {{ $inputType }} --}}
   
     <section class="container mx-auto p-4">
       <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
@@ -142,6 +142,11 @@
           </table>
         </div>
       </div>
+      <a class="bg-blue-600 hover:bg-blue-700 rounded-md px-3 py-2 text-white uppercase text-sm"
+        href="{{ url('/inscriptionsPDF/'.Auth::user()->id.'/'.$career) }}"
+        target="_blank">
+        Vista Previa
+      </a>
     </section>
   </div>
   

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\PrintInscriptionsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -134,6 +135,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('books');
     })->name('books');
 
+    Route::get('/inscriptionsPDF/{student}/{career}', [PrintInscriptionsController::class,'index'])->name('inscriptionsPDF');
         
 });
 

@@ -77,7 +77,7 @@ class InscriptionStudent extends Component
     public function updateOrCreateValue($key)
     {
         $value=$this->inscriptionStudent[$key];
-        if ($value==null) { $this->emit('toast','Sin cambios 🚫','warning'); return; }
+        if ($value==null) { $this->clearValue($key); return; }
         //$this->validate();
         $studentinscription=\App\Models\Studentinscription::where('user_id', $this->studentID)
             ->where('subject_id', $key)->first();
