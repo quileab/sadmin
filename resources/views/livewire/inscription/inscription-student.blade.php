@@ -1,4 +1,6 @@
 <div class="m-4">
+  <div class="flex justify-between">
+    <div>
     Carrera&nbsp; 
     <select wire:model.lazy="career" name="career" id="career">
       {{-- opcion 0 por default --}}
@@ -8,8 +10,17 @@
         </option>
       @endforeach
     </select>
+    </div>
     {{-- {{ $inputType }} --}}
-  
+    @if (session('success'))
+    <div id="message" class="border border-green-600 bg-green-200 rounded-md px-4 py-2 align-middle">
+        {{ session('success') }}
+        <button onclick="document.getElementById('message').remove()"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg></button>
+    </div>
+    @endif
+  </div>
     <section class="container mx-auto p-4">
       <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
         <div class="w-full overflow-x-auto">
@@ -142,10 +153,15 @@
           </table>
         </div>
       </div>
-      <a class="bg-blue-600 hover:bg-blue-700 rounded-md px-3 py-2 text-white uppercase text-sm"
+      <a class="bg-blue-600 hover:bg-blue-700 rounded-md mx-1 px-3 py-2 text-white uppercase text-sm"
         href="{{ url('/inscriptionsPDF/'.Auth::user()->id.'/'.$career) }}"
         target="_blank">
         Vista Previa
+      </a>
+      <a class="bg-blue-600 hover:bg-blue-700 rounded-md mx-1 px-3 py-2 text-white uppercase text-sm"
+        href="{{ url('/inscriptionsSavePDF/'.Auth::user()->id.'/'.$career) }}"
+        target="_self">
+        Enviar Inscripción
       </a>
     </section>
   </div>

@@ -31,4 +31,8 @@
       </div>
   </div>
 
+  @hasanyrole('secretary|admin')
+    @livewire('inscription.inscriptions-manage')
+  @endhasanyrole
+
 </x-app-layout>

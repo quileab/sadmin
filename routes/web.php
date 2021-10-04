@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PrintInscriptionsController;
+use App\Http\Controllers\PrivateFilesController;
+use App\Models\Studentinscription;
 
 Route::get('/', function () {
     return view('welcome');
@@ -47,6 +49,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return $response;
     });
 
+    Route::get('/files/private/{filename}', [PrivateFilesController::class, 'files']);
+  
     Route::get('/permissions', function () {
         if (auth()->user()->can('menu.security')) {
             return view('permissions.index');
@@ -136,6 +140,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('books');
 
     Route::get('/inscriptionsPDF/{student}/{career}', [PrintInscriptionsController::class,'index'])->name('inscriptionsPDF');
+    
+    Route::get('/inscriptionsSavePDF/{student}/{career}', [PrintInscriptionsController::class,'savePDF'])->name('inscriptionsSavePDF');
         
 });
 

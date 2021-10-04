@@ -16,7 +16,7 @@
 
 <div>
   <h3>
-    {{$inscriptions[0]->user['lastname']}}, {{$inscriptions[0]->user['firstname']}}
+    {{$student->lastname}}, {{$student->firstname}}
   </h3>
   <h4>
     {{ $career->id }}: {{ $career->name }}
