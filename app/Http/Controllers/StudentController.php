@@ -13,6 +13,9 @@ class StudentController extends Controller
     public $errorInfo='';
 
     public function importBulk(Request $request){
+        if (!auth()->user()->hasRole('admin')) {
+            return;
+        }
         $request->validate(
             [
                 'file'=>'required',
@@ -42,14 +45,11 @@ class StudentController extends Controller
                 // Just Continue
                 //$this->errorInfo = $this->errorInfo.$exception->errorInfo;
             }
-
-            // TODO: Ver como agrego Carreras a los estudiantes
-
-            // $user->career::create([
-            //     'career'=>$rows['career'],
-            // ]);
-        }       
-        // return redirect()->back()->with(['message'=>'Usuarios importados correctamente']);
-        return redirect(route('students'));
+            // Asignar Role al Usuario
+            $user->assignRole($request->role);
+            // Asignar Carrera al Usuario
+            $user->careers()->attach($row['career']);
+        }
+        return redirect()->route('students')->with('success','Importación Exitosa');
     }
 }

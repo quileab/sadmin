@@ -10,6 +10,7 @@
           <tr>
             <th class="px-4 py-2">Apellido y Nombre</th>
             <th class="px-4 py-2">Carrera</th>
+            <th class="px-4 py-2">Inscripto a</th>
             <th class="px-4 py-2">PDF</th>
           </tr>
         </thead>
@@ -19,6 +20,7 @@
               <td class="border px-4 py-2">{{ $inscript['user']->lastname }}, {{ $inscript['user']->firstname }}
               </td>
               <td class="border px-4 py-2">{{ $inscript['career']->name }}</td>
+              <td class="border px-4 py-2">{{ $inscript['inscription'] }}</td>
               <td class="border px-4 py-2">
                 <a href="{{ $inscript['pdflink'] }}" target="_blank" class="text-red-700">
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" height="16" fill="currentColor"

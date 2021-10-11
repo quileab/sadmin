@@ -3,6 +3,15 @@
     font-family: Arial, Helvetica, sans-serif
   }
 
+  h2{
+    margin: 0rem;
+    padding: 0rem;
+  }
+  h4{
+    margin: 0rem;
+    padding: 0rem;
+  }
+
   table{
     width:100%; border:1px solid; border-collapse:collapse;
   }
@@ -15,12 +24,24 @@
 </style>
 
 <div>
-  <h3>
-    {{$student->lastname}}, {{$student->firstname}}
-  </h3>
-  <h4>
+  <h2>{{ $config['shortname'] }} - {{ $config['longname'] }}</h2>
+  <h4>{{ $config[$insc_conf_id] }} - 
     {{ $career->id }}: {{ $career->name }}
   </h4>
+<br />
+  <table>
+    <tr>
+      <td>
+        <strong>{{$student->lastname}}, {{$student->firstname}}</strong><br />
+        <small>{{$student->email}} - {{$student->phone}}</small>
+      </td>
+      <td>
+        {{ date('d-m-Y H:i', strtotime(now())) }}    
+      </td>
+    </tr>
+  </table>
+
+
   <table>
     <thead>
       <tr>

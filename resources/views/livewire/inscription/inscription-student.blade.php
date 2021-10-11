@@ -154,12 +154,12 @@
         </div>
       </div>
       <a class="bg-blue-600 hover:bg-blue-700 rounded-md mx-1 px-3 py-2 text-white uppercase text-sm"
-        href="{{ url('/inscriptionsPDF/'.Auth::user()->id.'/'.$career) }}"
+        href="{{ url('/inscriptionsPDF/'.Auth::user()->id.'/'.$career.'/'.$inscription->id) }}"
         target="_blank">
         Vista Previa
       </a>
       <a class="bg-blue-600 hover:bg-blue-700 rounded-md mx-1 px-3 py-2 text-white uppercase text-sm"
-        href="{{ url('/inscriptionsSavePDF/'.Auth::user()->id.'/'.$career) }}"
+        href="{{ url('/inscriptionsSavePDF/'.Auth::user()->id.'/'.$career.'/'.$inscription->id) }}"
         target="_self">
         Enviar Inscripción
       </a>

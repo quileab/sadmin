@@ -107,17 +107,6 @@
     </x-slot>
   </x-jet-dialog-modal>
 
-  {{-- Import Students --}}
-  <div class="w-full text-right">
-  <a href="{{ route('students-import-form') }}">
-    <x-jet-button>
-      Importar Alumnos&nbsp;
-      <span class="inline-flex items-center justify-center px-2 py-1 text-xs leading-none text-gray-50 bg-blue-600 rounded-full">
-        .csv</span>
-    </x-jet-button>
-  </a>
-  </div>
-
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- This example requires Tailwind CSS v2.0+ -->
     <x-table>

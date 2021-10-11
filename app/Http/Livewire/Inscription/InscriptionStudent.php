@@ -67,8 +67,10 @@ class InscriptionStudent extends Component
         // Seteo arrays de trabajo
         foreach ($subjects as $subject) {
             $this->inscriptionValues[$subject->id]=\App\Models\Studentinscription::where('user_id', $this->adminID)->
+            where('name',$this->inscription->id)->
             where('subject_id', $subject->id)->first()->value ?? null;
             $this->inscriptionStudent[$subject->id]=\App\Models\Studentinscription::where('user_id', $this->studentID)->
+            where('name',$this->inscription->id)->
             where('subject_id', $subject->id)->first()->value ?? null;
             $this->inscriptionUpdated[$subject->id]=$this->inscriptionStudent[$subject->id];
         }
@@ -84,12 +86,13 @@ class InscriptionStudent extends Component
 
         if ($studentinscription!=null) {
             $studentinscription->value=$value;
+            $studentinscription->name=$this->inscription->id;
             $studentinscription->save();
         } else { // create Studentinscription
             Studentinscription::create([
                 'user_id' => $this->studentID,
                 'subject_id' => $key,
-                'name' => $key, // default
+                'name' => $this->inscription->id, // name es el id de la inscripcion
                 'type' => $this->inputType,
                 'value' => $value,
             ]);
@@ -104,7 +107,9 @@ class InscriptionStudent extends Component
         $this->inscriptionStudent[$key]='';
         $this->inscriptionUpdated[$key]='';
         \App\Models\Studentinscription::where('user_id', $this->studentID)
-            ->where('subject_id', $key)->delete();
+            ->where('subject_id', $key)
+            ->where('name', $this->inscription->id)
+            ->delete();
         $this->emit('toast','Cleared','warning');
     }
 

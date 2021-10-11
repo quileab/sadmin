@@ -32,8 +32,9 @@
         <div class="w-2/4 mx-2">
           {{-- Approved --}}
           <x-jet-label value="Aprobado" />
-          <input type="checkbox" value="@if ($approved) 0 @else 1 @endif" wire:model.defer="approved"
+          <input type="checkbox" value="@if ($approved) 0 @else 1 @endif" wire:model.lazy="approved"
           class="border-4 focus:border-gray-700 form-checkbox mt-1 h-9 w-9 text-green-600">
+          <x-jet-input-error for="approved" />
         </div>
         
         <div class="w-full mt-6 text-right">

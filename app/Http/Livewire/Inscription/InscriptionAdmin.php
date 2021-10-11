@@ -63,7 +63,8 @@ class InscriptionAdmin extends Component
         foreach ($this->subjects as $subject) {
             //dd($subject,$this->inscription->id);
             $this->inscriptionValues[$subject->id]=\App\Models\Studentinscription::where('user_id', $this->adminID)->
-                where('subject_id', $subject->id)->first()->value ?? 'N/A'; //$this->inscription;
+                where('name',$this->inscription->id)->
+                where('subject_id', $subject->id)->first()->value ?? ''; //$this->inscription;
             $this->inscriptionUpdated[$subject->id]=$this->inscriptionValues[$subject->id];
         }
     }
@@ -78,12 +79,13 @@ class InscriptionAdmin extends Component
         if ($studentinscription!=null) {
             $studentinscription->value=$value;
             $studentinscription->type=$this->inputType;
+            $studentinscription->name=$this->inscription->id;
             $studentinscription->save();
         } else { // create Studentinscription
             Studentinscription::create([
                 'user_id' => $this->adminID,
                 'subject_id' => $key,
-                'name' => $key, // default
+                'name' => $this->inscription->id, // name es el id de la inscripcion
                 'type' => $this->inputType,
                 'value' => $value,
             ]);
@@ -98,7 +100,9 @@ class InscriptionAdmin extends Component
         $this->inscriptionValues[$key]='';
         $this->inscriptionUpdated[$key]='';
         \App\Models\Studentinscription::where('user_id', $this->adminID)
-            ->where('subject_id', $key)->delete();
+            ->where('subject_id', $key)
+            ->where('name', $this->inscription->id)
+            ->delete();
         $this->emit('toast','Cleared','warning');
     }
 }

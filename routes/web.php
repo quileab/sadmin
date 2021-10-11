@@ -1,14 +1,15 @@
 <?php
 
 use App\Models\Config;
+use App\Models\Studentinscription;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\PrintInscriptionsController;
 use App\Http\Controllers\PrivateFilesController;
-use App\Models\Studentinscription;
+use App\Http\Controllers\PrintInscriptionsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -102,20 +103,20 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             if ($inscription == []) {
                 return redirect()->route('studentsinsc');
             }
-            return view('students.inscriptionsData', compact('inscription'));
+            return view('students.inscriptionsData', compact('inscription', 'id'));
         }
     })->name('studentsinscdata');
 
+    // IMPORT FORM
     Route::get('/students-import-form', function () {
-        return view('students.import-form');
+      if (auth()->user()->hasRole('admin')) {
+          $roles=Role::all();
+          return view('students.import-form', compact('roles'));
+      }
+      return back();
     })->name('students-import-form');
-
-    // *** Route to a Controller ***
+    // IMPORT BULK
     Route::post('/students-import-bulk', [StudentController::class,'importBulk'])->name('students-import-bulk');
-    // *** Route to a View ***
-    // Route::post('/students-import-bulk', function () {
-    //     return view('students.import-bulk');
-    // })->name('students-import-bulk');
 
     Route::get('/grades/{id}', function ($id) {
         return view('grades.index',compact('id'));
@@ -139,9 +140,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('books');
     })->name('books');
 
-    Route::get('/inscriptionsPDF/{student}/{career}', [PrintInscriptionsController::class,'index'])->name('inscriptionsPDF');
+    Route::get('/inscriptionsPDF/{student}/{career}/{inscription}', [PrintInscriptionsController::class,'index'])->name('inscriptionsPDF');
     
-    Route::get('/inscriptionsSavePDF/{student}/{career}', [PrintInscriptionsController::class,'savePDF'])->name('inscriptionsSavePDF');
+    Route::get('/inscriptionsSavePDF/{student}/{career}/{inscription}', [PrintInscriptionsController::class,'savePDF'])->name('inscriptionsSavePDF');
         
 });
 

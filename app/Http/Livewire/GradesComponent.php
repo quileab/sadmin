@@ -2,10 +2,9 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
 use App\Models\User;
-use App\Models\Subject;
 use App\Models\Grade;
+use Livewire\Component;
 
 class GradesComponent extends Component
 {
@@ -35,7 +34,7 @@ class GradesComponent extends Component
         'uid'=>['required','exists:users,id'],
         'subjID'=>['required','exists:subjects,id'],
         'date'=>['required'],
-        //'name'=>['required'],
+        'name'=>['required'],
         'grade'=>['required'], //,'integer'
         'approved'=>['required','boolean'],
         ];
@@ -84,21 +83,17 @@ class GradesComponent extends Component
         $this->readyToLoad = true;
     }
 
-    public function addGrade(Request $request)
+    public function addGrade()
     {
-        dd($request);
-        // validar que el campo no este vacio
         $this->validate();
-        //dd($this->approved);
         Grade::create([
             'user_id' => $this->uid,
             'subject_id' => $this->subjID,
             'date_id' => $this->date,
             'name' => $this->name,
             'grade' => $this->grade,
-            'approved' => $this->approved ? 1 : 0,
+            'approved' => trim($this->approved ?1:0),
         ]);
-
         $this->reset(['date','name','grade','approved']);
         $this->emit('toast', 'Registro Guardado', 'success');
     }
@@ -108,6 +103,7 @@ class GradesComponent extends Component
         $this->date=date('Y-m-d');
         $this->subjID = $subjID;
         $this->subjName = $subjName;
+        $this->approved = false;
 
         $this->openModal = true;
     }
