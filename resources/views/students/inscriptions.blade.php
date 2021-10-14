@@ -8,12 +8,16 @@
           <h1>Inscripciones</h1>
 
       </div>
+      @if (auth()->user()->enabled==false)
+          <p class="ml-5 mt-1 text-red-700">
+            Se ha encontrado una inconsistencia: CONSULTE CON SECRETARÍA</p>
+      @endif
       <div class="m-4 flex justify-evenly">
           @foreach ($inscriptions as $inscription)
 
         <div class="inline-flex">
         <a 
-          @if ($inscription->value == 'true')
+          @if ($inscription->value == 'true' && auth()->user()->enabled)
             href="{{ route('studentsinscdata', $inscription->id) }}"
           @endif
         >

@@ -84,7 +84,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('payplans');
 
     Route::get('/inscriptions', function () {
-        if (auth()->user()->can('menu.exams')) {
+        if (auth()->user()->can('menu.inscriptions')) {
             // busca en config las inscripciones que el ID NO terminen "-data"
             $inscriptions = Config::where('group', 'inscriptions')->where('id', 'not like', '%-data')->get();
             if (auth()->user()->hasRole('student')) {
@@ -94,7 +94,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
                 }
             }
             return view('students.inscriptions', compact('inscriptions'));
-        } 
+        }
+        abort(403);
     })->name('studentsinsc');
 
     Route::get('/inscriptionsData/{id}', function ($id) {

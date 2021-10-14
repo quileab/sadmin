@@ -17,7 +17,7 @@
         <tbody>
           @foreach ($inscripts as $inscript)
             <tr>
-              <td class="border px-4 py-2">{{ $inscript['user']->lastname }}, {{ $inscript['user']->firstname }}
+              <td class="border px-4 py-2">{{ $inscript['user']->lastname ?? '' }}, {{ $inscript['user']->firstname ?? '' }}
               </td>
               <td class="border px-4 py-2">{{ $inscript['career']->name }}</td>
               <td class="border px-4 py-2">{{ $inscript['inscription'] }}</td>

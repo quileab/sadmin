@@ -22,7 +22,7 @@ $nav_links = [
       'name' => 'Inscripciones',
       'route' => route('studentsinsc'),
       'active' => request()->routeIs('studentsinsc'),
-      'permission'=>'menu.exams',
+      'permission'=>'menu.inscriptions',
     ],
     [
       'name' => 'Calendarios',
