@@ -10,7 +10,7 @@
       </div>
       @if (auth()->user()->enabled==false)
           <p class="ml-5 mt-1 text-red-700">
-            Se ha encontrado una inconsistencia: CONSULTE CON SECRETARÍA</p>
+            Se ha encontrado una inconsistencia: CONSULTE CON TESORERÍA</p>
       @endif
       <div class="m-4 flex justify-evenly">
           @foreach ($inscriptions as $inscription)

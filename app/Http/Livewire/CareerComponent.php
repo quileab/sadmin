@@ -77,7 +77,11 @@ class CareerComponent extends Component
     }
 
     public function destroy(Career $career){
-        $career->delete();
+        try{
+            $career->delete();
+        }catch(\Exception $e){
+            $this->emit('toast','ERROR: Esta CARRERA puede contener ESTUDIANTES','error');
+        }
     }
 
 }

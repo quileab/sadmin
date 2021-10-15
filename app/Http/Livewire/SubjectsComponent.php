@@ -90,7 +90,12 @@ class SubjectsComponent extends Component
     }
 
     public function destroy(Subject $subject){
-        $subject->delete();
+        //dd('destroy',$subject);
+        try{
+            $subject->delete();
+        }catch(\Exception $e){
+            $this->emit('toast','ERROR: Esta MATERIA puede contener INSCRIPCIONES','error');
+        }
     }
 
 }

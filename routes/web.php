@@ -99,7 +99,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('studentsinsc');
 
     Route::get('/inscriptionsData/{id}', function ($id) {
-        if (auth()->user()->can('menu.exams')) {
+        if (auth()->user()->can('menu.inscriptions')) {
             $inscription = Config::find($id) ?? [];
             if ($inscription == []) {
                 return redirect()->route('studentsinsc');

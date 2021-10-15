@@ -24,8 +24,8 @@ class PrintInscriptionsController extends Controller
 
     public function index(User $student,Career $career, String $insc_conf_id){
         $inscriptions = \App\Models\Studentinscription::
-              where('user_id', $student->id)
-            ->where('name', $insc_conf_id)->get();
+          where('user_id', $student->id)->
+          where('name', $insc_conf_id)->get();
         $config=$this->config;
         
         //dd($inscriptions,$config);
@@ -37,7 +37,9 @@ class PrintInscriptionsController extends Controller
     }
 
     public function savePDF(User $student,Career $career, String $insc_conf_id){
-        $inscriptions = \App\Models\Studentinscription::where('user_id', $student->id)->get();
+        $inscriptions = \App\Models\Studentinscription::
+          where('user_id', $student->id)->
+          where('name', $insc_conf_id)->get();
         $config=$this->config;
         // this enables static method calls on the PDF class
         $pdf=app('dompdf.wrapper');
