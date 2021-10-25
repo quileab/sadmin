@@ -1,7 +1,12 @@
 <x-guest-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">
+            <dir class="inline-flex p-0 m-0">
             <x-jet-authentication-card-logo />
+            </dir>
+            <dir class="inline-flex p-0 m-0">
+            <img src="{{url('/imgs/logo.png')}}" class="inline-flex h-16 w-auto" alt=""/> 
+            </dir>
         </x-slot>
 
         <x-jet-validation-errors class="mb-4 p-2 bg-red-50 rounded-md" />
@@ -40,7 +45,7 @@
                 @endif
 
                 <x-jet-button class="ml-4">
-                    {{ __('Login') }}
+                    {{ __('messages.Login') }}
                 </x-jet-button>
             </div>
         </form>

@@ -44,7 +44,7 @@
             </thead>
             <tbody class="bg-white">
               @foreach ($subjects as $subject)
-              
+              @if (!empty(trim($inscriptionValues[$subject->id])))
               <tr class="text-gray-700 even:bg-gray-300">
                 <td class="px-3 py-2 border">
                   <div class="flex items-center text-sm">
@@ -56,27 +56,27 @@
                     'bg-red-200'=>($inscriptionStudent[$subject->id]!=$inscriptionUpdated[$subject->id])])>
                   @switch($inputType)
                   @case('csv-1')
-                  <fieldset>
-                    @foreach (str_getcsv($inscriptionValues[$subject->id],",",'"',"\\") as $value)
-                    @php $value = trim($value); @endphp
-                      @if ($value)
-                      <x-jet-button wire:click="csv1AddRemove('{{$subject->id}}','{{$value}}')" class="mb-1"
-                        color='{{(strpos($inscriptionStudent[$subject->id],$value) === false) ? "gray" : "green" }}'>
-                        @if (strpos($inscriptionStudent[$subject->id],$value) === false)
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                        </svg>
-                        @else
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
+                    <fieldset>
+                      @foreach (str_getcsv($inscriptionValues[$subject->id],",",'"',"\\") as $value)
+                      @php $value = trim($value); @endphp
+                        @if ($value)
+                        <x-jet-button wire:click="csv1AddRemove('{{$subject->id}}','{{$value}}')" class="mb-1"
+                          color='{{(strpos($inscriptionStudent[$subject->id],$value) === false) ? "gray" : "green" }}'>
+                          @if (strpos($inscriptionStudent[$subject->id],$value) === false)
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                          </svg>
+                          @else
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                          </svg>
+                          @endif
+                            &nbsp;{{$value}}
+                        </x-jet-button>  
                         @endif
-                          &nbsp;{{$value}}
-                      </x-jet-button>  
-                      @endif
-                    @endforeach
-                  </fieldset>
-                @break
+                      @endforeach
+                    </fieldset>
+                  @break
                   @case('csv-n')
                     <fieldset>
                         @foreach (str_getcsv($inscriptionValues[$subject->id],",",'"',"\\") as $value)
@@ -98,40 +98,42 @@
                           @endif
                         @endforeach
                       </fieldset>
-                    @break
+                  @break
+{{-- 
                   @case('text')
                     <x-jet-input name="value{{$subject->id}}" wire:model.lazy="inscriptionValues.{{$subject->id}}"
                         type="text" class="w-full border border-gray-500" /> 
-                    @break
+                  @break
                   @case('int')
                     <x-jet-input name="value{{$subject->id}}" wire:model.lazy="inscriptionValues.{{$subject->id}}"
                         type="number" class="w-full border border-gray-500" /> 
-                    @break
+                  @break
                   @case('bool')
-                  <fieldset>
-                    @foreach (str_getcsv($inscriptionValues[$subject->id],",",'"',"\\") as $value)
-                    @php $value = trim($value); @endphp
-                      @if ($value)
-                      <x-jet-button wire:click="csv1AddRemove('{{$subject->id}}','{{$value}}')" class="mb-1" 
-                        color='{{(strpos($inscriptionStudent[$subject->id],$value) === false) ? "gray" : "green" }}'>
-                        @if (strpos($inscriptionStudent[$subject->id],$value) === false)
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                        </svg>
-                        @else
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
+                    <fieldset>
+                      @foreach (str_getcsv($inscriptionValues[$subject->id],",",'"',"\\") as $value)
+                        @php $value = trim($value); @endphp
+                        @if ($value)
+                        <x-jet-button wire:click="csv1AddRemove('{{$subject->id}}','{{$value}}')" class="mb-1" 
+                          color='{{(strpos($inscriptionStudent[$subject->id],$value) === false) ? "gray" : "green" }}'>
+                          @if (strpos($inscriptionStudent[$subject->id],$value) === false)
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                          </svg>
+                          @else
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                          </svg>
+                          @endif
+                            &nbsp;{{$value}}
+                        </x-jet-button>  
                         @endif
-                          &nbsp;{{$value}}
-                      </x-jet-button>  
-                      @endif
-                    @endforeach
-                  </fieldset>
-                @break
+                      @endforeach
+                    </fieldset>
+                  @break
+--}}
                   @default
-                    ERROR EN FORMA DE INGRESO!!    
-                    @break
+                  ERROR EN FORMA DE INGRESO!!    
+                  @break
                 @endswitch
 
                 </td>
@@ -148,6 +150,7 @@
                   </button>
                 </td>
               </tr>
+              @endif
               @endforeach
             </tbody>
           </table>

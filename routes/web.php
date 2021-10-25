@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Config;
-use App\Models\Studentinscription;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -12,7 +11,9 @@ use App\Http\Controllers\PrivateFilesController;
 use App\Http\Controllers\PrintInscriptionsController;
 
 Route::get('/', function () {
-    return view('welcome');
+    $info=\App\Models\Config::find('shortname')->value.
+      ' '.\App\Models\Config::find('longname')->value;
+    return view('welcome',compact('info'));
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
@@ -24,13 +25,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         $dashInfo=[
             'shortname' => Config::where('id', 'shortname')->first()->value ?? 'false',
             'longname' => Config::where('id', 'longname')->first()->value ?? 'false',
-            'inscriptions' => Config::where('id', 'inscriptions')->first()->value ?? 'false',
             'modalities' => Config::where('id', 'modalities')->first()->value ?? 'false',
-            'exams' => Config::where('id', 'exams')->first()->value ?? 'false',
             'careers'=>Auth::user()->careers()->get(),
             'number'=> $temp->format(Auth::user()->userCount()),
         ];
-        return view('dashboard',compact('dashInfo'));
+        $inscriptions= Config::where('group', 'inscriptions')->get();
+        return view('dashboard',compact('dashInfo','inscriptions'));
     })->name('dashboard');
 
     Route::get('PDFs/{filename}', function ($filename)
@@ -142,16 +142,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('books');
 
     Route::get('/inscriptionsPDF/{student}/{career}/{inscription}', [PrintInscriptionsController::class,'index'])->name('inscriptionsPDF');
-    
     Route::get('/inscriptionsSavePDF/{student}/{career}/{inscription}', [PrintInscriptionsController::class,'savePDF'])->name('inscriptionsSavePDF');
         
 });
-
-/*
-
-// funciona bien pero... // Aclaracion -> $id a traves de __CONSTRUCT 
-// Route::middleware(['auth:sanctum', 'verified'])->get('/subjects/{career_id}', function ($career_id) {
-//     return view('subjects.index',['career_id'=>$career_id]);
-// })->name('subjects');
-
-*/

@@ -13,11 +13,11 @@
 
   &nbsp; » Tipo de ingreso
   <select wire:model.lazy="inputType" name="inputtype" id="">
-    <option value="text">Texto Simple</option>
-    <option value="csv-1">Texto separado por comas, Selecciona solo Un valor</option>
-    <option value="csv-n">Texto separado por comas, Selecciona varios valores</option>
-    <option value="bool">Si/No</option>
-    <option value="num">Valor numerico</option>
+    {{-- <option value="text">Texto Simple</option> --}}
+    {{-- <option value="bool">Si/No (Ej. Habilitar/Deshabilitar)</option> --}}
+    <option value="csv-1">Texto separado por comas. Acepta solo un valor</option>
+    <option value="csv-n">Texto separado por comas. Acepta varios valores</option>
+    {{-- <option value="num">Valor numerico</option> --}}
   </select>
   </div>
 
@@ -51,7 +51,7 @@
               </td>
               <td class="px-3 py-2 text-ms font-semibold border">{{ $subject->name }}</td>
               <td class="px-3 py-2 text-xs border
-                @if ($inscriptionValues[$subject->id]!=$inscriptionUpdated[$subject->id])
+                @if(isset($inscriptionValues[$subject->id]) && $inscriptionValues[$subject->id]!=$inscriptionUpdated[$subject->id])
                     bg-red-200
                 @endif
                 ">

@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire\Inscription;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Studentinscription;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class InscriptionStudent extends Component
@@ -25,7 +27,10 @@ class InscriptionStudent extends Component
 
     public function getSubjects($id)
     {
-        return $this->subjects=\App\Models\Subject::where('career_id', $id)->get();
+      return $this->subjects=\App\Models\Subject::
+        where('career_id', $id)->
+        where('name','>','')->
+        get();
     }
 
     public function mount($inscription)
@@ -45,6 +50,7 @@ class InscriptionStudent extends Component
 
     public function render()
     {
+        // dd($this->subjects,$this->inscriptionValues);
         return view('livewire.inscription.inscription-student')
             ->with('inputType', $this->inputType)
             ->with('inscriptionValues', $this->inscriptionValues)
@@ -62,22 +68,43 @@ class InscriptionStudent extends Component
         // Obtengo las materias de la carrera seleccionada
         $subjects=$this->getSubjects($this->career);
         // Seteo el valor del InputType Default
-        $this->inputType=\App\Models\Studentinscription::where('user_id', $this->adminID)->
-            where('subject_id',$subjects[0]->id)->first()->type ?? 'text';
+        $this->inputType=\App\Models\Studentinscription::
+            where('user_id', $this->adminID)->
+            where('subject_id',$subjects[0]->id)->first()->type ?? 'bool';
         // Seteo arrays de trabajo
-        foreach ($subjects as $subject) {
-            $this->inscriptionValues[$subject->id]=\App\Models\Studentinscription::where('user_id', $this->adminID)->
-            where('name',$this->inscription->id)->
-            where('subject_id', $subject->id)->first()->value ?? null;
-            $this->inscriptionStudent[$subject->id]=\App\Models\Studentinscription::where('user_id', $this->studentID)->
-            where('name',$this->inscription->id)->
-            where('subject_id', $subject->id)->first()->value ?? null;
-            $this->inscriptionUpdated[$subject->id]=$this->inscriptionStudent[$subject->id];
+        $this->inscriptionValues=DB::table('subjects')
+          ->join('studentinscriptions', 'subjects.id', '=', 'studentinscriptions.subject_id')
+          ->where('studentinscriptions.user_id', $this->adminID)
+          ->where('studentinscriptions.type', $this->inputType)
+          ->where('subjects.career_id', $this->career)
+          ->select('subjects.id', 'studentinscriptions.value')
+          ->pluck('value', 'id');
+        $this->inscriptionStudent=DB::table('subjects')
+          ->join('studentinscriptions', 'subjects.id', '=', 'studentinscriptions.subject_id')
+          ->where('studentinscriptions.user_id', $this->studentID)
+          ->where('studentinscriptions.type', $this->inputType)
+          ->where('subjects.career_id', $this->career)
+          ->select('subjects.id', 'studentinscriptions.value')
+          ->pluck('value', 'id');
+        // check for empty Student values and set it to default
+        //dd($this->inscriptionValues,$this->inscriptionStudent,$this->inscriptionUpdated);
+        foreach ($this->inscriptionValues as $key => $value) {
+          if (!isset($this->inscriptionStudent[$key])) {
+            $this->inscriptionStudent[$key]=null;
+          }
         }
+        $this->inscriptionUpdated=$this->inscriptionStudent;
+        //dd($this->inscriptionValues,$this->inscriptionStudent,$this->inscriptionUpdated);
     }
 
     public function updateOrCreateValue($key)
     {
+
+        if ($this->studentID==null || $this->studentID==User::where('name','admin')->first()->id) {
+            $this->emit('toast','💥 ERROR','error');
+            return;
+        }
+
         $value=$this->inscriptionStudent[$key];
         if ($value==null) { $this->clearValue($key); return; }
         //$this->validate();
@@ -103,6 +130,11 @@ class InscriptionStudent extends Component
 
     public function clearValue($key)
     {
+        // security check for null studentID & user as admin
+        if ($this->studentID==null || $this->studentID==User::where('name','admin')->first()->id) {
+            $this->emit('toast','💥 ERROR','error');
+            return;
+        }
         //delete record
         $this->inscriptionStudent[$key]='';
         $this->inscriptionUpdated[$key]='';
@@ -110,7 +142,7 @@ class InscriptionStudent extends Component
             ->where('subject_id', $key)
             ->where('name', $this->inscription->id)
             ->delete();
-        $this->emit('toast','Cleared','warning');
+        $this->emit('toast','💫','warning');
     }
 
     public function csvnAddRemove($id,$value){

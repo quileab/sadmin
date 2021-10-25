@@ -26,7 +26,7 @@ class InscriptionsManage extends Component
             $this->inscripts[$key]['inscription'] = $config_incription_id;//\App\Models\Config::find($config_incription_id);
             $this->inscripts[$key]['pdflink'] = $this->files[$key];
         }
-        //dd($this->inscripts);
+        //dd(array_multisort($this->inscripts, array('career'=>SORT_ASC)));
     }
 
     public function render(){

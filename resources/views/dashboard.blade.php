@@ -40,31 +40,17 @@
                           {{$dashInfo['shortname']}}, {{$dashInfo['longname']}}
                         </div>
                   
-                          <div class="mt-2 text-sm text-gray-700">
-                            Inscripciones a Ciclo Lectivo:&nbsp;
-                            @if ($dashInfo['inscriptions']=="true")
-                              <span class="font-bold text-green-600">Habilitadas</span>                     
-                            @else
-                              <span class="font-bold text-red-600">Cerradas</span>  
-                            @endif
-                            <br />
-
-                            Inscripciones a Modalidades:&nbsp;
-                            @if ($dashInfo['modalities']=="true")
-                              <span class="font-bold text-green-600">Abiertas</span>                     
-                            @else
-                              <span class="font-bold text-red-600">Cerradas</span>  
-                            @endif
-                            <br />
-
-                            Inscripciones a Exámenes:&nbsp;
-                            @if ($dashInfo['exams']=="true")
+                        <div class="mt-2 text-sm text-gray-700">
+                          @foreach ($inscriptions as $inscription)
+                            {{$inscription->description}}:&nbsp;
+                            @if ($inscription->value=="true")
                               <span class="font-bold text-green-600">Abiertas</span>
                             @else
                               <span class="font-bold text-red-600">Cerradas</span>  
                             @endif
-
-                          </div>
+                            <br />
+                          @endforeach
+                        </div>
                   
                       </div>
                     </div>
@@ -93,7 +79,7 @@
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                         </svg>
                         <div class="ml-4 text-lg text-gray-700 leading-7 font-semibold">
-                          Materias y Notas
+                          Materias y Calificaciones
                         </div>
                       </div>
                   
@@ -112,19 +98,15 @@
                   
                     <div class="p-6 border-t border-gray-200 md:border-l">
                       <div class="flex items-center">
-                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          viewBox="0 0 24 24" class="w-8 h-8 text-gray-400">
-                          <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                          </path>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <div class="ml-4 text-lg text-gray-700 leading-7 font-semibold">Authentication</div>
+                        <div class="ml-4 text-lg text-gray-700 leading-7 font-semibold">Mensajes</div>
                       </div>
                   
                       <div class="ml-12">
                         <div class="mt-2 text-sm text-gray-500">
-                          Authentication and registration views are included with Laravel Jetstream, as well as support for user email
-                          verification and resetting forgotten passwords. So, you're free to get started what matters most: building your
-                          application.
+                          🗒✏
                         </div>
                       </div>
                     </div>

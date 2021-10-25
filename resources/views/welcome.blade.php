@@ -410,11 +410,12 @@
                 @auth
                     <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a>
                 @else
-                    <a href="{{ route('login') }}" class="text-sm ">Login
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                    <a href="{{ route('login') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 inline-flex align-middle" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
                         <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
                     </svg>
+                    <p class="inline-flex align-middle">{{__('messages.Login')}}</p>
 
                     </a>
                     {{-- @if (Route::has('register'))
@@ -425,10 +426,11 @@
         @endif
 
 
-        <div class="ml-4 text-center text-sm text-gray-500 sm:text-center sm:ml-0">
-            <x-jet-application-mark class="text-gray-400 h-auto w-96" />
-            <h1>SAdmin</h1>
-            Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
+        <div class="ml-4 text-center text-sm sm:text-center sm:ml-0">
+            <x-jet-application-mark class="text-indigo-400 inline-flex h-auto w-20" />
+            <h1 class="inline-flex align-middle text-6xl text-white">SAdmin</h1>
+            {{-- Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }}) --}}
+            <h2 class="text-4xl text-blue-600">{{ $info }}</h2>
         </div>
     </div>
 
