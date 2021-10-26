@@ -68,12 +68,18 @@ class InscriptionAdmin extends Component
 
         // Seteamos arrays de trabajo
         $this->inscriptionValues=DB::table('subjects')
-            ->join('studentinscriptions', 'subjects.id', '=', 'studentinscriptions.subject_id')
+            ->join('studentinscriptions','subjects.id','=','studentinscriptions.subject_id')
             ->where('studentinscriptions.user_id', $this->adminID)
-            ->where('studentinscriptions.type', $this->inputType)
+            ->where('studentinscriptions.name', $this->inscription->id)
             ->where('subjects.career_id', $this->career)
             ->select('subjects.id', 'studentinscriptions.value')
             ->pluck('value', 'id');
+        // Seteamos los valores por defecto si no existen
+        foreach ($subjects as $subject) {
+            if(!isset($this->inscriptionValues[$subject->id])){
+                $this->inscriptionValues[$subject->id]=null;
+            }
+        }
         $this->inscriptionUpdated=$this->inscriptionValues;
     }
 
@@ -85,7 +91,7 @@ class InscriptionAdmin extends Component
             where('user_id', $this->adminID)
           ->where('subject_id', $key)->first();
 
-        if ($studentinscription!=null) {
+        if ($studentinscription!=null) { // Si existe, actualizamos
             $studentinscription->value=$value;
             $studentinscription->type=$this->inputType;
             $studentinscription->name=$this->inscription->id;
@@ -98,6 +104,7 @@ class InscriptionAdmin extends Component
                 'type' => $this->inputType,
                 'value' => $value,
             ]);
+            $this->inscriptionValues[$key]=$value;    
         }
         $this->inscriptionUpdated[$key]=$value;
         $this->emit('toast','📀'.$value,'info');

@@ -70,19 +70,25 @@ class InscriptionStudent extends Component
         // Seteo el valor del InputType Default
         $this->inputType=\App\Models\Studentinscription::
             where('user_id', $this->adminID)->
-            where('subject_id',$subjects[0]->id)->first()->type ?? 'bool';
+            where('subject_id',$subjects[0]->id)->first()->type ?? 'csv-1';
         // Seteo arrays de trabajo
         $this->inscriptionValues=DB::table('subjects')
           ->join('studentinscriptions', 'subjects.id', '=', 'studentinscriptions.subject_id')
           ->where('studentinscriptions.user_id', $this->adminID)
-          ->where('studentinscriptions.type', $this->inputType)
+          ->where('studentinscriptions.name', $this->inscription->id)
           ->where('subjects.career_id', $this->career)
           ->select('subjects.id', 'studentinscriptions.value')
           ->pluck('value', 'id');
+        // Seteamos los valores por defecto si no existen
+        foreach ($subjects as $subject) {
+            if(!isset($this->inscriptionValues[$subject->id])){
+                $this->inscriptionValues[$subject->id]=null;
+            }
+        }
         $this->inscriptionStudent=DB::table('subjects')
           ->join('studentinscriptions', 'subjects.id', '=', 'studentinscriptions.subject_id')
           ->where('studentinscriptions.user_id', $this->studentID)
-          ->where('studentinscriptions.type', $this->inputType)
+          ->where('studentinscriptions.name', $this->inscription->ID)
           ->where('subjects.career_id', $this->career)
           ->select('subjects.id', 'studentinscriptions.value')
           ->pluck('value', 'id');
