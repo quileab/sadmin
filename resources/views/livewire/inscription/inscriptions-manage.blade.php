@@ -2,29 +2,45 @@
   <div class="bg-gray-300 rounded-md shadow-md overflow-hidden max-w-6xl mx-auto">
     {{-- table that displays inscript lastname, firstname and career --}}
     <div class="w-full d2c px-4 py-3 text-white flex justify-between">
-      <h1>Inscriptos</h1>
+      <h1 class="py-1">Inscriptos</h1>
+      @if($selectedCount>0)
+      <button class="flex rounded-md bg-gray-800 text-gray-200 hover:bg-cool-gray-700 px-3 py-1 shadow-md"
+        wire:click="deleteSelected"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+      </svg>&nbsp;<small>Eliminar {{ $selectedCount }}</small></button>
+      @endif
     </div>
 
       <table class="table-auto w-full bg-gray-200">
         <thead class="bg-gray-800 text-white">
           <tr>
+            <th class="px-4 py-2">PDF</th>
             <th class="px-4 py-2">Apellido y Nombre</th>
             <th class="px-4 py-2">Carrera</th>
             <th class="px-4 py-2">Inscripto a</th>
-            <th class="px-4 py-2">PDF</th>
           </tr>
         </thead>
         <tbody>
-          @foreach ($inscripts as $inscript)
-            <tr>
-              <td class="border px-4 py-2">{{ $inscript['user']->lastname ?? '' }}, {{ $inscript['user']->firstname ?? '' }}
-              </td>
-              <td class="border px-4 py-2">{{ $inscript['career']->name }}</td>
-              <td class="border px-4 py-2">{{ $inscript['inscription'] }}</td>
-              <td class="border px-4 py-2">
+          @foreach ($inscripts as $key=>$inscript)
+
+            <tr @class(['bg-blue-200'=>($inscript['checked'])])>
+              <td class="border px-4 py-2 flex justify-between">
+                <button wire:click='fileSelect({{$key}})'>
+                @if ($inscript['checked'])
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 inline-flex" fill="currentColor" class="bi bi-check2-square" viewBox="0 0 16 16">
+                    <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
+                    <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+                  </svg>
+                @else
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 inline-flex" fill="currentColor" class="bi bi-square" viewBox="0 0 16 16">
+                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                  </svg>
+                @endif
+                </button>
+                &nbsp;
                 <a href="{{ $inscript['pdflink'] }}" target="_blank" class="text-red-700">
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" height="16" fill="currentColor"
-                    class="bi bi-file-earmark-pdf" viewBox="0 0 16 16">
+                    class="bi bi-file-earmark-pdf inline-flex" viewBox="0 0 16 16">
                     <path
                       d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
                     <path
@@ -32,6 +48,9 @@
                   </svg>
                 </a>
               </td>
+              <td class="border px-4 py-2">{{ $inscript['user'] ?? '' }}</td>
+              <td class="border px-4 py-2">{{ $inscript['career'] ?? '' }}</td>
+              <td class="border px-4 py-2">{{ $inscript['inscription'] ?? '' }}</td>
             </tr>
           @endforeach
         </tbody>

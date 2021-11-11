@@ -11,9 +11,10 @@ use App\Http\Controllers\PrivateFilesController;
 use App\Http\Controllers\PrintInscriptionsController;
 
 Route::get('/', function () {
-    $info=\App\Models\Config::find('shortname')->value.
-      ' '.\App\Models\Config::find('longname')->value;
-    return view('welcome',compact('info'));
+    // $info=\App\Models\Config::find('shortname')->value.
+    //   ' '.\App\Models\Config::find('longname')->value;
+    //return view('welcome',compact('info'));
+    return redirect()->route('login');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {

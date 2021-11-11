@@ -10,6 +10,7 @@ class InscriptionsManage extends Component
     public $files=[];
     public $inscripts=[];
     public $inscripts_id;
+    public $selectedCount=0;
 
     public function mount()
     {
@@ -20,17 +21,50 @@ class InscriptionsManage extends Component
             $user_id = explode('-', $this->files[$key])[1];
             $career_id = explode('-', $this->files[$key])[2];
             $config_incription_id = explode('-', $this->files[$key])[3];
-            $this->inscripts[$key]['filename'] = $this->files[$key];
-            $this->inscripts[$key]['user'] = \App\Models\User::find($user_id);
-            $this->inscripts[$key]['career'] = \App\Models\Career::find($career_id);
+            $user=\App\Models\User::find($user_id);
+            if ($user!=null) {
+                $username=$user->lastname.', '.$user->firstname;
+                //dd($user);
+            }else{
+                $username='No encontrado';
+                //dd($user, $key);
+            }
+            $this->careers=\App\Models\Career::all();
+            $career=\App\Models\Career::find($career_id)->name;
+            $this->inscripts[$key]['filename'] = $file;
+            $this->inscripts[$key]['user'] = $username;
+            $this->inscripts[$key]['career'] = $career;
             $this->inscripts[$key]['inscription'] = $config_incription_id;//\App\Models\Config::find($config_incription_id);
             $this->inscripts[$key]['pdflink'] = $this->files[$key];
+            $this->inscripts[$key]['checked'] = false;
         }
         //dd(array_multisort($this->inscripts, array('career'=>SORT_ASC)));
     }
 
     public function render(){
         $inscripts=$this->inscripts;
-        return view('livewire.inscription.inscriptions-manage',compact('inscripts'));
+        $careers=$this->careers;
+        return view('livewire.inscription.inscriptions-manage',compact('inscripts','careers'));
     }
+
+    public function fileSelect($key){
+        $this->inscripts[$key]['checked'] = !$this->inscripts[$key]['checked'];
+        $this->selectedCount = array_reduce($this->inscripts, function ($carry, $item) {
+            return $carry + ($item['checked'] ? 1 : 0);
+        }, 0);
+    }
+
+    public function deleteSelected(){
+        foreach ($this->inscripts as $key => $inscript) {
+            if ($inscript['checked']) {
+                Storage::delete($inscript['filename']);
+                unset($this->inscripts[$key]);
+            }
+        }
+        $this->inscripts = array_values($this->inscripts);
+        $this->selectedCount = 0;
+    }
+
+      
+
 }

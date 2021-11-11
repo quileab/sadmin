@@ -1,3 +1,4 @@
+ {{-- Data came from web route --}}
 <x-app-layout>
     <x-slot name="header">
         <h2 class="leading-tight">
