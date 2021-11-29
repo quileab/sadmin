@@ -16,7 +16,7 @@ class InscriptionsManage extends Component
     public function mount()
     {
         $this->files = Storage::files('private/inscriptions');
-        
+        //dd($this->files);
         foreach ($this->files as $key => $file) {
             $this->files[$key] = str_replace('private/inscriptions/', 'files/private/', $file);
             $user_id = explode('-', $this->files[$key])[1];
@@ -39,7 +39,8 @@ class InscriptionsManage extends Component
             $this->inscripts[$key]['pdflink'] = $this->files[$key];
             $this->inscripts[$key]['checked'] = false;
         }
-        //dd(array_multisort($this->inscripts, array('career'=>SORT_ASC)));
+        // convertir en collection y ordenar por carrera y usuario
+        $this->inscripts=collect($this->inscripts)->sortBy(['career','user']);
     }
 
     public function render(){

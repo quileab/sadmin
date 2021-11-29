@@ -2,7 +2,7 @@
   <div class="bg-gray-300 rounded-md shadow-md overflow-hidden max-w-6xl mx-auto">
     {{-- table that displays inscript lastname, firstname and career --}}
     <div class="w-full d2c px-4 py-3 text-white flex justify-between">
-      <h1 class="py-1">Inscriptos</h1>
+      <h1 class="py-1">Inscriptos » <small>{{ count($inscripts) ?? '0' }}</small></h1>
       @if($selectedCount>0)
       <button class="flex rounded-md bg-gray-800 text-gray-200 hover:bg-cool-gray-700 px-3 py-1 shadow-md"
         wire:click="deleteSelected"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
