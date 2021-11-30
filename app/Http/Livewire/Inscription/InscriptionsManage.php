@@ -41,6 +41,8 @@ class InscriptionsManage extends Component
         }
         // convertir en collection y ordenar por carrera y usuario
         $this->inscripts=collect($this->inscripts)->sortBy(['career','user']);
+        // return to array
+        $this->inscripts=$this->inscripts->toArray();
     }
 
     public function render(){
