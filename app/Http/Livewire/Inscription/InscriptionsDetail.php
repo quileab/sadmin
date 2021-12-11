@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Inscription;
 
+use App\Models\Studentinscription;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 
@@ -66,6 +67,33 @@ class InscriptionsDetail extends Component
         ->orderBy('users.lastname')
         ->orderBy('users.firstname')
         ->get();
+    }
+
+    public function borrarRegistros(){
+        $admin_ID=\App\Models\User::where('name','admin')->first()->id;
+        $career_id=$this->career_id;
+        $subject_id=$this->subject_id;
+
+        DB::table('studentinscriptions')
+        ->select('studentinscriptions.user_id',
+            'studentinscriptions.name as inscription',
+            'studentinscriptions.value',
+            'studentinscriptions.subject_id',
+            'subjects.name as subject_name')
+        ->join('subjects','subjects.id','=','studentinscriptions.subject_id')
+        ->where('user_id','!=',$admin_ID)
+        ->when(!empty($this->inscription_id), function($query){
+            return $query->where('studentinscriptions.name',$this->inscription_id);
+            })
+        ->when(!empty($career_id), function($query){
+            return $query->where('career_id', $this->career_id);
+            })
+        ->when(!empty($subject_id), function($query){
+            return $query->where('subject_id', $this->subject_id);
+            })
+        ->delete();
+
+        $this->detail=[];
     }
 
 }
