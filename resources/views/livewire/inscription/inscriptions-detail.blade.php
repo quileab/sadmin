@@ -32,10 +32,17 @@
           @endforeach
         </select>
       </div>
-      <div class="h-full mt-auto ml-2 mb-1">
+      <div class="h-full mt-auto ml-2 mb-1 flex">
         <x-jet-button wire:click="buscarFiltros" wire:loading.attr="disabled">
           Buscar
         </x-jet-button>
+        @if (count($detail) > 0)
+          &nbsp;<x-jet-button wire:click="borrarRegistros" wire:loading.attr="disabled">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="red">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>{{ count($detail) ?? 0 }}
+          </x-jet-button>
+        @endif
       </div>
     </div>
 
