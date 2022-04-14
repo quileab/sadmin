@@ -44,11 +44,13 @@ class StudentController extends Controller
             } catch (\Illuminate\Database\QueryException $exception) {
                 // Just Continue
                 //$this->errorInfo = $this->errorInfo.$exception->errorInfo;
+                $user=null;
             }
-            // Asignar Role al Usuario
-            $user->assignRole($request->role);
-            // Asignar Carrera al Usuario
-            $user->careers()->attach($row['career']);
+            // Assign Role & Career to User
+            if ($user){
+                $user->assignRole($request->role);
+                $user->careers()->attach($row['career']);
+            }
         }
         return redirect()->route('students')->with('success','Importación Exitosa');
     }

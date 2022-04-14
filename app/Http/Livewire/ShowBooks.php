@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
 use App\Models\Book;
+use Livewire\Component;
 use Livewire\WithPagination;
 
 class ShowBooks extends Component
@@ -63,17 +63,27 @@ class ShowBooks extends Component
 
     public function render()
     {
-        //$books=book::all();
-        if ($this->readyToLoad)
-        {
-        $books=Book::where('title','like','%'.$this->search."%")
-            ->orwhere('synopsis','like','%'.$this->search."%")
-            ->orwhere('author','like','%'.$this->search."%")
-            ->orderBy($this->sort, $this->direction)
-            ->paginate($this->cant);
+        if ($this->readyToLoad){
+            //$this->search='ladr sanch';
+            $searchValues = preg_split('/\s+/', $this->search, -1, PREG_SPLIT_NO_EMPTY);
+            $books=Book::where(function($query) use ($searchValues){
+                    foreach ($searchValues as $srch) {
+                        $query->whereRaw(\Illuminate\Support\Facades\DB::raw('CONCAT(title,author,synopsis) LIKE "%'.$srch.'%"'));
+                    }
+                })
+                ->orderBy($this->sort,$this->direction)->paginate($this->cant);
         } else {
             $books=[];
-        }      
+        }
+
+        // $books=Book::where('title','like','%'.$this->search."%")
+        //     ->orwhere('synopsis','like','%'.$this->search."%")
+        //     ->orwhere('author','like','%'.$this->search."%")
+        //     ->orderBy($this->sort, $this->direction)
+        //     ->paginate($this->cant);
+        // } else {
+        //     $books=[];
+        // }      
         return view('livewire.show-books', compact('books'));
         // si quiero que utilice una plantilla diferente a app.blade.php -> name.blade.php
         // return view('livewire.show-books')->layout('layouts.name');

@@ -9,6 +9,8 @@ class Book extends Model
 {
     use HasFactory;
 
+    protected $appends = ['full_search'];
+
     protected $fillable = [
         'id', 'uid', 'title', 'publisher', 'author',
         'gender', 'extent', 'edition', 'isbn',
@@ -17,11 +19,18 @@ class Book extends Model
         'discharge_reason', 'synopsis', 'note', 'user_id'
     ];
 
+
     public function user(){
         /** Metodo Largo */
         // $user=User::find($this->user_id);
         // return $user;
         /*** Metodo Corto */
         return $this->belongsTo('App\Models\User');
+    }
+
+    public function getFullSearchAttribute(){
+        return $this->title . '|' . $this->author. '|' 
+            .$this->publisher. '|' . $this->gender .'|'
+            .$this->synopsis;
     }
 }
