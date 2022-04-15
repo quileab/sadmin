@@ -16,9 +16,13 @@ Route::get('/', function () {
     //return view('welcome',compact('info'));
     return redirect()->route('login');
 });
+Route::get('/register', function () {
+    return redirect()->route('login');
+});
+
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-
+    
     Route::get('/dashboard', function () {
         // get first record from config table
         $temp = new NumberFormatter("es", NumberFormatter::SPELLOUT);
