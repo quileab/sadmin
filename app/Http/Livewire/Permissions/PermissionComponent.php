@@ -68,21 +68,35 @@ class PermissionComponent extends Component
     public function createRole(){
         //dd($this->newrole);
         // check if $this->newrole exists in Roles table
-        $role=Role::where('name',$this->newrole)->first();
-        if (!$role) {
-            $role=Role::create(['name'=>$this->newrole]);
-            $this->newrole='';
-            $this->emit('toast','Registro Guardado','success');
-        } else{
-            $this->emit('toast','Rol existente','warning');
-        }
+        $this->validate(['newrole'=>['required','unique:roles,name']]);
+        // create new role with guard_name=web
+        $role=Role::create(['name'=>$this->newrole,'guard_name'=>'web']);
+        $this->newrole='';
+        $this->emit('toast','Registro Guardado','success');
+
+
+        // $role=Role::where('name',$this->newrole)->first();
+        // if (!$role) {
+        //     $role=Role::create(['name'=>$this->newrole]);
+        //     $this->newrole='';
+        //     $this->emit('toast','Registro Guardado','success');
+        // } else{
+        //     $this->emit('toast','Rol existente','warning');
+        // }
     }
 
     public function createPermission(){
         // check if $this->newpermission exists in Permissions table
         $permission=Permission::where('name', $this->newpermission)->first();
         if (!$permission) {
-            $permission=Permission::create(['name'=>$this->newpermission]);
+            // permission with guard_name=web
+            $permission=Permission::create(['name'=>$this->newpermission,'guard_name'=>'web']);
+            //assign permission to role
+            $role=Role::find($this->selectedrole);
+            if ($role) {
+                $role->givePermissionTo($permission);
+                $this->emit('toast','Registro Guardado','success');
+            }
             $this->newpermission='';
             $this->emit('toast', 'Registro Guardado', 'success');
         } else {

@@ -187,50 +187,38 @@
                 </div>
               </td>
 
-              <td class="px-6 py-1 flex justify-between text-sm font-medium">
+              <td class="mt-1 text-sm">
+                <div class="inline-flex rounded-lg overflow-hidden">
                 {{-- <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a> --}}
-                <button wire:click="edit('{{ $student->id }}')" class="bg-blue-600 text-white px-3 py-2 rounded-md">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                  </svg>
+                <button wire:click="edit('{{ $student->id }}')" class="bg-blue-600 text-white px-3 py-2">
+                  <x-svg.edit class="h-6 w-6" />
                 </button>
                 {{-- Add/Edit Materias --}}
                 @if (count($student->careers))
                   <a href='grades/{{ $student->id }}'>
-                    <button class="bg-indigo-600 text-white px-3 py-2 rounded-md">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-                      </svg>
+                    <button class="bg-indigo-600 text-white px-3 py-2">
+                      <x-svg.academicCap class="h-7 w-7" />
                     </button>
                   </a>
                 @else
-                  <button class="bg-indigo-600 text-white px-3 rounded-md opacity-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                      <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-                    </svg>
-                </button>
+                  <button class="bg-indigo-600 text-white px-3 opacity-50">
+                    <x-svg.academicCap class="h-7 w-7" />
+                  </button>
                 @endif
                 <a href='userpayments/{{ $student->id }}'>
-                <button class="bg-green-600 text-white px-3 py-2 rounded-md">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                <button class="bg-green-600 text-white px-3 py-2">
+                  <x-svg.dolarRound class="h-7 w-7" />
                 </button>
                 </a>
-                <button class="bg-yellow-600 text-white px-3 py-2 rounded-md"
+                <button class="bg-yellow-600 text-white px-3 py-2"
                   wire:click="$emit('setBookmark','{{ $student->id }}')">
                   <x-svg.bookmarkPlus class="h-6 w-6" />
                 </button>
-                <button class="bg-red-600 text-white px-3 py-2 rounded-md"
+                <button class="bg-red-600 text-white px-3 py-2 ml-1"
                   wire:click="$emit('confirmDelete','{{ $student->lastname }}, {{ $student->firstname }}','{{ $student->id }}','delete')">
                   <x-svg.trash class="h-6 w-6" />
                 </button>
+                </div>
               </td>
             </tr>
           @endforeach
