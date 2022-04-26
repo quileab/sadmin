@@ -87,6 +87,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Books');
     }
 
+    public function subjects(){
+        return $this->belongsToMany(Subject::class);
+    }
+
     public function payments(){
         return $this->hasMany('App\Models\UserPayments');
     }

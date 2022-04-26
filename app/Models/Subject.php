@@ -15,6 +15,10 @@ class Subject extends Model
         return $this->belongsTo('App\Models\Career');
     }
 
+    public function users(){
+        return $this->belongsToMany(User::class);
+    }
+
     public function grades(){
         return $this->hasMany(Grade::class);
     }
