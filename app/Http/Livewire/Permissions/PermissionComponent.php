@@ -66,23 +66,12 @@ class PermissionComponent extends Component
     }    
 
     public function createRole(){
-        //dd($this->newrole);
         // check if $this->newrole exists in Roles table
         $this->validate(['newrole'=>['required','unique:roles,name']]);
         // create new role with guard_name=web
         $role=Role::create(['name'=>$this->newrole,'guard_name'=>'web']);
         $this->newrole='';
         $this->emit('toast','Registro Guardado','success');
-
-
-        // $role=Role::where('name',$this->newrole)->first();
-        // if (!$role) {
-        //     $role=Role::create(['name'=>$this->newrole]);
-        //     $this->newrole='';
-        //     $this->emit('toast','Registro Guardado','success');
-        // } else{
-        //     $this->emit('toast','Rol existente','warning');
-        // }
     }
 
     public function createPermission(){

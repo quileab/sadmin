@@ -20,7 +20,6 @@ Route::get('/register', function () {
     return redirect()->route('login');
 });
 
-
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     
     Route::get('/dashboard', function () {
