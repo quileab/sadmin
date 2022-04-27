@@ -147,5 +147,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/inscriptionsPDF/{student}/{career}/{inscription}', [PrintInscriptionsController::class,'index'])->name('inscriptionsPDF');
     Route::get('/inscriptionsSavePDF/{student}/{career}/{inscription}', [PrintInscriptionsController::class,'savePDF'])->name('inscriptionsSavePDF');
+
+    //route to TeacherSubjects
+    Route::get('/teachersubjects', \App\Http\Livewire\TeacherSubjects::class)->name('teachersubjects');
         
 });
