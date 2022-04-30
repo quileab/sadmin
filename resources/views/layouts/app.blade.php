@@ -19,6 +19,12 @@ $nav_links = [
       'permission'=>'menu.careers',
     ],
     [
+      'name' => 'Profesores-Materias',
+      'route' => route('teachersubjects'),
+      'active' => request()->routeIs('teachersubjects'),
+      'permission'=>'menu.teachersubjects',
+    ],
+    [
       'name' => 'Inscripciones',
       'route' => route('studentsinsc'),
       'active' => request()->routeIs('studentsinsc'),
