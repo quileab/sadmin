@@ -10,6 +10,7 @@ class TeacherSubjects extends Component
     public $career;
     public $careers;
     public $user;
+    public $selected_subjects=[];
 
     //rules for validation
     public $rules = [
@@ -31,30 +32,21 @@ class TeacherSubjects extends Component
         $this->career = $this->careers->first();
         //get all subjects from subjects table where career_id is equal to career id
         $this->subjects = \App\Models\Subject::where('career_id', $this->career->id)->pluck('name','id')->toArray();
-
-        //dd($this->career, $this->user, $this->careers, $this->subjects);
     }
 
     public function render()
     {
-        $user_subjects = $this->user->subjects->pluck('name','id')->toArray();
-        //remove from subjects items already in user_subjects
-        $selected_subjects=[];
+        $user_subjects = $this->user->subjects->pluck('name','id')->toArray();        //remove from subjects items already in user_subjects
+        $this->selected_subjects=[];
         foreach ($this->subjects as $key=>$subject) {
             //add attibute "disabled" to each selected_subject if it is already in user_subjects
             if (in_array($subject, $user_subjects)) {
-                $selected_subjects[$key] = true;
+                $this->selected_subjects[$key] = true;
             }else{
-                $selected_subjects[$key] = false;
+                $this->selected_subjects[$key] = false;
             }
         }
-
-        // dd($career, $user, $careers, $subjects, $user_subjects);
-        // if ($this->career == '300') {
-        //     dd($this->subjects, $user_subjects, $selected_subjects);
-        // }
-        //dd($career, $user, $careers, $subjects);
-        return view('livewire.teacher-subjects', compact('selected_subjects'));
+        return view('livewire.teacher-subjects');
     }
 
     // on career change get subjects from subjects table where career_id is equal to career id
@@ -63,4 +55,21 @@ class TeacherSubjects extends Component
         $this->subjects = \App\Models\Subject::where('career_id', $career)->pluck('name','id')->toArray();
         //$this->render();
     }
+
+    public function toggleSubject($key)
+    {
+        //switch $selected_subjects[$key] value to opposite
+        $this->selected_subjects[$key] = !$this->selected_subjects[$key];
+
+        //set user_subjects table value to 1 if subject is selected
+        if ($this->selected_subjects[$key]) {
+            $this->user->subjects()->attach($key);
+        } else {
+            $this->user->subjects()->detach($key);
+        }
+
+        $this->emit('toast','Subjects updated','success');
+        $this->render();
+    }
+
 }
