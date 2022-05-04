@@ -33,28 +33,22 @@
           {{-- Approved --}}
           <x-jet-label value="Aprobado" />
           <input type="checkbox" value="@if ($approved) 0 @else 1 @endif" wire:model.lazy="approved"
-          class="border-4 focus:border-gray-700 form-checkbox mt-1 h-9 w-9 text-green-600">
+          class="rounded-sm border-4 focus:border-gray-700 form-checkbox mt-1 h-9 w-9">
           <x-jet-input-error for="approved" />
         </div>
         
         <div class="w-full mt-6 text-right">
         @if ($edittingGrade)
         <x-jet-button color="indigo" wire:click="updateGrade">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>&nbsp;Corregir
+          <x-svg.edit />&nbsp;Corregir
         </x-jet-button>
         <x-jet-button wire:click="cancelEditGrades" class="ml-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>&nbsp;Cancelar
+          <x-svg.trash />&nbsp;Cancelar
         </x-jet-button>
 
         @else
           <x-jet-button wire:click="addGrade">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>&nbsp;Agregar
+            <x-svg.plusCircle />&nbsp;Agregar
           </x-jet-button>
         @endif
         </div>
@@ -65,7 +59,7 @@
       <div class="mx-6 px-0">
       <x-table>
         <table class="w-full divide-y divide-gray-200">
-          <thead class="text-gray-100 bg-cool-gray-700">
+          <thead class="text-gray-100 bg-gray-700">
             <tr>
               <th class="py-2" scope="col">Fecha</th>
               <th scope="col">Descripción</th>
@@ -90,19 +84,11 @@
                 <td class="w-28 bg-gray-100 px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   {{-- Edit --}}
                   <button wire:click="editGrade('{{ $grade->date_id }}')" class="mr-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                      stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
+                    <x-svg.edit class="h-5 w-5 text-gray-700" />
                   </button>
                   {{-- Delete --}}
                   <button wire:click="$emit('confirmDelete','{{$grade->date_id}}, {{ $grade->name }}','{{ $grade->date_id }}','deleteGrade')">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                    stroke="red">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                  </svg>
+                    <x-svg.trash class="h-5 w-5 text-red-700" />
                   </button>
                 </td>
               </tr>
@@ -153,7 +139,7 @@
       </div>
 
       <table class="min-w-full divide-y divide-gray-200">
-        <thead class="text-gray-100 bg-cool-gray-700">
+        <thead class="text-gray-50 bg-gray-800">
           <tr>
             <th scope="col">ID</th>
             <th scope="col">Materia</th>
@@ -169,13 +155,9 @@
               <td class="px-6 py-1">
                 {{ $subject->name }}
               </td>
-              <td class="w-28 bg-gray-100 px-6 py-1 whitespace-nowrap text-right text-sm font-medium">
+              <td class="w-28 bg-gray-100 px-6 py-1 whitespace-nowrap text-right text-sm font-medium">                
                 <x-jet-button wire:click="setGrades('{{ $subject->id }}','{{ $subject->name }}')">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
-                  </svg>
-
+                  <x-svg.edit />
                 </x-jet-button>
               </td>
             </tr>

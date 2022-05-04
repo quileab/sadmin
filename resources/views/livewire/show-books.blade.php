@@ -149,7 +149,7 @@
         @endhasanyrole
       </div>
       <table class="min-w-full divide-y divide-gray-200">
-        <thead class="text-gray-100 bg-cool-gray-700">
+        <thead class="text-gray-100 bg-gray-700">
           <tr>
             <th scope="col" class="cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
               wire:click="order('id')">

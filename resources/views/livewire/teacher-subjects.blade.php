@@ -15,13 +15,16 @@
 
     <div class="p-2 flex flex-wrap">
     @foreach ($subjects as $key => $subject)
-      <div class="flex w-80 rounded shadow-md shadow-gray-600 bg-gray-50 m-2 overflow-hidden">
-        <div class="p-2 w-1/4 {{ $selected_subjects[$key] ==  true ? 'bg-green-600' : 'bg-gray-700'  }} text-white">
+      <div class="flex w-80 rounded shadow-lg shadow-gray-600 bg-gray-50 m-2 overflow-hidden">
+        <div class="p-2 w-1/4 {{ $selected_subjects[$key] ==  true ? 'bg-green-600' : 'bg-gray-700'  }} text-white text-center">
           {{ $key }}<hr />
           {{-- button on/off --}}
-          <button wire:click="toggleSubject({{ $key }})"
-            class="text-sm">
-            {{ $selected_subjects[$key] ==  true ? 'Desactivar' : 'Activar' }}
+          <button wire:click="toggleSubject({{ $key }})">
+          @if($selected_subjects[$key])
+            <x-svg.switchRight class="h-7 w-7" />
+          @else
+            <x-svg.switchLeft class="h-7 w-7" />
+          @endif
           </button>
 
         </div>

@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\User;
 use App\Models\Grade;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class GradesComponent extends Component
@@ -40,13 +41,11 @@ class GradesComponent extends Component
         ];
 
     // toma el valor enviado desde el Router (web.php) // livewire no utiliza __construct
-    public function mount($id)
-    {
+    public function mount($id){
         $this->uid = $id;
     }
 
-    public function render()
-    {
+    public function render(){
         $careers = [];
         $subjects = [];
         if ($this->readyToLoad) {
@@ -61,30 +60,27 @@ class GradesComponent extends Component
                 if ($this->selectedCareer == 0) {
                     $this->selectedCareer = $careers[0]->id;
                 }
+                // subjects pertenecientes al USER
+                $loggedUser = \App\Models\User::find(Auth::user()->id);//->subjects()->get();
                 // load User -> Career -> Subjects
-                $subjects = $user->careers()->find($this->selectedCareer)->subjects()->get();
+                $subjects = $user->careers()->find($this->selectedCareer)->subjects()->
+                  //filter subjects existing in logged user subjects
+                  whereIn('id', $loggedUser->subjects()->pluck('id'))->get();
             } else {
                 $careers = [];
                 $subjects = [];
                 $this->emit('toast', 'No se encuentran Carreras', 'error');
             }
-            // Si el Modal se abre cargo las notas
-            if ($this->openModal == true) {
-                $this->grades = Grade::where('user_id', $this->uid)
-                    ->where('subject_id', $this->subjID)
-                    ->get();
-            }
+
         }
         return view('livewire.grades-component', compact('careers', 'subjects'));
     }
 
-    public function loadData()
-    {
-        $this->readyToLoad = true;
+    public function loadData(){
+      $this->readyToLoad = true;
     }
 
-    public function addGrade()
-    {
+    public function addGrade(){
         $this->validate();
         Grade::create([
             'user_id' => $this->uid,
@@ -96,6 +92,14 @@ class GradesComponent extends Component
         ]);
         $this->reset(['date','name','grade','approved']);
         $this->emit('toast', 'Registro Guardado', 'success');
+
+        // cargo las notas
+        $this->grades = $this->loadGrades($this->uid,$this->subjID);
+    }
+
+    public function loadGrades($userId,$subjectId)
+    {
+        return Grade::where('user_id',$userId)->where('subject_id',$subjectId)->get();
     }
 
     public function setGrades($subjID, $subjName)
@@ -104,6 +108,9 @@ class GradesComponent extends Component
         $this->subjID = $subjID;
         $this->subjName = $subjName;
         $this->approved = false;
+
+        // cargo las notas
+        $this->grades = $this->loadGrades($this->uid,$subjID);
 
         $this->openModal = true;
     }
@@ -114,6 +121,8 @@ class GradesComponent extends Component
         $this->date=date('Y-m-d');
         //$this->openModal = false;
         $this->edittingGrade=false;
+        // cargo las notas
+        $this->grades = $this->loadGrades($this->uid,$this->subjID);        
     }
 
     public function editGrade($date_id){
@@ -147,6 +156,9 @@ class GradesComponent extends Component
         $this->reset(['date','name','grade','approved']);
         $this->edittingGrade=false;
         $this->emit('toast','Actualizado correctamente','success');
+        // cargo las notas
+        $this->grades = $this->loadGrades($this->uid,$this->subjID);
+
     }
 
     public function deleteGrade($date_id){
@@ -157,5 +169,8 @@ class GradesComponent extends Component
             ->first(); // first() return model
         $grade->delete();
         $this->emit('toast','Registro eliminado','error');
+        // cargo las notas
+        $this->grades = $this->loadGrades($this->uid,$this->subjID);
+
     }
 }
