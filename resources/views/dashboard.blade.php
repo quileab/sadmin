@@ -108,6 +108,11 @@
                       <div class="ml-12">
                         <div class="mt-2 text-sm text-gray-500">
                           🗒✏
+                          <p>
+                            <x-svg.gear class="inline-block h-4 w-4 text-gray-400" />
+                          {{ app()->version() }} | {{ env('APP_ENV') }} | {{ env('APP_DEBUG') }} | 
+                          {{ phpversion()}}
+                          </p>
                         </div>
                       </div>
                     </div>

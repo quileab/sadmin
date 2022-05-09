@@ -12,6 +12,12 @@ use Livewire\WithPagination;
 class StudentsComponent extends Component
 {
     use WithPagination;
+
+    // display
+    public $careers=[];
+    public $careerSelected;
+    public $roles=[];
+    public $roleSelected;
     // record
     public $uid, $pid, $name, $lastname, $firstname;
     public $phone, $email, $enabled, $career_id;
@@ -50,30 +56,74 @@ class StudentsComponent extends Component
         // 'career_id'
     ];
 
+    public function mount()
+    {
+        $this->careers = Career::all();
+        $this->careerSelected = $this->careers[0]->id;
+
+        if($this->career_id==null){
+            $this->career_id=$this->careers[0]->id;
+        }
+
+        // get all roles
+        $this->roles = \Spatie\Permission\Models\Role::all();
+        $this->roleSelected = 3;
+    }
+
     public function render()
     {
-        $careers=[];
         if ($this->readyToLoad)
         {
-        $students=User::where('pid','=',$this->search)->
-            orwhere('lastname','like','%'.$this->search."%")->
-            orwhere('firstname','like','%'.$this->search."%")->
-            orderBy('lastname', $this->direction)->
-            paginate($this->cant);
 
-            $careers=Career::all();
-            if($this->career_id==null){
-                $this->career_id=$careers[0]->id;
+            // $this->search="daniel";
+            // $this->roleSelected = 3;
+            // $this->careerSelected = 100;
+
+          // regex clean $search to only letters, numbers and spaces
+          $this->search = preg_replace('/[^A-Za-z0-9 ]/', '', $this->search);
+          if ($this->search=='') {
+            return view('livewire.students-component', [
+              'students' => User::where('role_id', $this->roleSelected)]);
+          }
+
+          //users where lastname like '%$this->search%' and intersect role_id=$this->roleSelected and career_id=$this->careerSelected
+          $students = User::where('id','like','%'.$this->search.'%')
+            ->orwhere('lastname','like','%'.$this->search."%")
+            ->orwhere('firstname','like','%'.$this->search."%")
+            ->whereHas('roles', function($q) {
+                $q->where('id', $this->roleSelected);
+              });
+            if($this->roleSelected==3){
+                $students->whereHas('careers', function($q) {
+                $q->where('id', $this->careerSelected);
+              });
             }
+            $students=$students->orderBy('lastname', $this->direction)
+            ->paginate($this->cant);
         }
         else {
-            $students=[];
+            $students=User::whereHas('roles', function($q) {
+                $q->where('id', $this->roleSelected);
+              })->orderBy('lastname', $this->direction)->paginate($this->cant);
         }
-        return view('livewire.students-component',compact('students','careers'));
+        
+        // dd($students);
+
+
+        return view('livewire.students-component',compact('students'));
     }
 
     public function loadData(){
         $this->readyToLoad=true;
+    }
+
+    public function updatedCareerSelected()
+    {
+        $this->render();
+    }
+    public function updatedRoleSelected()
+    {
+        $this->render();
     }
 
     public function updatingSearch(){ // livewire hook - cuando cambie la variable $search

@@ -36,7 +36,6 @@ class TeacherSubjects extends Component
 
     public function render()
     {
-
         return view('livewire.teacher-subjects');
     }
 

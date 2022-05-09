@@ -108,21 +108,39 @@
   </x-jet-dialog-modal>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- This example requires Tailwind CSS v2.0+ -->
     <x-table>
-      <div class="px-4 py-2 flex items-center d2c">
+      <div class="px-4 py-1 flex items-center d2c">
         <div class="flex item center">
           <span class="mt-3">Mostrar&nbsp;</span>
           <select wire:model="cant"
-            class="mr-4 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+            class="mr-2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
         </div>
+        {{-- SEARCH --}}
+        <x-jet-input class="flex-1 mr-2" type="search" placeholder="Ingrese su búsqueda aquí" wire:model.lazy="search" />
 
-        <x-jet-input class="flex-1 mr-4" type="search" placeholder="Ingrese su búsqueda aquí" wire:model="search" />
+        {{-- select career --}}
+        <div class="inline text-sm mr-2">
+        <select wire:model="careerSelected" name="careerSelected" id="careerSelected" 
+          class="truncate w-36 py-1">
+          @foreach ($careers as $career)
+            <option value="{{ $career->id }}">{{ $career->name }}</option>
+          @endforeach
+        </select><br>
+        {{-- select role --}}
+        <select wire:model="roleSelected" name="roleSelected" id="roleSelected"
+          class="truncate w-36 py-1">
+          @foreach ($roles as $role)
+            <option value="{{ $role->id }}">{{ $role->name }}</option>
+          @endforeach
+        </select>
+        </div>
+
+
         <x-jet-button wire:click="create" color="green">Nuevo Ingreso</x-jet-danger-button>
       </div>
       <table class="min-w-full divide-y divide-gray-200">
@@ -225,11 +243,11 @@
           <!-- More items... -->
         </tbody>
       </table>
-      @if (count($students))
+      {{-- @if (count($students)) --}}
         <div class="px-5 py-2 bg-gray-300">
           {{ $students->links() }}
         </div>
-      @endif
+      {{-- @endif --}}
     </x-table>
   </div>
 
