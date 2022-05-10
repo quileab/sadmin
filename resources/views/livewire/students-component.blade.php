@@ -243,11 +243,11 @@
           <!-- More items... -->
         </tbody>
       </table>
-      {{-- @if (count($students)) --}}
+      @if (count($students))
         <div class="px-5 py-2 bg-gray-300">
           {{ $students->links() }}
         </div>
-      {{-- @endif --}}
+      @endif
     </x-table>
   </div>
 

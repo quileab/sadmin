@@ -2,12 +2,13 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
+use Exception;
 use App\Models\User;
 use App\Models\Career;
-use Exception;
-use Illuminate\Support\Facades\Hash;
+use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class StudentsComponent extends Component
 {
@@ -18,6 +19,7 @@ class StudentsComponent extends Component
     public $careerSelected;
     public $roles=[];
     public $roleSelected;
+    public $users=[];
     // record
     public $uid, $pid, $name, $lastname, $firstname;
     public $phone, $email, $enabled, $career_id;
@@ -67,49 +69,44 @@ class StudentsComponent extends Component
 
         // get all roles
         $this->roles = \Spatie\Permission\Models\Role::all();
+        // $this->roleSelected = 3 -> student
         $this->roleSelected = 3;
+
+    }
+
+    public function getSearch()
+    {
+    // get all students with name or lastname like $search and filtered by career_id in career_user table and/or role_id in model_has_role table
+        $users=User::where('id', 'like', '%' . $this->search . '%')
+                ->orWhere('lastname', 'like', '%' . $this->search . '%')
+                ->orWhere('firstname', 'like', '%' . $this->search . '%');
+        
+        if ($this->roleSelected==3) {
+            $users=$users->whereHas('careers', function ($query) {
+                $query->where('career_id', $this->career_id);
+            });
+        } else {
+            $users=$users->whereHas('roles', function ($query) {
+                $query->where('role_id', $this->roleSelected);
+            });
+        }
+        DB::enableQueryLog();
+        $users=$users->paginate($this->cant);
+        dd(DB::getQueryLog());
+
+        return $users;
     }
 
     public function render()
     {
-        if ($this->readyToLoad)
-        {
-
-            // $this->search="daniel";
-            // $this->roleSelected = 3;
-            // $this->careerSelected = 100;
-
+        $students=[];
+        if ($this->readyToLoad) {
           // regex clean $search to only letters, numbers and spaces
-          $this->search = preg_replace('/[^A-Za-z0-9 ]/', '', $this->search);
-          if ($this->search=='') {
-            return view('livewire.students-component', [
-              'students' => User::where('role_id', $this->roleSelected)]);
-          }
-
-          //users where lastname like '%$this->search%' and intersect role_id=$this->roleSelected and career_id=$this->careerSelected
-          $students = User::where('id','like','%'.$this->search.'%')
-            ->orwhere('lastname','like','%'.$this->search."%")
-            ->orwhere('firstname','like','%'.$this->search."%")
-            ->whereHas('roles', function($q) {
-                $q->where('id', $this->roleSelected);
-              });
-            if($this->roleSelected==3){
-                $students->whereHas('careers', function($q) {
-                $q->where('id', $this->careerSelected);
-              });
+            $this->search = preg_replace('/[^A-Za-z0-9 ]/', '', $this->search);
+            if ($this->search!='') {
+                $students = $this->getSearch();            
             }
-            $students=$students->orderBy('lastname', $this->direction)
-            ->paginate($this->cant);
         }
-        else {
-            $students=User::whereHas('roles', function($q) {
-                $q->where('id', $this->roleSelected);
-              })->orderBy('lastname', $this->direction)->paginate($this->cant);
-        }
-        
-        // dd($students);
-
-
         return view('livewire.students-component',compact('students'));
     }
 
@@ -126,11 +123,12 @@ class StudentsComponent extends Component
         $this->render();
     }
 
-    public function updatingSearch(){ // livewire hook - cuando cambie la variable $search
+    public function updatedSearch(){ // livewire hook - cuando cambie la variable $search
         // updating+Variable ---> $variable
         // permite reiniciar el paginado para que
         // funcione correctamente la búsqueda.
-        $this->resetPage(); 
+        $this->resetPage();
+        $this->render();
     }
 
     public function order($sort){
@@ -235,7 +233,7 @@ class StudentsComponent extends Component
     }
 
     public function addCareer(){
-        $text=$this->uid." / ".$this->career_id;
+        // remove: $text=$this->uid." / ".$this->career_id;
 
         $user=User::find($this->uid);
         $hasCareer = $user->careers()->where('id', $this->career_id)->exists();
