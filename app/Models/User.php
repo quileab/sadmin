@@ -99,4 +99,19 @@ class User extends Authenticatable
     public function userCount(){
         return User::where('pid','>','1000000')->count();
     }
+
+    public function getCountByRole(){
+        // return array with key=role and value=count
+        $roles = \Spatie\Permission\Models\Role::all();
+        $users = User::with('roles')->get();
+        $roleless = User::whereDoesntHave('roles')->count();
+        $counts = [];
+        foreach($roles as $role){
+            $counts[$role->name] = $users->filter(function($user) use ($role){
+                return $user->hasRole($role->name);
+            })->count();
+        }
+        $counts['roleless'] = $roleless;
+        return $counts;
+    }
 }

@@ -20,6 +20,7 @@ class StudentsComponent extends Component
     public $roles=[];
     public $roleSelected;
     public $users=[];
+    protected $students;
     // record
     public $uid, $pid, $name, $lastname, $firstname;
     public $phone, $email, $enabled, $career_id;
@@ -34,6 +35,7 @@ class StudentsComponent extends Component
     // TODO: leave just one
     public $formAction = "store";
     public $updating=false;
+    public $debug;
 
     // Listener para los EMIT - Conexión entre PHP-JS
     protected $listeners=['delete','deleteCareer']; 
@@ -64,50 +66,61 @@ class StudentsComponent extends Component
         $this->careerSelected = $this->careers[0]->id;
 
         if($this->career_id==null){
-            $this->career_id=$this->careers[0]->id;
+          $this->career_id=$this->careers[0]->id;
         }
 
         // get all roles
         $this->roles = \Spatie\Permission\Models\Role::all();
         // $this->roleSelected = 3 -> student
         $this->roleSelected = 3;
-
     }
 
     public function getSearch()
     {
-    // get all students with name or lastname like $search and filtered by career_id in career_user table and/or role_id in model_has_role table
-        $users=User::where('id', 'like', '%' . $this->search . '%')
-                ->orWhere('lastname', 'like', '%' . $this->search . '%')
-                ->orWhere('firstname', 'like', '%' . $this->search . '%');
-        
-        if ($this->roleSelected==3) {
-            $users=$users->whereHas('careers', function ($query) {
-                $query->where('career_id', $this->career_id);
-            });
-        } else {
-            $users=$users->whereHas('roles', function ($query) {
-                $query->where('role_id', $this->roleSelected);
-            });
-        }
-        DB::enableQueryLog();
-        $users=$users->paginate($this->cant);
-        dd(DB::getQueryLog());
+        $this->debug=time();
+        $users=[] ;
 
+        // if role=3 get only students filtered by career else get filtered by role
+        if($this->roleSelected==3){
+          $users = User::where('id','like','%'.$this->search.'%')
+                    ->orWhere('lastname','like','%'.$this->search.'%')
+                    ->orWhere('firstname','like','%'.$this->search.'%')
+                    ->whereHas('careers', function($q) {
+                        $q->where('careers.id', $this->careerSelected);
+                    });
+                    $this->debug=$this->debug."Career: ".$this->careerSelected;
+
+        }else{
+            $users = User::where('id','like','%'.$this->search.'%')
+                    ->orWhere('lastname','like','%'.$this->search.'%')
+                    ->orWhere('firstname','like','%'.$this->search.'%')
+                    ->whereHas('roles', function($q) {
+                        $q->where('roles.id', $this->roleSelected);
+                    });
+                    $this->debug=$this->debug."Role: ".$this->roleSelected;
+            }
+
+        //DB::enableQueryLog();
+        $users=$users->paginate($this->cant);
+        //dd(DB::getQueryLog());
+
+        //set debug to query raw sql
+        //$this->debug=print_r(DB::getQueryLog());
+        // $this->debug=$this->debug.str_replace(array( '\'','"',',',';','<','>'),' ',$users);
         return $users;
     }
 
     public function render()
     {
-        $students=[];
-        if ($this->readyToLoad) {
-          // regex clean $search to only letters, numbers and spaces
-            $this->search = preg_replace('/[^A-Za-z0-9 ]/', '', $this->search);
-            if ($this->search!='') {
-                $students = $this->getSearch();            
-            }
+        // regex clean $search to only letters, numbers and spaces
+        $this->search = preg_replace('/[^A-Za-z0-9 ]/', '', $this->search);
+        if ($this->readyToLoad && $this->search!='') {
+            $this->students = $this->getSearch();
+        } else {
+            $this->students = [];
         }
-        return view('livewire.students-component',compact('students'));
+        return view('livewire.students-component',
+            ['students'=>$this->students]);
     }
 
     public function loadData(){
@@ -229,7 +242,6 @@ class StudentsComponent extends Component
         } catch(Exception $exeption){
             $this->emit('toast','Error: Existe información relacionada a este Usuario','error');
         }
-
     }
 
     public function addCareer(){

@@ -108,6 +108,13 @@
   </x-jet-dialog-modal>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <p class="text-indigo-800 text-sm px-1 py-2">
+    | <b>Career:</b> {{ $careerSelected}} 
+    | <b>Role:</b> {{ $roleSelected }} 
+    | <b>Search:</b> {{ $search }}
+    | <b>Debug:</b> {{ $debug }}
+    {{-- RdyToLd:{{ $readyToLoad}}  | Students:{{ $students }} --}}
+    </p>
     <x-table>
       <div class="px-4 py-1 flex items-center d2c">
         <div class="flex item center">
@@ -140,8 +147,11 @@
         </select>
         </div>
 
-
-        <x-jet-button wire:click="create" color="green">Nuevo Ingreso</x-jet-danger-button>
+        <div class="block">
+        <x-jet-button wire:click="create">Nuevo Ingreso</x-jet-button>
+        <br>
+        <x-jet-danger-button wire:click="render">« Render »</x-jet-danger-button>
+        </div>
       </div>
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="text-gray-100 bg-gray-700">

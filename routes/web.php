@@ -32,6 +32,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             'modalities' => Config::where('id', 'modalities')->first()->value ?? 'false',
             'careers'=>Auth::user()->careers()->get(),
             'number'=> $temp->format(Auth::user()->userCount()),
+            'rolesUsersCount'=>Auth::user()->getCountByRole(),
         ];
         $inscriptions= Config::where('group', 'inscriptions')->get();
         return view('dashboard',compact('dashInfo','inscriptions'));
