@@ -79,10 +79,15 @@ class User extends Authenticatable
     //         ]);
     // }
     
-    public function careers(){
+    // users may have multiple careers
+    public function careers(): BelongsToMany {
         return $this->belongsToMany(Career::class);
-        //return $this->hasMany(Career::class);
     }
+
+    // public function careers(){
+    //     return $this->belongsToMany(Career::class);
+    //     //return $this->hasMany(Career::class);
+    // }
 
     public function book(){
         return $this->hasMany('App\Models\Books');

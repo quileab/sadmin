@@ -77,28 +77,37 @@ class StudentsComponent extends Component
 
     public function getSearch()
     {
+        // regex clean $search to only letters, numbers and spaces
+        $this->search = preg_replace('/[^A-Za-z0-9 ]/', '', $this->search);
+
         $this->debug=time();
         $users=[] ;
 
         // if role=3 get only students filtered by career else get filtered by role
-        if($this->roleSelected==3){
+        if($this->roleSelected==3 && $this->search!=''){
           $users = User::where('id','like','%'.$this->search.'%')
                     ->orWhere('lastname','like','%'.$this->search.'%')
                     ->orWhere('firstname','like','%'.$this->search.'%')
                     ->whereHas('careers', function($q) {
                         $q->where('careers.id', $this->careerSelected);
                     });
-                    $this->debug=$this->debug."Career: ".$this->careerSelected;
-
+                    $this->debug=$this->debug."»Career: ".$this->careerSelected;
         }else{
-            $users = User::where('id','like','%'.$this->search.'%')
+            // if search is empty get all users by role
+            if($this->search==''){
+                $users = User::whereHas('roles', function($q) {
+                    $q->where('roles.id', $this->roleSelected);
+                });
+            } else {
+                $users = User::where('id','like','%'.$this->search.'%')
                     ->orWhere('lastname','like','%'.$this->search.'%')
                     ->orWhere('firstname','like','%'.$this->search.'%')
                     ->whereHas('roles', function($q) {
                         $q->where('roles.id', $this->roleSelected);
                     });
-                    $this->debug=$this->debug."Role: ".$this->roleSelected;
+                    $this->debug=$this->debug."»Role: ".$this->roleSelected;
             }
+        }
 
         //DB::enableQueryLog();
         $users=$users->paginate($this->cant);
@@ -112,9 +121,7 @@ class StudentsComponent extends Component
 
     public function render()
     {
-        // regex clean $search to only letters, numbers and spaces
-        $this->search = preg_replace('/[^A-Za-z0-9 ]/', '', $this->search);
-        if ($this->readyToLoad && $this->search!='') {
+        if ($this->readyToLoad) {
             $this->students = $this->getSearch();
         } else {
             $this->students = [];
