@@ -7,12 +7,10 @@
   </select>
   
   @if (session('bookmark'))
-  <x-jet-button class='mx-2' color="blue" wire:click="assignRole" wire:loading.attr="disabled">
+  <x-jet-button class='mx-1' wire:click="assignRole" wire:loading.attr="disabled">
   Asignar a
   </x-jet-button>
-  <strong>{{ $selectedUser->lastname }}, {{ $selectedUser->firstname }}</strong>
-  
+  <strong>{{ $selectedUser->lastname }}</strong>, {{ $selectedUser->firstname }}
   @endif
-
 
 </div>

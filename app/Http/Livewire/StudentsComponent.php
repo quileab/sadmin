@@ -85,7 +85,7 @@ class StudentsComponent extends Component
             // get students filtered by career
             $users = User::whereHas('careers', function($query) {
                 $query->where('careers.id', $this->careerSelected);
-            })
+            }) // filter by name
             ->where(function($query) {
                 $query->where('name', 'like', '%'.$this->search.'%')
                     ->orWhere('lastname', 'like', '%'.$this->search.'%')
@@ -93,18 +93,20 @@ class StudentsComponent extends Component
             });
 
             $this->debug=$this->debug." » Career: ".$this->careerSelected;
-        }else{
-            // get all users by role
-            $users = User::whereHas('roles', function($q) {
-                $q->where('roles.id', $this->roleSelected);
+        }else{ // get all users by role
+            if ($this->roleSelected==0) {
+                $users = User::whereHas('roles', function ($q) {
+                    $q->where('roles.id', $this->roleSelected);
                 })
-                ->where(function($query) {
+                ->where(function ($query) {
                     $query->where('name', 'like', '%'.$this->search.'%')
                         ->orWhere('lastname', 'like', '%'.$this->search.'%')
                         ->orWhere('firstname', 'like', '%'.$this->search.'%');
                 });
-    
-                $this->debug=$this->debug." » Role: ".$this->roleSelected; 
+                $this->debug=$this->debug." » Role: ".$this->roleSelected;
+            } else {
+                $users = User::whereDoesntHave('roles');
+            }
         }
 
         //DB::enableQueryLog();

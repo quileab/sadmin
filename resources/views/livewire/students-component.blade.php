@@ -142,15 +142,16 @@
         <select wire:model="roleSelected" name="roleSelected" id="roleSelected"
           class="truncate w-36 py-1">
           @foreach ($roles as $role)
-            <option value="{{ $role->id }}">{{ $role->name }}</option>
+          <option value="{{ $role->id }}">{{ $role->name }}</option>
           @endforeach
+          <option value="">*none*</option>
         </select>
         </div>
 
         <div class="block">
         <x-jet-button wire:click="create">Nuevo Ingreso</x-jet-button>
         <br>
-        <x-jet-danger-button wire:click="render">« Render »</x-jet-danger-button>
+        <x-jet-secondary-button wire:click="render"><x-svg.search /></x-jet-secondary-button>
         </div>
       </div>
       <table class="min-w-full divide-y divide-gray-200">

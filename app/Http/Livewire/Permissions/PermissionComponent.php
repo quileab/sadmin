@@ -12,8 +12,8 @@ class PermissionComponent extends Component
     public $selectedrole;
     public $newrole, $newpermission;
     public $checkall;
-    protected $rules=
-        ['selectedrole'=>['required','integer','exists:roles,id'],
+    protected $rules=[
+        'selectedrole'=>['required','integer','exists:roles,id'],
         'selectedpermissions'=>['required','exists:permissions,id']
         ];
 
@@ -102,6 +102,17 @@ class PermissionComponent extends Component
             $this->emit('toast', 'Rol asignado', 'success');
         } else {
             $this->emit('toast', 'Error al asignar rol', 'error');
+        }
+    }
+
+    public function removeRole($role) {
+        $user=\App\Models\User::find(session('bookmark'));
+        //$role=Role::find($this->selectedrole);
+        if ($user && $role) {
+            $user->removeRole($role);
+            $this->emit('toast', 'Rol removido', 'success');
+        } else {
+            $this->emit('toast', 'Error al remover rol', 'error');
         }
     }
 
