@@ -37,7 +37,7 @@
                       </div>
                   
                       <div class="ml-12">
-                        <div class="mt-2 text-sm text-lg text-gray-500">
+                        <div class="mt-2 text-sm text-gray-500">
                           {{$dashInfo['shortname']}}, {{$dashInfo['longname']}}
                         </div>
                   

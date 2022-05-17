@@ -64,10 +64,7 @@ class StudentsComponent extends Component
     {
         $this->careers = Career::all();
         $this->careerSelected = $this->careers[0]->id;
-
-        if($this->career_id==null){
-          $this->career_id=$this->careers[0]->id;
-        }
+        $this->career_id=$this->careers[0]->id;
 
         // get all roles
         $this->roles = \Spatie\Permission\Models\Role::all();
@@ -85,28 +82,29 @@ class StudentsComponent extends Component
 
         // if role=3 get only students filtered by career else get filtered by role
         if($this->roleSelected==3 && $this->search!=''){
-          $users = User::where('id','like','%'.$this->search.'%')
-                    ->orWhere('lastname','like','%'.$this->search.'%')
-                    ->orWhere('firstname','like','%'.$this->search.'%')
-                    ->whereHas('careers', function($q) {
-                        $q->where('careers.id', $this->careerSelected);
-                    });
-                    $this->debug=$this->debug."»Career: ".$this->careerSelected;
+            // get students filtered by career
+            $users = User::whereHas('careers', function($query) {
+                $query->where('careers.id', $this->careerSelected);
+            })
+            ->where(function($query) {
+                $query->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('lastname', 'like', '%'.$this->search.'%')
+                    ->orWhere('firstname', 'like', '%'.$this->search.'%');
+            });
+
+            $this->debug=$this->debug." » Career: ".$this->careerSelected;
         }else{
-            // if search is empty get all users by role
-            if($this->search==''){
-                $users = User::whereHas('roles', function($q) {
-                    $q->where('roles.id', $this->roleSelected);
+            // get all users by role
+            $users = User::whereHas('roles', function($q) {
+                $q->where('roles.id', $this->roleSelected);
+                })
+                ->where(function($query) {
+                    $query->where('name', 'like', '%'.$this->search.'%')
+                        ->orWhere('lastname', 'like', '%'.$this->search.'%')
+                        ->orWhere('firstname', 'like', '%'.$this->search.'%');
                 });
-            } else {
-                $users = User::where('id','like','%'.$this->search.'%')
-                    ->orWhere('lastname','like','%'.$this->search.'%')
-                    ->orWhere('firstname','like','%'.$this->search.'%')
-                    ->whereHas('roles', function($q) {
-                        $q->where('roles.id', $this->roleSelected);
-                    });
-                    $this->debug=$this->debug."»Role: ".$this->roleSelected;
-            }
+    
+                $this->debug=$this->debug." » Role: ".$this->roleSelected; 
         }
 
         //DB::enableQueryLog();
@@ -116,6 +114,7 @@ class StudentsComponent extends Component
         //set debug to query raw sql
         //$this->debug=print_r(DB::getQueryLog());
         // $this->debug=$this->debug.str_replace(array( '\'','"',',',';','<','>'),' ',$users);
+        $this->debug=$this->debug.' » Count: '.$users->count();
         return $users;
     }
 
