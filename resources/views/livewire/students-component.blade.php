@@ -144,7 +144,7 @@
           @foreach ($roles as $role)
           <option value="{{ $role->id }}">{{ $role->name }}</option>
           @endforeach
-          <option value="">*none*</option>
+          <option value="0">*none*</option>
         </select>
         </div>
 

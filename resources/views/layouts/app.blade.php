@@ -7,7 +7,7 @@ $nav_links = [
       'permission'=>'menu.dashboard',
     ],
     [
-      'name' => 'Alumnos',
+      'name' => 'Usuarios/Alumnos',
       'route' => route('students'),
       'active' => request()->routeIs('students'),
       'permission'=>'menu.students',

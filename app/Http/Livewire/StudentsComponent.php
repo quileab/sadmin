@@ -68,7 +68,7 @@ class StudentsComponent extends Component
 
         // get all roles
         $this->roles = \Spatie\Permission\Models\Role::all();
-        // $this->roleSelected = 3 -> student
+        // Set roleSelected = 3 -> student
         $this->roleSelected = 3;
     }
 
@@ -94,7 +94,7 @@ class StudentsComponent extends Component
 
             $this->debug=$this->debug." » Career: ".$this->careerSelected;
         }else{ // get all users by role
-            if ($this->roleSelected==0) {
+            if ($this->roleSelected!=0) {
                 $users = User::whereHas('roles', function ($q) {
                     $q->where('roles.id', $this->roleSelected);
                 })
@@ -103,18 +103,16 @@ class StudentsComponent extends Component
                         ->orWhere('lastname', 'like', '%'.$this->search.'%')
                         ->orWhere('firstname', 'like', '%'.$this->search.'%');
                 });
-                $this->debug=$this->debug." » Role: ".$this->roleSelected;
             } else {
                 $users = User::whereDoesntHave('roles');
             }
+            $this->debug=$this->debug." » Role: ".$this->roleSelected;
         }
 
         //DB::enableQueryLog();
         $users=$users->paginate($this->cant);
         //dd(DB::getQueryLog());
 
-        //set debug to query raw sql
-        //$this->debug=print_r(DB::getQueryLog());
         // $this->debug=$this->debug.str_replace(array( '\'','"',',',';','<','>'),' ',$users);
         $this->debug=$this->debug.' » Count: '.$users->count();
         return $users;

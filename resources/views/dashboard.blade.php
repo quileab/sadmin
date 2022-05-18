@@ -66,16 +66,25 @@
                       </div>
                   
                       <div class="ml-12">
-                        <div class="mt-2 text-xl text-gray-500">
-                          {{ Auth::user()->userCount() }}
-                          {{ $dashInfo['number'] }}
-                          <hr>
-                          @foreach ($dashInfo['rolesUsersCount'] as $role=>$count)
-                            {{$role}}:&nbsp;
-                            <span class="font-bold text-green-600">{{$count}}</span>
-                            <br />
-                            
-                          @endforeach
+                        <div class="mt-2 text-xs text-gray-500">
+                          {{-- {{ Auth::user()->userCount() }}
+                          {{ $dashInfo['number'] }} --}}
+                          <table>
+                            <thead>
+                              <tr>
+                                <th>Categ.</th>
+                                <th>Cant.</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @foreach ($dashInfo['rolesUsersCount'] as $role=>$count)
+                                <tr>
+                                  <td>{{$role}}</td>
+                                  <td class="text-right text-green-600">{{$count}}</td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          </table>
                         </div>
                   
                       </div>
