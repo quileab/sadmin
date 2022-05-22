@@ -45,9 +45,9 @@
                           @foreach ($inscriptions as $inscription)
                             {{$inscription->description}}:&nbsp;
                             @if ($inscription->value=="true")
-                              <span class="font-bold text-green-600">Abiertas</span>
+                              <span class="font-bold text-green-700">Abiertas</span>
                             @else
-                              <span class="font-bold text-red-600">Cerradas</span>  
+                              <span class="font-bold text-red-700">Cerradas</span>  
                             @endif
                             <br />
                           @endforeach
@@ -62,25 +62,23 @@
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                         <div class="ml-4 text-lg font-semibold leading-7 text-gray-700">
-                          Estudiantes Registrados</div>
+                          Usuarios Registrados</div>
                       </div>
                   
                       <div class="ml-12">
-                        <div class="mt-2 text-xs text-gray-500">
-                          {{-- {{ Auth::user()->userCount() }}
-                          {{ $dashInfo['number'] }} --}}
+                        <div class="overflow-hidden text-xs text-gray-500 rounded-sm">
                           <table>
-                            <thead>
+                            <thead class="text-white bg-gray-800">
                               <tr>
-                                <th>Categ.</th>
-                                <th>Cant.</th>
+                                <th class="px-2">Categ.</th>
+                                <th class="px-2">Cant.</th>
                               </tr>
                             </thead>
                             <tbody>
                               @foreach ($dashInfo['rolesUsersCount'] as $role=>$count)
                                 <tr>
-                                  <td>{{$role}}</td>
-                                  <td class="text-right text-green-600">{{$count}}</td>
+                                  <td class="px-2">{{$role}}</td>
+                                  <td class="px-2 text-right text-green-700 strong">{{$count}}</td>
                                 </tr>
                               @endforeach
                             </tbody>
@@ -105,7 +103,7 @@
                           @foreach ($dashInfo['careers'] as $career)
                             {{$career->name}}<br />
                             @foreach ($career->subjects() as $subject)
-                              >> {{$subject->name}}<br />
+                              » {{$subject->name}}<br />
                               
                             @endforeach
                           @endforeach
@@ -126,8 +124,10 @@
                           🗒✏
                           <p>
                             <x-svg.gear class="inline-block w-4 h-4 text-gray-400" />
-                          {{ app()->version() }} | {{ env('APP_ENV') }} | {{ env('APP_DEBUG') }} | 
-                          {{ phpversion()}}
+                          | {{ app()->version() }}
+                          | {{ phpversion()}}
+                          | {{ env('APP_ENV') }}
+                          | {{ env('APP_DEBUG') }}
                           </p>
                         </div>
                       </div>

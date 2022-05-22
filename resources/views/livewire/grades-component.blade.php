@@ -22,7 +22,7 @@
         </div>
       </div>
 
-      <div class="flex mb-2 justify-between">
+      <div class="flex justify-between mb-2">
         <div class="w-2/4">
           <x-jet-label value="Calificación" />
           <x-jet-input type='text' wire:model.defer='grade' value='{{ $grade }}' class="w-full" />
@@ -33,7 +33,7 @@
           {{-- Approved --}}
           <x-jet-label value="Aprobado" />
           <input type="checkbox" value="@if ($approved) 0 @else 1 @endif" wire:model.lazy="approved"
-          class="rounded-sm border-4 focus:border-gray-700 form-checkbox mt-1 h-9 w-9">
+          class="mt-1 border-4 rounded-sm focus:border-gray-700 form-checkbox h-9 w-9">
           <x-jet-input-error for="approved" />
         </div>
         
@@ -56,7 +56,7 @@
       </div>
 
 
-      <div class="mx-6 px-0">
+      <div class="px-0 mx-6">
       <x-table>
         <table class="w-full divide-y divide-gray-200">
           <thead class="text-gray-100 bg-gray-700">
@@ -81,14 +81,14 @@
                 <td class="px-6 py-4">
                   {{$grade->grade}}
                 </td>
-                <td class="w-28 bg-gray-100 px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td class="px-6 py-4 text-sm font-medium text-right bg-gray-100 w-28 whitespace-nowrap">
                   {{-- Edit --}}
                   <button wire:click="editGrade('{{ $grade->date_id }}')" class="mr-2">
-                    <x-svg.edit class="h-5 w-5 text-gray-700" />
+                    <x-svg.edit class="w-5 h-5 text-gray-700" />
                   </button>
                   {{-- Delete --}}
                   <button wire:click="$emit('confirmDelete','{{$grade->date_id}}, {{ $grade->name }}','{{ $grade->date_id }}','deleteGrade')">
-                    <x-svg.trash class="h-5 w-5 text-red-700" />
+                    <x-svg.trash class="w-5 h-5 text-red-700" />
                   </button>
                 </td>
               </tr>
@@ -112,10 +112,10 @@
     </x-slot>
   </x-jet-dialog-modal>
 
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl px-4 mx-auto sm:px-6 lg:px-8">
     <x-table>
-      <div class="px-6 py-2 flex items-center d2c">
-        <div class="flex flex-1 justify-between place-items-center">
+      <div class="flex items-center px-6 py-2 d2c">
+        <div class="flex justify-between flex-1 place-items-center">
           <span class="text-2xl">
             <strong>{{ $lastname }}</strong>, {{ $firstname }} »
             <small>({{ $uid }})</small>
@@ -138,8 +138,10 @@
 
       </div>
 
+      {{-- if exists subjects show them else display a message --}}
+      @if(count($subjects))
       <table class="min-w-full divide-y divide-gray-200">
-        <thead class="text-gray-50 bg-gray-800">
+        <thead class="bg-gray-800 text-gray-50">
           <tr>
             <th scope="col">ID</th>
             <th scope="col">Materia</th>
@@ -155,7 +157,7 @@
               <td class="px-6 py-1">
                 {{ $subject->name }}
               </td>
-              <td class="w-28 bg-gray-100 px-6 py-1 whitespace-nowrap text-right text-sm font-medium">                
+              <td class="px-6 py-1 text-sm font-medium text-right bg-gray-100 w-28 whitespace-nowrap">                
                 <x-jet-button wire:click="setGrades('{{ $subject->id }}','{{ $subject->name }}')">
                   <x-svg.edit />
                 </x-jet-button>
@@ -165,6 +167,14 @@
           <!-- More items... -->
         </tbody>
       </table>
+      @else
+        {{-- display a message --}}
+          <div class="flex p-4 text-lg text-red-700 bg-gray-200">
+            <x-svg.infoLg class="mr-2 border-2 border-red-800 rounded-full w-7 h-7" />
+              No hay materias registradas&nbsp;<span class="text-blue-700"> para este Estudiante o Profesor</span>
+          </div>
+
+      @endif
     </x-table>
   </div>
 

@@ -11,6 +11,8 @@ class PermissionComponent extends Component
     public $selectedpermissions=[];
     public $selectedrole;
     public $newrole, $newpermission;
+    public $roles;
+    public $selectedUser;
     public $checkall;
     protected $rules=[
         'selectedrole'=>['required','integer','exists:roles,id'],
@@ -20,12 +22,26 @@ class PermissionComponent extends Component
         // Listener para los EMIT - Conexión entre PHP-JS
     protected $listeners=['bookmarkCleared'=>'render']; 
 
+    public function mount(){
+        $this->checkBookMark();
+        $this->selectedrole=Role::first()->id;
+        $this->selectedpermissions=Permission::first()->id;
+        $this->roles = Role::all();
+    }
+
     public function render() {
-        $roles = Role::all();
+        $this->checkBookMark();
         $permissions = Permission::all()->sortBy('name');
-        $selectedUser = \App\Models\User::find(session('bookmark'));
         //->pluck('name', 'id');
-        return view('livewire.permissions.index', compact('roles', 'permissions', 'selectedUser'));
+        return view('livewire.permissions.index', compact('permissions'));
+    }
+
+    protected function checkBookMark()
+    {
+        if(!session('bookmark')){
+            return redirect()->route('students');
+        }
+        $this->selectedUser = \App\Models\User::find(session('bookmark'));
     }
 
     public function updatedSelectedRole($value) {
