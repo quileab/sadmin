@@ -1301,9 +1301,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .p-1 {
   padding: 0.25rem;
 }
-.p-5 {
-  padding: 1.25rem;
-}
 .py-12 {
   padding-top: 3rem;
   padding-bottom: 3rem;

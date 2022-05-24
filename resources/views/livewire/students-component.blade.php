@@ -212,20 +212,20 @@
               </td>
               <td class="px-6 py-1">
                 <div><b>{{ $student->lastname }}</b>, {{ $student->firstname }}<br />
-                  {{ $student->email }} | {{ $student->phone }}
+                  <small>{{ $student->email }} | {{ $student->phone }}</small>
                 </div>
               </td>
 
               <td class="mt-1 text-sm">
                 <div class="inline-flex rounded-lg overflow-hidden">
                 {{-- <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a> --}}
-                <button wire:click="edit('{{ $student->id }}')" class="bg-blue-600 text-white px-3 py-2">
+                <button wire:click="edit('{{ $student->id }}')" class="bg-blue-600 text-white px-3 py-1">
                   <x-svg.edit class="h-6 w-6" />
                 </button>
                 {{-- Add/Edit Materias --}}
                 @if (count($student->careers))
                   <a href='grades/{{ $student->id }}'>
-                    <button class="bg-indigo-600 text-white px-3 py-2">
+                    <button class="bg-indigo-600 text-white px-3 py-1">
                       <x-svg.academicCap class="h-7 w-7" />
                     </button>
                   </a>
@@ -235,15 +235,15 @@
                   </button>
                 @endif
                 <a href='userpayments/{{ $student->id }}'>
-                <button class="bg-green-600 text-white px-3 py-2">
+                <button class="bg-green-600 text-white px-3 py-1">
                   <x-svg.dolarRound class="h-7 w-7" />
                 </button>
                 </a>
-                <button class="bg-yellow-600 text-white px-3 py-2"
+                <button class="bg-yellow-600 text-white px-3 py-1"
                   wire:click="$emit('setBookmark','{{ $student->id }}')">
                   <x-svg.bookmarkPlus class="h-6 w-6" />
                 </button>
-                <button class="bg-red-600 text-white px-3 py-2 ml-1"
+                <button class="bg-red-600 text-white px-3 py-1 ml-1"
                   wire:click="$emit('confirmDelete','{{ $student->lastname }}, {{ $student->firstname }}','{{ $student->id }}','delete')">
                   <x-svg.trash class="h-6 w-6" />
                 </button>
