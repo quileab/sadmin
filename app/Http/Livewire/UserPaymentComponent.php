@@ -86,6 +86,7 @@ class UserPaymentComponent extends Component
             $this->totalDebt+=$payment->amount;
             $this->totalPaid+=$payment->paid;
         }
+        return;
     }
 
     public function assignPayPlan($pid){
@@ -173,7 +174,31 @@ class UserPaymentComponent extends Component
 
         // cerar modal y actualizar valores
         $this->paymentModal=false;
-        // $this->userPayments=UserPayments::where('user_id', $this->uid)->orderBy('date')->get() ?? [];
+
+        // generar PDF de pago
+        $data=[
+            'user'=>$this->user,
+            'payment'=>$paymentRecord,
+            'paymentDescription'=>$this->paymentDescription,
+            'paymentAmount'=>$this->paymentAmount,
+            'paymentDate'=>$this->paymentActualDate,
+        ];
+        
         $this->updateInfo();
+
+        $pdf=app('dompdf.wrapper');
+        $pdf->loadView('pdf.paymentReceipt',[
+            'data'=>$data
+        ]);
+        $pdf->setPaper('A4', 'portrait');
+
+        //clear invoiceData session 
+        session()->forget('invoiceData');
+
+        // return $pdf->stream("preview.pdf");
+        $filename='rc-'.$this->user->lastname.', '.$this->user->firstname.'.pdf';
+        $pdf->save(storage_path('app/public/pdfs/'.$filename));
+        return $pdf->download($filename);
+
     }
 }

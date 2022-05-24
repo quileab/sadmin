@@ -41,7 +41,7 @@
       <p>Pagando: <strong>{{ $paymentDescription }}</strong> » Valor: <strong>$ {{ number_format($paymentAmount,2) }}</strong></p>
       <x-jet-input type="number" wire:model.defer="payment" placeholder="Ingrese el monto" />
       <button wire:click="registerUserPayment"
-        class="px-4 py-2 m-1 text-sm text-white uppercase bg-blue-700 rounded-md">
+        class="px-4 py-2 m-1 text-sm text-white uppercase bg-green-800 rounded-md ">
         Ingresar Pago
       </button>
 
