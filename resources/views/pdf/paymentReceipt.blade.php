@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
@@ -204,7 +204,7 @@
     }
 
     .page-break {
-      page-break-before: always;
+      page-break-after: always;
     }
 
   </style>
@@ -217,7 +217,7 @@
           <tr>
             <td style="width:45%;" class="text-left border">
               <div>
-                <img style="height:1.5cm; width:auto;" src=" public_path() . '/img/logo.jpg' ">
+                <img style="height:1.5cm; width:auto;" src="{{ public_path('imgs') . '/logo.jpg' }}">
               </div>
               <div class="font-sm">
                 <small>Datos Alumno: </small><br />
@@ -238,7 +238,8 @@
               Fecha:  data['invoice_date'] <br />
               CUIT:  data['conf']['cuit']  -
               IIBB:  data['conf']['iibb'] <br />
-              Inicio de Actividades:  data['conf']['start_date'] 
+              Inicio de Actividades:  data['conf']['start_date']
+              {{ public_path() }}
             </td>
           </tr>
         </table>

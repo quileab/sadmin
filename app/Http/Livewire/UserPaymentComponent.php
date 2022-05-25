@@ -186,19 +186,17 @@ class UserPaymentComponent extends Component
         
         $this->updateInfo();
 
+        // $timestamp = yyyymmdd-hhmmss
+        $timestamp=\Illuminate\Support\Carbon::now()->format('Ymd-His');
+        $filename='rc-'.$this->user->lastname
+            .', '.$this->user->firstname
+            .'-'.$timestamp.'.pdf';
         $pdf=app('dompdf.wrapper');
+        $pdf->setPaper('A4', 'portrait');
         $pdf->loadView('pdf.paymentReceipt',[
             'data'=>$data
         ]);
-        $pdf->setPaper('A4', 'portrait');
 
-        //clear invoiceData session 
-        session()->forget('invoiceData');
-
-        // return $pdf->stream("preview.pdf");
-        $filename='rc-'.$this->user->lastname.', '.$this->user->firstname.'.pdf';
-        $pdf->save(storage_path('app/public/pdfs/'.$filename));
-        return $pdf->download($filename);
-
+        return $pdf->save(storage_path('app/public/pdfs/'.$filename))->stream($filename);
     }
 }

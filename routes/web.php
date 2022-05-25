@@ -20,6 +20,11 @@ Route::get('/register', function () {
     return redirect()->route('login');
 });
 
+Route::get('/previewReceipt', function () {
+    return view('pdf.paymentReceipt');    
+});
+
+
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     
     Route::get('/dashboard', function () {
