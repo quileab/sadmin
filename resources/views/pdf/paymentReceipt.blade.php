@@ -45,8 +45,8 @@
     /* page body */
     body {
       font-family: 'Open Sans', sans-serif;
-      padding-top: 3cm;
-      padding-bottom: 3.1cm;
+      /* padding-top: 3cm;
+      padding-bottom: 3.1cm; */
       counter-reset: pages 1;
     }
 
@@ -60,8 +60,8 @@
     }
 
     table thead {
-      border: 1px solid #000;
-      border-bottom: 2px solid #000;
+      border: 0px solid #000;
+      border-bottom: 0px solid #000;
     }
 
     table thead th {
@@ -83,7 +83,7 @@
     }
 
     table tbody tr:last-child td {
-      border-bottom: 1px solid #000;
+      border-bottom: 0px solid #000;
     }
 
     /* table tfoot */
@@ -98,16 +98,16 @@
     }
 
     table tfoot tr:last-child td {
-      border-bottom: 1px solid #000;
+      border-bottom: 0px solid #000;
     }
 
     /* table tfoot total */
     table tfoot tr:last-child td:first-child {
-      border-right: 1px solid #000;
+      border-right: 0px solid #000;
     }
 
     table tfoot tr:last-child td:last-child {
-      border-left: 1px solid #000;
+      border-left: 0px solid #000;
     }
 
     p {
@@ -207,96 +207,74 @@
       page-break-after: always;
     }
 
+    .w-full {
+      width: 100%;
+    }
   </style>
 </head>
 
 <body>
-    <header>
+    {{-- <header> --}}
       <div>
         <table>
           <tr>
-            <td style="width:45%;" class="text-left border">
+            <td>
               <div>
-                <img style="height:1.5cm; width:auto;" src="{{ public_path('imgs') . '/logo.jpg' }}">
+                <img style="height:3cm; width:auto;" src="./storage/imgs/logo.jpg">
               </div>
-              <div class="font-sm">
-                <small>Datos Alumno: </small><br />
+              <div>
+                RECIBO Nº: 000000
               </div>
 
             </td>
-            <td style="width:10%;" class="border">
-              <div class="font-bold font-xxl"> data['inv_letter'] </div>
-              cod <br>
-              <p class="font-sm">Copia</p>
-            </td>
-            <td style="width:45%;" class="text-left border">
-              <span class="font-bold font-lg">
-                data
-              </span>&nbsp;
-              <span class="font-md">data['ptoVta'] - data['invoice_number'] </span>
-              <br />
-              Fecha:  data['invoice_date'] <br />
-              CUIT:  data['conf']['cuit']  -
-              IIBB:  data['conf']['iibb'] <br />
-              Inicio de Actividades:  data['conf']['start_date']
-              {{ public_path() }}
+            <td class="text-center">
+              <p class="font-xl font-bold">
+                ESCUELA DE EDUCACIÓN SECUNDARIA ORIENTADA<br>
+                PARTICULAR INCORPORADA Nº 8206
+              </p>
+              <p class="font-md">
+                <strong>"Roberto Vicentín"</strong>
+              </p>
+              <p class="font-sm">
+                Calle 14 Nº 581 (3561) AVELLANEDA (Santa Fe) - Tel. (03482) 481182
+              </p>
+              <p class="font-xsm">
+                CUIT: 30-56780754-8 - IVA: Excento
+              </p>
             </td>
           </tr>
         </table>
       </div>
-    </header>
+    {{-- </header>
     <footer>
       Receipt Footer
-    </footer>
-    <main>
+    </footer> --}}
+    <main class="font-md">
+      <div class="text-right w-full">Avellaneda, 00/00/0000</div>
       <table>
         <tr>
-          <td style="width:50%;" class="text-left border">
-            <strong>Cliente: data['customer']->name </strong><br />
-            Domicilio:  data['customer']->address ,  data['customer']->city 
+          <td class="text-right">
+            Recibí de:<br>
+            la cantidad de pesos:<br>
+            Concepto:<br>
+            Curso/Div:<br>
+            <br>
+            SON PESOS:
           </td>
-          <td style="width:50%;" class="text-left border">
-            Cond. fte. al IVA: <strong> data['customer']->responsibility_type_id </strong><br />
-            CUIT:  data['customer']->CUIT 
-
+          <td class="text-left">
+            <strong>Perez, Juan</strong><br>
+            <strong>Mil ciento diez</strong><br>
+            <strong>Pago voluntario, mayo 2022</strong><br>
+            <strong>Quinto "B"</strong><br>
+            <br>
+            <strong>$ 1.110,00</strong>
           </td>
         </tr>
+        <tr>
+          <td><span class="font-md">DUPLICADO</span></td>
+          <td><span class="font-xsm">Firma Autorizada</span></td>
+        </tr>
       </table>
-      <table class="font-xsm">
-        <thead style="background-color: #dddddd;">
-          <tr>
-            <th style="width:5%; overflow:hidden;" class="border-top border-left">Cód.</th>
-            <th style="width:60%;" class="border-top border-left">Descripción</th>
-            <th style="width:10%;" class="border-top border-left">Cant.</th>
-            <th style="width:10%;" class="border-top border-left">U. med.</th>
-            <th style="width:15%;" class="border-top border-left">Precio Unitario</th>
-            <th style="width:10%;" class="border-top border-left">% Desc.</th>
-            <th style="width:15%;" class="border-top border-left">Subtotal</th>
-          </tr>
-        </thead>
-        <tbody>
-          Table body
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan=" data['inv_letter'] === 'A' ? 7:5 " class="text-right border-top border-left">
-              Subtotal
-            </td>
-            <td colspan="2" class="text-right border-top border-right">
-               currency_format(data['ImpNeto']) 
-            </td>
-          </tr>
-          <tr>
-            <td colspan=" data['inv_letter'] === 'A' ? 7:5 " class="text-right border-left border-right">
-              <strong>Total</strong>
-            </td>
-            <td colspan="2" class="text-right border-top border-left border-right">
-              <strong> currency_format(data['ImpTotal']) </strong>
-            </td>
-
-        </tfoot>
-      </table>
-
     </main>
 </body>
 
