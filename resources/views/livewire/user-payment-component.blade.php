@@ -66,14 +66,14 @@
       @if ($hasCounter!=null)
       <div>
         @if ($totalPaid < $totalDebt)
-        <x-jet-button color='green' wire:click="addPaymentToUser(true)">
+        <x-jet-button wire:click="addPaymentToUser(true)">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>&nbsp;Ingresar Pago
         </x-jet-button>&nbsp;
         @endif
-        <x-jet-button color='green' wire:click="$set('openModal',true)">
+        <x-jet-button wire:click="$set('openModal',true)">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" class="bi bi-plus-circle"
             viewBox="0 0 16 16">
             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -107,11 +107,10 @@
         </div>
       @endforeach
     </div>
-    <div class="container px-3 py-1 mx-auto my-3 text-xl text-right bg-indigo-200 md:px-6">
+    <div class="container px-3 py-1 mx-auto my-3 text-lg text-right bg-gray-300 md:px-6">
       <p>Deuda Total <span class="inline-block font-bold bg-gray-200 w-44">$ {{ number_format($totalDebt,2) }}</span></p>
       <p>Total de Pagos <span class="inline-block font-bold bg-gray-200 w-44">$ {{ number_format($totalPaid,2) }}</span></p>
-      <p>Saldo <span class="inline-block font-bold bg-blue-300 w-44">$ {{ number_format($totalDebt - $totalPaid, 2) }}</span></p>
+      <p>Saldo <span class="inline-block font-bold bg-gray-100 w-44">$ {{ number_format($totalDebt - $totalPaid, 2) }}</span></p>
     </div>
-    {{$paymentDescription}}
   </div>
 </div>

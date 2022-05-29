@@ -197,6 +197,12 @@ class UserPaymentComponent extends Component
             'data'=>$data
         ]);
 
-        return $pdf->save(storage_path('app/public/pdfs/'.$filename))->stream($filename);
+        $pdf->save(storage_path('app/public/pdfs/'.$filename));
+
+        return response()->download(storage_path('app/public/pdfs/'.$filename,$filename, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="'.$filename.'"'
+        ]));
+
     }
 }
