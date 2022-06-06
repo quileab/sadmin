@@ -261,10 +261,6 @@ $copy = 'SINGLE';
       border-color: gray;
     }
 
-    .line-height-15 {
-      line-height: 1.6rem;
-    }
-
   </style>
 </head>
 
@@ -294,7 +290,7 @@ $copy = 'SINGLE';
       </div>
 
       <div class="w-full text-right">Avellaneda, {{ date('d/m/Y', strtotime($data['payment']->created_at)) }}</div>
-      <div class="w-full text-left">
+      <div class="w-full text-left font-1">
 
         Recibí de: <b>{{ $data['user']->lastname }}, {{ $data['user']->firstname }}</b><br><br>
         Concepto: Pago voluntario, <b>{{ $data['paymentDescription'] }}</b><br><br>
@@ -308,8 +304,8 @@ $copy = 'SINGLE';
         SON PESOS: <b>$ {{ $amount }}</b>
       </div>
 
-      <div style="width:55%" class="inline-block text-right font-sm">{{ $copy }}</div>
-      <div style="width:40%" class="inline-block text-center font-sm">Firma Autorizada</div>
+      <div style="width:90%" class="text-right font-sm">Firma Autorizada</div>
+      <div style="width:100%" class="text-center font-sm">{{ $copy }}</div>
     </div>
     {!! $copy == $copies[0] ? '<hr>' : '' !!}
   @endforeach

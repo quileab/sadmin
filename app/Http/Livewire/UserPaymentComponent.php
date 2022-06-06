@@ -49,8 +49,8 @@ class UserPaymentComponent extends Component
         $this->payplans=PlansMaster::all();
 
         $this->updateInfo();
-        $this->readyToLoad=true;
         $this->selectedPlan=0;
+        $this->readyToLoad=true;
 
     }
 

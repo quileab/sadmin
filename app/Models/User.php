@@ -98,7 +98,7 @@ class User extends Authenticatable
     }
 
     public function payments(){
-        return $this->hasMany('App\Models\UserPayments');
+        return $this->hasMany('App\Models\PaymentRecord');
     }
 
     public function userCount(){

@@ -137,6 +137,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('userpayments',compact('id'));
     })->name('userpayments');
 
+    Route::get('/paymentsDetails/{id}', \App\Http\Livewire\PaymentsDetails::class)->name('paymentsDetails');
+
+
     Route::get('/calendars', function () {
         return view('calendars.index');
         // lo de abajo al no utilizar la directiva @livewire

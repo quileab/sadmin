@@ -17,4 +17,14 @@ class PaymentRecord extends Model
 
     protected $table = "paymentrecords";
     use HasFactory;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function userpayments()
+    {
+        return $this->belongsTo(UserPayments::class);
+    }
 }
