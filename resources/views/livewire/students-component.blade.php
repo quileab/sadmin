@@ -92,10 +92,7 @@
 
         @if ($formAction == 'store')
           <x-jet-button wire:click="store" class="text-white font-bold px-3 py-1 rounded text-xs">
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>&nbsp;Crear
+            <x-svg.plusCircle class="w-5 h-5" />&nbsp;Crear
           </x-jet-button>
         @else
           <x-jet-button class="ml-2" wire:click="saveChange" wire:loading.attr="disabled">
@@ -108,13 +105,6 @@
   </x-jet-dialog-modal>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <p class="text-indigo-800 text-sm px-1 py-2">
-    | <b>Career:</b> {{ $careerSelected}} 
-    | <b>Role:</b> {{ $roleSelected }} 
-    | <b>Search:</b> {{ $search }}
-    | <b>Debug:</b> {{ $debug }}
-    {{-- RdyToLd:{{ $readyToLoad}}  | Students:{{ $students }} --}}
-    </p>
     <x-table>
       <div class="px-4 py-1 flex items-center d2c">
         <div class="flex item center">
@@ -137,6 +127,7 @@
           @foreach ($careers as $career)
             <option value="{{ $career->id }}">{{ $career->name }}</option>
           @endforeach
+            <option value="">*none*</option>
         </select><br>
         {{-- select role --}}
         <select wire:model="roleSelected" name="roleSelected" id="roleSelected"

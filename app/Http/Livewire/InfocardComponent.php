@@ -7,10 +7,18 @@ use App\Models\Infocard;
 
 class InfocardComponent extends Component
 {
-    public $uid, $title, $text, $type;
+    public $uid, $title, $text;
+    public $type="#991211";
 
     public $formAction = "store";
     public $updateForm = false;
+
+    // rules
+    public $rules = [
+        'title' => 'required',
+        'text' => 'required',
+        'type' => 'required',
+    ];
 
     public function render()
     {
@@ -19,13 +27,13 @@ class InfocardComponent extends Component
     }
 
     public function store(){
-        $user = auth()->user();
+        $this->validate();
         
         Infocard::create([
             'title'=>$this->title,
             'text'=>$this->text,
             'type'=>$this->type,
-            'user_id'=>$user->id
+            'user_id'=>auth()->user()->id
         ]);
         $this->reset(['title','text','type']);
         $this->updateForm=false;
@@ -42,22 +50,20 @@ class InfocardComponent extends Component
     }
 
     public function create(){
-        $this->reset(['uid','title','text']);
-
-        $this->formAction = "store";
+        $this->reset(['uid','title','text','type','formAction']);
         $this->updateForm=true;
     }
 
     public function update(){
-        $user = auth()->user();
-
+        $this->validate();
+        
         $infocard=Infocard::find($this->uid);
         
         $infocard->update([
             'title'=>$this->title,
             'text'=>$this->text,
             'type'=>$this->type,
-            'user_id'=>$user->id
+            'user_id'=>auth()->user()->id
         ]);
         $this->reset(['title','text','type','uid','formAction']);
         $this->updateForm=false;
