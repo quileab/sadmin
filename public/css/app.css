@@ -1591,6 +1591,13 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(20 83 45 / var(--tw-text-opacity));
 }
 .text-indigo-600 {
+<<<<<<< HEAD
+=======
+  --tw-text-opacity: 1;
+  color: rgb(79 70 229 / var(--tw-text-opacity));
+}
+.text-indigo-800 {
+>>>>>>> b98e253a9425be3fba771f262056f1be1e0967ce
   --tw-text-opacity: 1;
   color: rgb(79 70 229 / var(--tw-text-opacity));
 }
