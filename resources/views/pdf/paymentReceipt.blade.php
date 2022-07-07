@@ -7,7 +7,6 @@
 //     ->orderBy('id', 'desc')
 //     ->first();
 
-    
 //     $data = [
 //       'user' => $user,
 //       'payment' => $paymentrecord,
@@ -305,7 +304,7 @@ $copy = 'SINGLE';
       </div>
 
       <div style="width:90%" class="text-right font-sm">Firma Autorizada</div>
-      <div style="width:100%" class="text-center font-sm">{{ $copy }}</div>
+      <div style="width:100ñ%" class="text-center font-sm">{{ $copy }}</div>
     </div>
     {!! $copy == $copies[0] ? '<hr>' : '' !!}
   @endforeach

@@ -75,5 +75,4 @@ class PaymentsDetails extends Component
         $payment->save();
     }
 
-
 }
