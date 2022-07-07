@@ -27,6 +27,7 @@ class PermissionComponent extends Component
         $this->selectedrole=Role::first()->id;
         $this->selectedpermissions=Permission::first()->id;
         $this->roles = Role::all();
+        $this->updatedSelectedRole($this->selectedrole);
     }
 
     public function render() {

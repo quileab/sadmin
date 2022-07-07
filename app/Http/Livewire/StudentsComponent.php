@@ -35,7 +35,6 @@ class StudentsComponent extends Component
     // TODO: leave just one
     public $formAction = "store";
     public $updating=false;
-    public $debug;
 
     // Listener para los EMIT - Conexión entre PHP-JS
     protected $listeners=['delete','deleteCareer']; 
@@ -50,7 +49,8 @@ class StudentsComponent extends Component
     
     protected $rules=[
         //'uid'=>'required|numeric',
-        'pid'=>'required|numeric',
+        'name'=>'required|unique:users,name',
+        'pid'=>'unique:users,pid|required|numeric',
         //'name'=>'required', 
         'lastname'=>'required', 
         'firstname'=>'required',
@@ -77,22 +77,25 @@ class StudentsComponent extends Component
         // regex clean $search to only letters, numbers and spaces
         $this->search = preg_replace('/[^A-Za-z0-9 ]/', '', $this->search);
 
-        $this->debug=time();
         $users=[] ;
 
         // if role=3 get only students filtered by career else get filtered by role
         if($this->roleSelected==3 && $this->search!=''){
             // get students filtered by career
-            $users = User::whereHas('careers', function($query) {
-                $query->where('careers.id', $this->careerSelected);
-            }) // filter by name
-            ->where(function($query) {
+            if ($this->careerSelected!='') {
+                $users = User::whereHas('careers', function ($query) {
+                    $query->where('career_id', $this->careerSelected);
+                });
+            } else { // users without career
+                $users = User::whereDoesntHave('careers');
+            }
+            // filter by name
+            $users->where(function($query) {
                 $query->where('name', 'like', '%'.$this->search.'%')
                     ->orWhere('lastname', 'like', '%'.$this->search.'%')
                     ->orWhere('firstname', 'like', '%'.$this->search.'%');
             });
 
-            $this->debug=$this->debug." » Career: ".$this->careerSelected;
         }else{ // get all users by role
             if ($this->roleSelected!=0) {
                 $users = User::whereHas('roles', function ($q) {
@@ -106,15 +109,10 @@ class StudentsComponent extends Component
             } else {
                 $users = User::whereDoesntHave('roles');
             }
-            $this->debug=$this->debug." » Role: ".$this->roleSelected;
         }
-
         //DB::enableQueryLog();
         $users=$users->paginate($this->cant);
         //dd(DB::getQueryLog());
-
-        // $this->debug=$this->debug.str_replace(array( '\'','"',',',';','<','>'),' ',$users);
-        $this->debug=$this->debug.' » Count: '.$users->count();
         return $users;
     }
 
@@ -175,7 +173,7 @@ class StudentsComponent extends Component
             'email'=>$this->email,
             'enabled'=>$this->enabled,
             'career_id'=>$this->career_id,
-            'password' => Hash::make($this->pid),
+            'password' => Hash::make($this->phone),
         ]);
 
         $this->openModal=false;
