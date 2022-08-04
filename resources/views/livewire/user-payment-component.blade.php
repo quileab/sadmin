@@ -8,24 +8,33 @@
     </x-slot>
 
     <x-slot name="content">
-      <select wire:model="selectedPlan" class="form-control">
+      <div class="flex items-center justify-evenly">
+
+      <select wire:model="selectedPlan" class="form-control w-1/2">
         @foreach ($payplans as $payplan)
           <option value="{{ $payplan->id }}">{{ $payplan->title }}</option>
         @endforeach
       </select>
-
-      <button wire:click="assignPayPlan({{ $selectedPlan }})"
-        class="px-4 py-2 m-1 text-sm text-white uppercase bg-blue-700 rounded-md">
-        Asignar Plan
-      </button>
-
+      
+      {{-- checkbox to combine with other plans --}}
+      <div class="form-check">
+        <input wire:model="combinePlans" type="checkbox">
+        <label class="form-check-label" for="combinePlans">
+          Combinar con otros planes
+        </label>
+      </div>
+      </div>
+      
     </x-slot>
-
+    
     <x-slot name="footer">
-      <div class="flex justify-end">
+      <div class="flex justify-between">
         <x-jet-secondary-button wire:click="$toggle('openModal')" wire:loading.attr="disabled">
           Salir
         </x-jet-secondary-button>
+        <x-jet-button wire:click="assignPayPlan({{ $selectedPlan }})">
+          Asignar Plan
+        </x-jet-button>
       </div>
     </x-slot>
   </x-jet-dialog-modal>

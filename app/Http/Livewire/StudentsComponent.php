@@ -23,7 +23,8 @@ class StudentsComponent extends Component
     protected $students;
     // record
     public $uid, $pid, $name, $lastname, $firstname;
-    public $phone, $email, $enabled, $career_id;
+    public $phone, $email, $enabled;
+    public $career_id=0;
     public $student_careers=[];
     // Livewire utilities
     public $search='';    
@@ -32,6 +33,7 @@ class StudentsComponent extends Component
     public $direction='asc';
     public $openModal=false;
     public $readyToLoad=false;
+    public $globalSearch=null;
     // TODO: leave just one
     public $formAction = "store";
     public $updating=false;
@@ -60,27 +62,26 @@ class StudentsComponent extends Component
         // 'career_id'
     ];
 
-    public function mount()
-    {
+    public function mount(){
         $this->careers = Career::all();
-        $this->careerSelected = $this->careers[0]->id;
-        $this->career_id=$this->careers[0]->id;
-
+        if (count($this->careers)>0) {
+            $this->careerSelected = $this->careers[0]->id;
+            $this->career_id=$this->careers[0]->id;
+        }
         // get all roles
         $this->roles = \Spatie\Permission\Models\Role::all();
         // Set roleSelected = 3 -> student
         $this->roleSelected = 3;
     }
 
-    public function getSearch()
-    {
+    public function getSearch(){
         // regex clean $search to only letters, numbers and spaces
         $this->search = preg_replace('/[^A-Za-z0-9 ]/', '', $this->search);
 
         $users=[] ;
 
         // if role=3 get only students filtered by career else get filtered by role
-        if($this->roleSelected==3 && $this->search!=''){
+        if($this->roleSelected==3 && $this->globalSearch==false){
             // get students filtered by career
             if ($this->careerSelected!='') {
                 $users = User::whereHas('careers', function ($query) {
@@ -116,8 +117,7 @@ class StudentsComponent extends Component
         return $users;
     }
 
-    public function render()
-    {
+    public function render(){
         if ($this->readyToLoad) {
             $this->students = $this->getSearch();
         } else {
@@ -189,7 +189,8 @@ class StudentsComponent extends Component
         $this->phone=$user->phone;
         $this->email=$user->email;
         $this->enabled=$user->enabled;
-        $this->career_id=$user->career_id;
+        $this->career_id=$user->career_id ?? $this->careers[0]->id;
+        dd($user->career_id);
 
         $this->formAction = "update";
         $this->updating=true;
@@ -250,6 +251,11 @@ class StudentsComponent extends Component
 
     public function addCareer(){
         // remove: $text=$this->uid." / ".$this->career_id;
+        // if ($this->career_id==0){
+        //     $this->career_id=$this->careers[0]->id;        
+        // }
+
+        dd($this->uid." / ".$this->career_id);
 
         $user=User::find($this->uid);
         $hasCareer = $user->careers()->where('id', $this->career_id)->exists();

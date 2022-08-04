@@ -1,32 +1,49 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
-.form-label{
-  @apply block text-xs font-bold text-gray-700;
+.form-label {
+    @apply block text-xs font-bold text-gray-700;
 }
 
-.d2c{
-  background: #0573c0;
-  background: linear-gradient(90deg, #0572c0 15%, #76a444 100%);
-  text-shadow: 1px 1px 4px black;
-  font-size: large;
-  color: white !important;
+input[type="checkbox"] {
+  /* BLUE BASE COLOR */
+  @apply w-4 h-4 focus:ring-2 bg-blue-700 align-middle text-gray-100;
+
 }
-.c2d{
-  background: #0573c0;
-  background: linear-gradient(0deg, #0572c0 15%, #76a444 100%);
-  text-shadow: 1px 1px 4px black;
-  color: white !important;
+
+input::file-selector-button {
+  @apply focus:ring-2 rounded bg-gray-700 align-middle text-gray-100;
+}
+
+.d2c {
+    background: #0573c0;
+    background: linear-gradient(90deg, #0572c0 15%, #76a444 100%);
+    text-shadow: 1px 1px 4px black;
+    font-size: large;
+    color: white !important;
+}
+.c2d {
+    background: #0573c0;
+    background: linear-gradient(0deg, #0572c0 15%, #76a444 100%);
+    text-shadow: 1px 1px 4px black;
+    color: white !important;
+}
+
+.gradl2r{
+  @apply bg-gradient-to-br from-gray-600 to-gray-800 
+    hover:bg-gradient-to-br hover:from-gray-500 hover:to-gray-700
+
+}
+
+thead{
+  @apply bg-gray-800 text-gray-100;
 }
 
 tbody > tr:nth-of-type(odd) {
-  background-color: rgba(0, 0, 0, 0.04);
+    background-color: rgba(0, 0, 0, 0.04);
 }
 
-select{
-  @apply my-1 px-2 py-2 border-gray-500 rounded-md shadow-sm bg-gray-50 text-gray-900
+select {
+    @apply my-1 px-2 py-2 border-gray-500 rounded-md shadow-sm bg-gray-50 text-gray-900;
 }
-
-
-

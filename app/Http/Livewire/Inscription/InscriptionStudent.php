@@ -114,8 +114,11 @@ class InscriptionStudent extends Component
         $value=$this->inscriptionStudent[$key];
         if ($value==null) { $this->clearValue($key); return; }
         //$this->validate();
-        $studentinscription=\App\Models\Studentinscription::where('user_id', $this->studentID)
-            ->where('subject_id', $key)->first();
+        $studentinscription=\App\Models\Studentinscription::
+            where('user_id', $this->studentID)
+            ->where('subject_id', $key)
+            ->where('name', $this->inscription->id)
+            ->first();
 
         if ($studentinscription!=null) {
             $studentinscription->value=$value;

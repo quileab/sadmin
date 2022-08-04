@@ -33,6 +33,7 @@ class UserPaymentComponent extends Component
     public $formAction="";
     public $totalDebt=0;
     public $totalPaid=0;
+    public $combinePlans=null;
 
     // validation rules
     protected $rules = [
@@ -90,16 +91,45 @@ class UserPaymentComponent extends Component
     }
 
     public function assignPayPlan($pid){
-        $planDetails=PlansDetail::where('plans_master_id',$pid)->get();
-        foreach ($planDetails as $planDetail) {
+        function createUserpayments($uid,$planDetail){
             UserPayments::create([
-                'user_id'=>$this->uid,
+                'user_id'=>$uid,
                 'date'=>$planDetail->date,
                 'paiddate'=>null,
                 'title'=>$planDetail->title,
                 'paid'=>0,
                 'amount'=>$planDetail->amount,
-            ]);
+                ]);
+        }
+
+        function updateUserpayments($userPaymentsId,$planDetail){
+            $userPayments=UserPayments::find($userPaymentsId);
+            $userPayments->date=$planDetail->date;
+            $userPayments->title=$planDetail->title;
+            $userPayments->amount=$planDetail->amount;
+            $userPayments->save();
+        }
+
+        $planDetails=PlansDetail::where('plans_master_id',$pid)->get();
+        // check if Plans has to be combined with other plans
+        if ($this->combinePlans){
+            foreach ($planDetails as $planDetail) {
+                $userPayments=UserPayments::where('user_id', $this->uid)
+                    ->where('date', $planDetail->date)
+                    ->orderBy('id', 'desc')->first() ?? [];
+                if ($userPayments) { // if user has a payment for this date
+                    if ($userPayments->amount>$userPayments->paid) {
+                        $planDetail->amount+=$userPayments->amount;
+                        updateUserpayments($userPayments->id, $planDetail);
+                    }
+                } else {
+                    createUserpayments($this->uid, $planDetail);
+                }
+            }
+        }else{ // create new user payments
+            foreach ($planDetails as $planDetail) {
+                createUserpayments($this->uid,$planDetail);
+            }
         }
         $this->openModal=false;
         // $this->userPayments=UserPayments::where('user_id',$this->uid)->orderBy('date')->get() ?? [];

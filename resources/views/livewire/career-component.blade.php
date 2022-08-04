@@ -62,9 +62,7 @@
             </tr>
         </thead>
         <tbody class="text-gray-700">
-
             @foreach ($careers as $career)
-
             <tr>
                 <td class="w-1/6 text-left py-2 px-3 border-b">{{ $career->id }}</td>
                 <td class="w-4/6 text-left py-2 px-3 border-b">{{ $career->name }}</td>

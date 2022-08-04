@@ -45,8 +45,7 @@ class InscriptionAdmin extends Component
         $this->updatedCareer();
     }
 
-    public function render()
-    {
+    public function render(){
         return view('livewire.inscription.inscription-admin')
             ->with('inputType', $this->inputType)
             ->with('inscriptionValues', $this->inscriptionValues)
@@ -55,8 +54,7 @@ class InscriptionAdmin extends Component
             ->with('subjects', $this->subjects);
     }
 
-    public function updatedCareer()
-    {
+    public function updatedCareer(){
       $this->inscriptionValues=[];
       $this->inscriptionUpdated=[];
         // Obtenemos las materias de la carrera seleccionada
@@ -89,8 +87,11 @@ class InscriptionAdmin extends Component
         //$this->validate();
         $studentinscription=\App\Models\Studentinscription::
             where('user_id', $this->adminID)
-          ->where('subject_id', $key)->first();
+          ->where('subject_id', $key)
+          ->where('name', $this->inscription->id)
+          ->first();
 
+        //dd($studentinscription,$value);
         if ($studentinscription!=null) { // Si existe, actualizamos
             $studentinscription->value=$value;
             $studentinscription->type=$this->inputType;

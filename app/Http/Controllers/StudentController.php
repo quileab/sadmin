@@ -22,11 +22,11 @@ class StudentController extends Controller
             ]
         );
     
+        ini_set('max_execution_time', 300);
         $file=$request->file('file');
         $csvData=file_get_contents($file);
         $rows=array_map('str_getcsv',explode("\n",$csvData));
         $header=array_shift($rows);
-        
         foreach ($rows as $row){
             $row=array_combine($header,$row); // convierte en array asociativo con los datos de $header
         
@@ -52,6 +52,7 @@ class StudentController extends Controller
                 $user->careers()->attach($row['career']);
             }
         }
+        ini_set('max_execution_time', 60);
         return redirect()->route('students')->with('success','Importación Exitosa');
     }
 }

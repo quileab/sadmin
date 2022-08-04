@@ -25,13 +25,17 @@ class InscriptionsManage extends Component
             $user=\App\Models\User::find($user_id);
             if ($user!=null) {
                 $username=$user->lastname.', '.$user->firstname;
-                //dd($user);
             }else{
                 $username='No encontrado';
-                //dd($user, $key);
             }
             $this->careers=\App\Models\Career::all();
-            $career=\App\Models\Career::find($career_id)->name;
+            if(count($this->careers)==0){
+                return;
+            }
+            // Get career name
+            $career=\App\Models\Career::where('id',$career_id)->first();
+            $career!=null?$career=$career->name:$career='🚫Carrera/Curso'; 
+
             $this->inscripts[$key]['filename'] = $file;
             $this->inscripts[$key]['user'] = $username;
             $this->inscripts[$key]['career'] = $career;
@@ -67,8 +71,6 @@ class InscriptionsManage extends Component
         }
         $this->inscripts = array_values($this->inscripts);
         $this->selectedCount = 0;
-    }
-
-      
+    }   
 
 }

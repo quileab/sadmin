@@ -13,7 +13,7 @@ $nav_links = [
       'permission'=>'menu.students',
     ],
     [
-      'name' => 'Carreras',
+      'name' => 'Carreras / Cursos-Divisiones',
       'route' => route('careers'),
       'active' => request()->routeIs('careers'),
       'permission'=>'menu.careers',
@@ -223,7 +223,7 @@ $nav_links = [
           @can($nav_link['permission'])
             <x-jet-nav-link class="block py-2 px-4 w-full" href="{{ $nav_link['route'] }}"
               :active="$nav_link['active']">
-              {{ __($nav_link['name']) }}
+              &nbsp;{{ __($nav_link['name']) }}
             </x-jet-nav-link><br />
           @endcan
         @endforeach
