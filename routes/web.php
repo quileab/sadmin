@@ -14,6 +14,7 @@ Route::get('/', function () {
     // $info=\App\Models\Config::find('shortname')->value.
     //   ' '.\App\Models\Config::find('longname')->value;
     //return view('welcome',compact('info'));
+    
     return redirect()->route('login');
 });
 Route::get('/register', function () {
