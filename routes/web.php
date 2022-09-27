@@ -133,6 +133,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('grades.index',compact('id'));
     })->name('grades');
 
+    Route::get('/grades/{id}/{career}', function ($id,$career) {
+        return view('grades.student',compact(['id','career']));
+    })->name('grades');
+
     Route::get('/userpayments/{id}', function ($id) {
         return view('userpayments',compact('id'));
     })->name('userpayments');

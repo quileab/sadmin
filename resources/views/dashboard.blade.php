@@ -11,14 +11,14 @@
        <div class="overflow-hidden bg-gray-200 shadow-xl sm:rounded-lg">
          {{-- <x-jet-welcome /> --}}
          {{-- begin: this is the welcome.blade --}}
-         <div class="d2c flex justify-between items-center py-2 px-8 text-white bg-gray-600 border-b border-gray-300">
+         <div class="flex items-center justify-between px-8 py-2 text-white bg-gray-600 border-b border-gray-300 d2c">
            <div class="flex text-2xl">
              <div class="flex">
                <x-jet-application-mark class="w-auto h-8" />&nbsp;
                Bienvenidos
              </div>
            </div>
-           <p class="opacity-60 text-sm">
+           <p class="text-sm opacity-60">
             {{ app()->version() }} » {{ phpversion() }} » 
             {{ env('APP_ENV') }} » {{ env('APP_DEBUG') }}
           </p>
@@ -98,7 +98,8 @@
                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                </svg>
                <div class="ml-4 text-lg font-semibold leading-7 text-gray-700">
-                 Materias y Calificaciones
+                 Materias y Calificaciones {{ Auth::user()->hasRole('student') ? '('.Auth::user()->id.')' : '»' }}
+                 
                </div>
              </div>
 

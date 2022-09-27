@@ -190,7 +190,6 @@ class StudentsComponent extends Component
         $this->email=$user->email;
         $this->enabled=$user->enabled;
         $this->career_id=$user->career_id ?? $this->careers[0]->id;
-        dd($user->career_id);
 
         $this->formAction = "update";
         $this->updating=true;
