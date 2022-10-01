@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Career;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class StudentsComponent extends Component
@@ -254,7 +253,8 @@ class StudentsComponent extends Component
         //     $this->career_id=$this->careers[0]->id;        
         // }
 
-        dd($this->uid." / ".$this->career_id);
+        // todo: asignar carrera corregir bug
+        // dd($this->uid." / ".$this->career_id);
 
         $user=User::find($this->uid);
         $hasCareer = $user->careers()->where('id', $this->career_id)->exists();

@@ -15,7 +15,7 @@ class GradesComponent extends Component
     public $date, $name, $grade, $approved;
     public $selectedCareer = 0;
 
-    public $subjID, $subjName;
+    public $subjID, $subjName, $canEdit;
     public $grades = [];
 
     // Livewire utilities
@@ -50,6 +50,7 @@ class GradesComponent extends Component
         $subjects = [];
         if ($this->readyToLoad) {
             $user = User::find($this->uid);
+            $this->canEdit=!$user->hasRole(['student','user','administrative','financial']); 
             $this->lastname = $user->lastname;
             $this->firstname = $user->firstname;
             $this->pid = $user->pid;
@@ -62,15 +63,20 @@ class GradesComponent extends Component
                 }
                 // subjects pertenecientes al USER
                 $loggedUser = \App\Models\User::find(Auth::user()->id);//->subjects()->get();
-                // load User -> Career -> Subjects
-                $subjects = $user->careers()->find($this->selectedCareer)->subjects()->
-                  //filter subjects existing in logged user subjects
-                  whereIn('id', $loggedUser->subjects()->pluck('id'))->get();
-            } else {
-                $careers = [];
-                $subjects = [];
-                $this->emit('toast', 'No se encuentran Carreras', 'error');
-            }
+                // if loggedUser = Selected user get all subjects
+                if($loggedUser->id==$this->uid){
+                    $subjects=$user->careers()->find($this->selectedCareer)->subjects()->get();
+                }
+                else{
+                    // load User -> Career -> Subjects
+                    $subjects = $user->careers()->find($this->selectedCareer)->subjects()->
+                    //filter subjects existing in logged user subjects
+                    whereIn('id', $loggedUser->subjects()->pluck('id'))->get();
+                }
+            } 
+            // else {
+            //     $this->emit('toast', 'No se encuentran Carreras', 'error');
+            // }
 
         }
         return view('livewire.grades-component', compact('careers', 'subjects'));

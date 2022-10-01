@@ -64,10 +64,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/files/private/{filename}', [PrivateFilesController::class, 'files']);
   
     Route::get('/permissions', function () {
-        if (auth()->user()->can('menu.security')) {
-            return view('permissions.index');
+        if (!auth()->user()->hasRole(['admin','principal'])) {
+            return abort(404);
         }
-        return abort(403);
+        return view('permissions.index');
     })->name('permissions');
 
     Route::get('/assignrole/{id}', function ($id) {
@@ -87,6 +87,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('careers');
 
     Route::get('/students', function () {
+        if (!auth()->user()->can('menu.students')){
+            abort(404); 
+        }
         return view('students.index');
     })->name('students');
 
@@ -131,7 +134,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/students-import-bulk', [StudentController::class,'importBulk'])->name('students-import-bulk');
 
     Route::get('/grades/{id}', function ($id) {
-        return view('grades.index',compact('id'));
+        if (auth()->user()->hasRole(['admin','principal','teacher','student'])) {
+            return view('grades.index', compact('id'));
+        }
+        return back();
     })->name('grades');
 
     Route::get('/grades/{id}/{career}', function ($id,$career) {
