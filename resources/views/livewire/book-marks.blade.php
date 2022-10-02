@@ -1,7 +1,8 @@
 <div>
   @role('student')
   @else
-    <div class="opacity-75 flex fixed top-2 right-2 text-xs shadow-md bg-gray-700 text-gray-300 rounded-full py-2 px-2">
+    {{-- <div class="opacity-75 flex fixed top-2 right-2 text-xs shadow-md bg-gray-700 text-gray-300 rounded-full py-2 px-2"> --}}
+    <div class="opacity-75 flex text-xs shadow-md bg-gray-700 text-gray-300 py-2 px-2">
         {{-- if session 'bookmarkedId' --}}
         @if (session()->has('bookmark'))
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" class="bi bi-bookmark-check-fill" viewBox="0 0 16 16">

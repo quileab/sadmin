@@ -217,6 +217,9 @@ $nav_links = [
           </x-jet-dropdown>
         </div>
       </div>
+      
+      {{-- float information --}}    
+      @livewire('book-marks')
 
       <nav class="text-gray-50">
         @foreach ($nav_links as $nav_link)
@@ -228,7 +231,6 @@ $nav_links = [
           @endcan
         @endforeach
       </nav>
-
     </div>
 
     {{-- content --}}
@@ -240,9 +242,6 @@ $nav_links = [
       </main>
 
     </div>
-
-    {{-- float information --}}    
-    @livewire('book-marks')
 
   </div>
   {{-- end qb template --}}
