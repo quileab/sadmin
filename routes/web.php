@@ -5,6 +5,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PrivateFilesController;
@@ -28,6 +29,42 @@ Route::get('/previewReceipt', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     
+    Route::get('/clear', function () {
+        if (!auth()->user()->hasRole('admin')) {
+            return abort(404);
+        }
+        $log="";
+        try {
+            Artisan::call('cache:clear');
+            $log=$log.'Cache...clear<br />';
+        } catch (\Exception $e){
+            $log=$log.'Cache...ERROR<br />';
+        }
+        try {
+            Artisan::call('config:clear'); 
+            $log=$log.'Config...clear<br />';
+        } catch (\Exception $e){
+            $log=$log.'Config...ERROR<br />';
+        }
+
+        try {
+            Artisan::call('optimize:clear');
+            $log=$log.'Optimize...clear<br />';
+        } catch (\Exception $e){
+            $log=$log.'Optimize...ERROR<br />';
+        }
+
+        $log=$log.'<hr />EXTRAS<br />';
+        try {
+            Artisan::call('debugbar:clear');
+            $log=$log.'DebugBar...clear<br />';
+        } catch (\Exception $e){
+            $log=$log.'DebugBar...ERROR<br />';
+        }
+        return $log;
+    });
+
+
     Route::get('/dashboard', function () {
         // get first record from config table
         $temp = new NumberFormatter("es", NumberFormatter::SPELLOUT);
