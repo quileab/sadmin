@@ -15,7 +15,8 @@ class PaymentRecord extends Model
         'paimentAmount',
     ];
 
-    protected $table = "paymentrecords";
+    protected $table = 'paymentrecords';
+
     use HasFactory;
 
     public function user()

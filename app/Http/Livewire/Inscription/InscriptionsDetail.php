@@ -2,77 +2,89 @@
 
 namespace App\Http\Livewire\Inscription;
 
-use App\Models\Studentinscription;
-use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+use Livewire\Component;
 
 class InscriptionsDetail extends Component
 {
-    public $careers=[];
-    public $career_id;
-    public $subjects=[];
-    public $subject_id;
-    public $inscriptions=[];
-    public $inscription_id;
-    public $detail=[];
+    public $careers = [];
 
-    public function mount(){
-        $this->inscriptions=\App\Models\Config::where('group','inscriptions')->get();
-        $this->careers=\App\Models\Career::all();
+    public $career_id;
+
+    public $subjects = [];
+
+    public $subject_id;
+
+    public $inscriptions = [];
+
+    public $inscription_id;
+
+    public $detail = [];
+
+    public function mount()
+    {
+        $this->inscriptions = \App\Models\Config::where('group', 'inscriptions')->get();
+        $this->careers = \App\Models\Career::all();
     }
 
-    public function render(){
+    public function render()
+    {
         return view('livewire.inscription.inscriptions-detail');
     }
 
-    public function updatedCareerId(){
-        $this->subjects=\App\Models\Subject::where('career_id',$this->career_id)
-          ->where('name','!=','')
+    public function updatedCareerId()
+    {
+        $this->subjects = \App\Models\Subject::where('career_id', $this->career_id)
+          ->where('name', '!=', '')
           ->get() ?? [];
-        $this->subject_id=null;
-        $this->detail=[];
+        $this->subject_id = null;
+        $this->detail = [];
     }
 
-    public function updatedSubjectId(){
-        $this->detail=[];
+    public function updatedSubjectId()
+    {
+        $this->detail = [];
     }
 
-    public function updatedInscriptionId(){
-        $this->detail=[];
+    public function updatedInscriptionId()
+    {
+        $this->detail = [];
     }
 
-    public function buscarFiltros(){
-        $career_id=$this->career_id;
-        $subject_id=$this->subject_id;
+    public function buscarFiltros()
+    {
+        $career_id = $this->career_id;
+        $subject_id = $this->subject_id;
 
-        $this->detail=DB::table('studentinscriptions')
+        $this->detail = DB::table('studentinscriptions')
         ->select('studentinscriptions.user_id',
             'users.lastname', 'users.firstname',
             'studentinscriptions.name as inscription',
             'studentinscriptions.value',
             'studentinscriptions.subject_id',
             'subjects.name as subject_name')
-        ->join('users','users.id','=','studentinscriptions.user_id')
-        ->join('subjects','subjects.id','=','studentinscriptions.subject_id')
-        ->where('user_id','>',1)
-        ->when(!empty($this->inscription_id), function($query){
-            return $query->where('studentinscriptions.name',$this->inscription_id);
-            })
-        ->when(!empty($career_id), function($query){
+        ->join('users', 'users.id', '=', 'studentinscriptions.user_id')
+        ->join('subjects', 'subjects.id', '=', 'studentinscriptions.subject_id')
+        ->where('user_id', '>', 1)
+        ->when(! empty($this->inscription_id), function ($query) {
+            return $query->where('studentinscriptions.name', $this->inscription_id);
+        })
+        ->when(! empty($career_id), function ($query) {
             return $query->where('career_id', $this->career_id);
-            })
-        ->when(!empty($subject_id), function($query){
+        })
+        ->when(! empty($subject_id), function ($query) {
             return $query->where('subject_id', $this->subject_id);
-            })
+        })
         ->orderBy('users.lastname')
         ->orderBy('users.firstname')
         ->get();
     }
 
-    public function borrarRegistros(){
-        $admin_ID=\App\Models\User::where('name','admin')->first()->id;
-        $career_id=$this->career_id;
-        $subject_id=$this->subject_id;
+    public function borrarRegistros()
+    {
+        $admin_ID = \App\Models\User::where('name', 'admin')->first()->id;
+        $career_id = $this->career_id;
+        $subject_id = $this->subject_id;
 
         DB::table('studentinscriptions')
         ->select('studentinscriptions.user_id',
@@ -80,20 +92,19 @@ class InscriptionsDetail extends Component
             'studentinscriptions.value',
             'studentinscriptions.subject_id',
             'subjects.name as subject_name')
-        ->join('subjects','subjects.id','=','studentinscriptions.subject_id')
-        ->where('user_id','!=',$admin_ID)
-        ->when(!empty($this->inscription_id), function($query){
-            return $query->where('studentinscriptions.name',$this->inscription_id);
-            })
-        ->when(!empty($career_id), function($query){
+        ->join('subjects', 'subjects.id', '=', 'studentinscriptions.subject_id')
+        ->where('user_id', '!=', $admin_ID)
+        ->when(! empty($this->inscription_id), function ($query) {
+            return $query->where('studentinscriptions.name', $this->inscription_id);
+        })
+        ->when(! empty($career_id), function ($query) {
             return $query->where('career_id', $this->career_id);
-            })
-        ->when(!empty($subject_id), function($query){
+        })
+        ->when(! empty($subject_id), function ($query) {
             return $query->where('subject_id', $this->subject_id);
-            })
+        })
         ->delete();
 
-        $this->detail=[];
+        $this->detail = [];
     }
-
 }

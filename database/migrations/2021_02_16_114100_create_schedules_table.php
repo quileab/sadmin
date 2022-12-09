@@ -14,14 +14,14 @@ class CreateSchedulesTable extends Migration
     public function up()
     {
         Schema::create('schedules', function (Blueprint $table) {
-            $table->primary(['user_id','datetime']);
+            $table->primary(['user_id', 'datetime']);
             $table->unsignedBigInteger('user_id');
             $table->timestamp('datetime');
-            $table->string('fullname',60);
-            $table->string('email',127);
-            $table->string('phone',30);
-            $table->string('subject',250);
-            $table->string('status',1);
+            $table->string('fullname', 60);
+            $table->string('email', 127);
+            $table->string('phone', 30);
+            $table->string('subject', 250);
+            $table->string('status', 1);
 
             $table->foreign('user_id')->references('id')->on('users')
             ->onDelete('cascade')->onUpdate('cascade');

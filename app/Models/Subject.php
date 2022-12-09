@@ -11,15 +11,18 @@ class Subject extends Model
 
     protected $guarded = [];
 
-    public function career(){
+    public function career()
+    {
         return $this->belongsTo('App\Models\Career');
     }
 
-    public function users(){
+    public function users()
+    {
         return $this->belongsToMany(User::class);
     }
 
-    public function grades(){
+    public function grades()
+    {
         return $this->hasMany(Grade::class);
     }
 }

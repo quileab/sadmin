@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -78,9 +77,10 @@ class User extends Authenticatable
     //            "career_id"=>1
     //         ]);
     // }
-    
+
     // users may have multiple careers
-    public function careers(): BelongsToMany {
+    public function careers(): BelongsToMany
+    {
         return $this->belongsToMany(Career::class);
     }
 
@@ -89,34 +89,41 @@ class User extends Authenticatable
     //     //return $this->hasMany(Career::class);
     // }
 
-    public function book(){
+    public function book()
+    {
         return $this->hasMany('App\Models\Books');
     }
 
-    public function subjects(){
+    public function subjects()
+    {
         return $this->belongsToMany(Subject::class);
     }
 
-    public function payments(){
+    public function payments()
+    {
         return $this->hasMany('App\Models\PaymentRecord');
     }
 
-    public function userCount(){
-        return User::where('pid','>','1000000')->count();
+    public function userCount()
+    {
+        return User::where('pid', '>', '1000000')->count();
     }
 
-    public function getCountByRole(){
+    public function getCountByRole()
+    {
         // return array with key=role and value=count
-        $roles = \Spatie\Permission\Models\Role::all();
-        $users = User::with('roles')->get();
+        $roles = \Spatie\Permission\Models\Role::select(['name'])->get(); //all();
+        $users = \App\Models\User::select('id')->with('roles')->get();
+        //dd($users, $roles);
         $roleless = User::whereDoesntHave('roles')->count();
         $counts = [];
-        foreach($roles as $role){
-            $counts[$role->name] = $users->filter(function($user) use ($role){
+        foreach ($roles as $role) {
+            $counts[$role->name] = $users->filter(function ($user) use ($role) {
                 return $user->hasRole($role->name);
             })->count();
         }
         $counts['roleless'] = $roleless;
+
         return $counts;
     }
 }

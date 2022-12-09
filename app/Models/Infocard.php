@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Infocard extends Model
 {
     use HasFactory;
-    
-    protected $fillable = ['title','text','type','user_id'];
 
-    public function user(){
+    protected $fillable = ['title', 'text', 'type', 'user_id'];
+
+    public function user()
+    {
         /*** Metodo largo ***/
         // $user=User::find($this->user_id);
         // return $user;

@@ -18,8 +18,8 @@ class CreateUserpaymentsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->date('date')->key();
             $table->string('title');
-            $table->decimal('paid',10,2)->default(0);
-            $table->decimal('amount',10,2);
+            $table->decimal('paid', 10, 2)->default(0);
+            $table->decimal('amount', 10, 2);
             $table->timestamps();
         });
     }

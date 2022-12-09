@@ -18,11 +18,11 @@ class CreateUsersTable extends Migration
             $table->string('name');
 
             $table->unsignedInteger('pid')->unique()->default(1);
-            $table->string('lastname',30)->nullable();
-            $table->string('firstname',30)->nullable();
-            $table->string('phone',20)->nullable();
+            $table->string('lastname', 30)->nullable();
+            $table->string('firstname', 30)->nullable();
+            $table->string('phone', 20)->nullable();
             $table->tinyInteger('enabled')->default(0);
-            
+
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Subject;
 
 class Career extends Model
 {
@@ -13,11 +12,13 @@ class Career extends Model
     // protected $fillable = ['id','name','correl','user_id'];
     protected $guarded = [];
 
-    public function users(){
+    public function users()
+    {
         return $this->belongsToMany(User::class);
     }
 
-    public function subjects(){
+    public function subjects()
+    {
         return $this->hasMany(Subject::class);
     }
 }

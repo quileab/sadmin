@@ -10,18 +10,21 @@ class Grade extends Model
     use HasFactory;
 
     protected $primaryKey = 'date_id';
+
     protected $guarded = [];
 
-    public function subject(){
+    public function subject()
+    {
         return $this->belongsTo('App\Models\Subject');
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo('App\Models\User');
     }
 
-    public function getDateIdAttribute(){
+    public function getDateIdAttribute()
+    {
         return \Carbon\Carbon::createFromFormat('Y-m-d', $this->attributes['date_id'])->format('d-m-Y');
     }
-
 }

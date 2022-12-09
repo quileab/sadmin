@@ -16,11 +16,11 @@ class Book extends Model
         'gender', 'extent', 'edition', 'isbn',
         'container', 'signature', 'digital', 'origin',
         'date_added', 'price', 'discharge_date',
-        'discharge_reason', 'synopsis', 'note', 'user_id'
+        'discharge_reason', 'synopsis', 'note', 'user_id',
     ];
 
-
-    public function user(){
+    public function user()
+    {
         /** Metodo Largo */
         // $user=User::find($this->user_id);
         // return $user;
@@ -28,9 +28,10 @@ class Book extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function getFullSearchAttribute(){
-        return $this->title . '|' . $this->author. '|' 
-            .$this->publisher. '|' . $this->gender .'|'
+    public function getFullSearchAttribute()
+    {
+        return $this->title.'|'.$this->author.'|'
+            .$this->publisher.'|'.$this->gender.'|'
             .$this->synopsis;
     }
 }

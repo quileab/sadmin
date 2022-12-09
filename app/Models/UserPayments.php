@@ -15,7 +15,8 @@ class UserPayments extends Model
         'amount',
     ];
 
-    protected $table = "userpayments";
+    protected $table = 'userpayments';
+
     use HasFactory;
 
     public function user()

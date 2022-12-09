@@ -15,8 +15,8 @@ class CreateOfficesTable extends Migration
     {
         Schema::create('offices', function (Blueprint $table) {
             $table->id();
-            $table->string('title',50);
-            $table->string('description',250);
+            $table->string('title', 50);
+            $table->string('description', 250);
             $table->unsignedBigInteger('user_id');
             $table->integer('minutes');
             $table->timestamps();

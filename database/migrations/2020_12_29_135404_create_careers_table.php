@@ -15,8 +15,8 @@ class CreateCareersTable extends Migration
     {
         Schema::create('careers', function (Blueprint $table) {
             $table->id();
-            $table->string('name',80);
-            $table->string('resol',40)->nullable();
+            $table->string('name', 80);
+            $table->string('resol', 40)->nullable();
             $table->boolean('active_suscribe');
             $table->boolean('active_eval');
 
