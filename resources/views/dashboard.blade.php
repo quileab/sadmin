@@ -139,6 +139,7 @@
          </div>
 
          {{-- end: welcome.blade --}}
+
        </div>
      </div>
    </div>

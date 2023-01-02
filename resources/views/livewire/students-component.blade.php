@@ -103,9 +103,9 @@
     </x-slot>
   </x-jet-dialog-modal>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="w-full px-3 sm:px-4 lg:px-6">
     <x-table>
-      <div class="px-4 py-1 flex items-center d2c">
+      <div class="px-3 py-1 flex items-center d2c">
         <div class="flex item center">
           <select wire:model="cant"
             class="mr-2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
@@ -117,8 +117,8 @@
         </div>
         {{-- SEARCH --}}
         <x-jet-input class="flex-1" type="search" placeholder="Ingrese su búsqueda aquí" wire:model.lazy="search" />
-        <x-jet-secondary-button wire:click="render" class="mr-2 py-3"><x-svg.search />
-          {{ count($students)}}
+        <x-jet-secondary-button wire:click="render" class="mr-2 py-2.5">
+          <x-svg.search />
         </x-jet-secondary-button>
         {{-- select career --}}
         <div class="inline text-sm mr-2">

@@ -32,8 +32,21 @@ input::file-selector-button {
 
 .gradl2r{
   @apply bg-gradient-to-br from-gray-600 to-gray-800 
-    hover:bg-gradient-to-br hover:from-gray-500 hover:to-gray-700
-
+    hover:bg-gradient-to-br hover:from-gray-500 hover:to-gray-700;
+}
+.spin{
+  animation-name: spinkeys;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear; 
+}
+@keyframes spinkeys {
+  from {
+      transform:rotate(0deg);
+  }
+  to {
+      transform:rotate(360deg);
+  }
 }
 
 thead{

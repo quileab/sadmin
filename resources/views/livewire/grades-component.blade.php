@@ -74,16 +74,16 @@
           <tbody class="bg-white divide-y divide-gray-200">
             @foreach ($grades as $grade)
               <tr class="hover:bg-gray-100">
-                <td class="px-6 py-4">
+                <td class="px-5 py-2">
                   {{ $grade->date_id }}<br />
                 </td>
-                <td class="px-6 py-4">
+                <td class="px-5">
                   {{$grade->name}}
                 </td>
-                <td class="px-6 py-4">
+                <td class="px-5">
                   {{$grade->grade}}
                 </td>
-                <td class="px-6 py-4 text-sm font-medium text-right bg-gray-100 w-28 whitespace-nowrap">
+                <td class="px-6 text-sm font-medium text-right bg-gray-100 w-28 whitespace-nowrap">
                   @if (!auth()->user()->hasRole('student'))
                   {{-- Edit --}}
                   <button wire:click="editGrade('{{ $grade->date_id }}')" class="mr-2">

@@ -1,5 +1,5 @@
-<svg  {!! $attributes->merge(['class' => 'h-6 w-6']) !!}
- fill="none" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
- <rect x="1.1285" y="7.4219" width="21.658" height="9.375" ry="4.6875" fill-opacity="0" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.109"/>
- <path d="m21.417 12.119a3.3184 3.3113 0 0 1-3.3159 3.3113 3.3184 3.3113 0 0 1-3.3209-3.3064 3.3184 3.3113 0 0 1 3.311-3.3162 3.3184 3.3113 0 0 1 3.3258 3.3014" fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.109"/>
+<svg {!! $attributes->merge(['class' => 'h-6 w-6']) !!}
+viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 15C18.6569 15 20 13.6569 20 12C20 10.3431 18.6569 9 17 9C15.3431 9 14 10.3431 14 12C14 13.6569 15.3431 15 17 15Z" fill="currentColor" />
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 12C0 8.13401 3.13401 5 7 5H17C20.866 5 24 8.13401 24 12C24 15.866 20.866 19 17 19H7C3.13401 19 0 15.866 0 12ZM7 7H17C19.7614 7 22 9.23858 22 12C22 14.7614 19.7614 17 17 17H7C4.23858 17 2 14.7614 2 12C2 9.23858 4.23858 7 7 7Z" fill="currentColor" />
 </svg>

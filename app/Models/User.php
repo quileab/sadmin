@@ -79,51 +79,49 @@ class User extends Authenticatable
     // }
 
     // users may have multiple careers
-    public function careers(): BelongsToMany
-    {
+    public function careers(): BelongsToMany {
         return $this->belongsToMany(Career::class);
     }
 
-    // public function careers(){
-    //     return $this->belongsToMany(Career::class);
-    //     //return $this->hasMany(Career::class);
-    // }
-
-    public function book()
-    {
+    public function book() {
         return $this->hasMany('App\Models\Books');
     }
 
-    public function subjects()
-    {
+    public function subjects() {
         return $this->belongsToMany(Subject::class);
     }
 
-    public function payments()
-    {
+    public function grades() {
+        return $this->belongsToMany(Grades::class);
+    }
+
+    public function payments() {
         return $this->hasMany('App\Models\PaymentRecord');
     }
 
-    public function userCount()
-    {
+    public function userCount() {
         return User::where('pid', '>', '1000000')->count();
     }
 
-    public function getCountByRole()
-    {
+    public function getCountByRole() {
         // return array with key=role and value=count
         $roles = \Spatie\Permission\Models\Role::select(['name'])->get(); //all();
         $users = \App\Models\User::select('id')->with('roles')->get();
-        //dd($users, $roles);
-        $roleless = User::whereDoesntHave('roles')->count();
         $counts = [];
         foreach ($roles as $role) {
             $counts[$role->name] = $users->filter(function ($user) use ($role) {
                 return $user->hasRole($role->name);
             })->count();
         }
-        $counts['roleless'] = $roleless;
+        $counts['roleless'] = User::whereDoesntHave('roles')->count();
 
         return $counts;
+    }
+
+    // return true if the user has grade approved on date=2000-01-01
+    public function enrolled($subject_id): bool{
+        return \App\Models\Grade::where('subject_id', $subject_id)->
+            //where('user_id', $user_id)->
+            where('date_id','2000-01-01')->count() ? true : false;
     }
 }

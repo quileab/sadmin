@@ -1,7 +1,7 @@
 <div>
   <div class="bg-gray-300 rounded-md shadow-md overflow-hidden max-w-6xl mx-auto">
     {{-- table that displays inscript lastname, firstname and career --}}
-    <div class="w-full d2c px-4 py-3 text-white flex justify-between">
+    <div class="w-full d2c px-4 py-1 flex justify-between">
       <h1 class="py-1">Inscriptos » <small>{{ count($inscripts) ?? '0' }}</small></h1>
       @if($selectedCount>0)
       <button class="flex rounded-md bg-gray-800 text-gray-200 hover:bg-cool-gray-700 px-3 py-1 shadow-md"
@@ -25,6 +25,7 @@
 
             <tr @class(['bg-blue-200'=>($inscript['checked'])])>
               <td class="border px-4 py-2 flex justify-between">
+                @hasanyrole('admin|principal|superintendent|administrative')
                 <button wire:click='fileSelect({{$key}})'>
                 @if ($inscript['checked'])
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 inline-flex" fill="currentColor" class="bi bi-check2-square" viewBox="0 0 16 16">
@@ -37,6 +38,7 @@
                   </svg>
                 @endif
                 </button>
+                @endhasanyrole
                 &nbsp;
                 <a href="{{ $inscript['pdflink'] }}" target="_blank" class="text-red-700">
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" height="16" fill="currentColor"

@@ -1,12 +1,12 @@
 <div>
   <div class="bg-gray-300 rounded-md shadow-md overflow-hidden max-w-6xl mx-auto mb-2 mt-2">
-    <div class="w-full d2c px-4 py-3 text-white flex justify-between">
+    <div class="w-full d2c px-4 py-1 flex justify-between">
       <h1 class="py-1 mr-3">Filtros</h1>
     </div>
 
     <div class="flex justify-evenly mx-2 my-1">
       <div class="w-1/3 mx-1">
-        Inscripcion<br />
+        Inscripcion 
         <select class="w-full" wire:model.lazy="inscription_id" id="inscription">
           <option value="">Todas</option>
           @foreach ($inscriptions as $inscription)
@@ -15,7 +15,7 @@
         </select>
       </div>
       <div class="w-1/3 mx-1">
-        Carreras<br />
+        Carreras
         <select class="w-full" wire:model.lazy="career_id" id="career">
           <option value="">Todas</option>
           @foreach ($careers as $career)
@@ -24,7 +24,7 @@
         </select>
       </div>
       <div class="w-1/3 mx-1">
-        Materias<br />
+        Materias
         <select class="w-full" wire:model.lazy="subject_id" id="subject">
           <option value="">Todas</option>
           @foreach ($subjects as $subject)

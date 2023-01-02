@@ -19,10 +19,27 @@ class InscriptionsManage extends Component
 
     public function mount()
     {
-        $this->files = Storage::files('private/inscriptions');
+        $pathToStorage = storage_path('app'); // == Storage::path('');
+        $pathToFiles='private/inscriptions';
+        $filter ="insc-*";
+        // Check if Logged User has "elevated" Roles
+        if (auth()->check() && auth()->user()->hasAnyRole('admin|principal|superintendent|administrative')){
+            $filter ="insc-*";
+        } // Check for "self" registrations
+        else{
+            $filter="insc-".auth()->user()->id."-*";
+        }
+        $this->files=[];
+        foreach (glob("$pathToStorage/$pathToFiles/$filter") as $nombre_fichero) {
+            $this->files[]="$pathToFiles/".basename($nombre_fichero);
+            //echo "$pathToFiles/".basename($nombre_fichero)."<br/>";
+        }
+        // $this->files = Storage::files('private/inscriptions');
+        // if user is "student" then search files belongsTo
         //dd($this->files);
         foreach ($this->files as $key => $file) {
             $this->files[$key] = str_replace('private/inscriptions/', 'files/private/', $file);
+            //dd($key, $file, $this->files[$key]);
             $user_id = explode('-', $this->files[$key])[1];
             $career_id = explode('-', $this->files[$key])[2];
             $config_incription_id = explode('-', $this->files[$key])[3];

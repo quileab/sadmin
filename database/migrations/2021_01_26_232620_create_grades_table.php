@@ -23,8 +23,9 @@ class CreateGradesTable extends Migration
             $table->date('date_id')->key();
             $table->tinyText('name');
 
-            $table->tinyInteger('grade')->default(0);
-            $table->tinyInteger('approved')->default(0);
+            $table->tinyInteger('grade')->unsigned()->default(0);
+            $table->tinyInteger('approved')->unsigned()->default(0);
+            $table->tinyInteger('attendance')->unsigned()->default(0); // percentage
             $table->timestamps();
         });
     }

@@ -214,6 +214,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // ruta a un FullPage Livewire -> funciona a medias a través del MOUNT // No necesita subjects.index
     Route::get('/subjects/{career_id}', \App\Http\Livewire\SubjectsComponent::class)->name('subjects');
 
+    Route::get('/mystudents', \App\Http\Livewire\MyStudents::class)->name('mystudents');
+
     Route::get('/books', function () {
         return view('books');
     })->name('books');

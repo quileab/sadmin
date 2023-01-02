@@ -25,6 +25,12 @@ $nav_links = [
       'permission'=>'menu.teachersubjects',
     ],
     [
+      'name' => 'Clases | Asistencia',
+      'route' => route('mystudents'),
+      'active' => request()->routeIs('mystudents'),
+      'permission'=>'menu.mystudents',
+    ],
+    [
       'name' => 'Inscripciones',
       'route' => route('studentsinsc'),
       'active' => request()->routeIs('studentsinsc'),

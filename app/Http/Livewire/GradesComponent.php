@@ -86,7 +86,7 @@ class GradesComponent extends Component
                     $this->selectedCareer = $careers[0]->id;
                 }
                 // subjects pertenecientes al USER
-                $loggedUser = \App\Models\User::find(Auth::user()->id); //->subjects()->get();
+                $loggedUser = \App\Models\User::find(Auth::user()->id); 
                 // if loggedUser = Selected user get all subjects
                 if ($loggedUser->id == $this->uid) {
                     $subjects = $user->careers()->find($this->selectedCareer)->subjects()->get();

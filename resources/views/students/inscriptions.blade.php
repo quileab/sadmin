@@ -3,7 +3,7 @@
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">Alumnos</h2>
   </x-slot>
 
-  <div class="bg-gray-300 rounded-md shadow-md overflow-hidden max-w-6xl mx-auto mb-2 mt-4">
+  <div class="bg-gray-300 rounded-md shadow-md overflow-hidden max-w-6xl mx-auto">
     <div class="w-full d2c px-4 py-3 text-white flex justify-between">
       <h1>Inscripciones
         @hasanyrole('admin|principal|superintendent|administrative')
@@ -49,7 +49,7 @@
 
   @hasanyrole('admin|principal|superintendent|administrative')
     @livewire('inscription.inscriptions-detail')
-    @livewire('inscription.inscriptions-manage')
   @endhasanyrole
+    @livewire('inscription.inscriptions-manage')
 
 </x-app-layout>
