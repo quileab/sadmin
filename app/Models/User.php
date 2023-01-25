@@ -99,9 +99,9 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\PaymentRecord');
     }
 
-    public function userCount() {
-        return User::where('pid', '>', '1000000')->count();
-    }
+    // public function userCount() {
+    //     return User::where('pid', '>', '1000000')->count();
+    // }
 
     public function getCountByRole() {
         // return array with key=role and value=count

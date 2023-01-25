@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('classbook', function (Blueprint $table) {
+        Schema::create('classbooks', function (Blueprint $table) {
             //$table->id();
             $table->foreignId('subject_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->date('date');
+            $table->date('date_id');
             $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('set null');
             $table->unsignedBigInteger('Authority_user_id')->nullable();
             $table->foreign('Authority_user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('Observations',60)->nullable();
             $table->timestamps();
 
-            $table->primary(['subject_id', 'date']);
+            $table->primary(['subject_id', 'date_id']);
         });
     }
 
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('classbook');
+        Schema::dropIfExists('classbooks');
     }
 };

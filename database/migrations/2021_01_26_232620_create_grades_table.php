@@ -21,7 +21,7 @@ class CreateGradesTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('subject_id')->constrained();
             $table->date('date_id')->key();
-            $table->tinyText('name');
+            $table->tinyText('name')->nullable();
 
             $table->tinyInteger('grade')->unsigned()->default(0);
             $table->tinyInteger('approved')->unsigned()->default(0);

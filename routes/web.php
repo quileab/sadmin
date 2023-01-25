@@ -77,14 +77,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/dashboard', function () {
         // get first record from config table
-        $temp = new NumberFormatter('es', NumberFormatter::SPELLOUT);
+        // $temp = new NumberFormatter('es', NumberFormatter::SPELLOUT);
 
         $dashInfo = [
             'shortname' => Config::where('id', 'shortname')->first()->value ?? 'false',
             'longname' => Config::where('id', 'longname')->first()->value ?? 'false',
             'modalities' => Config::where('id', 'modalities')->first()->value ?? 'false',
             'careers' => Auth::user()->careers()->get(),
-            'number' => $temp->format(Auth::user()->userCount()),
             'rolesUsersCount' => Auth::user()->getCountByRole(),
         ];
         $inscriptions = Config::where('group', 'inscriptions')->get();
@@ -159,7 +158,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
             return view('students.inscriptions', compact('inscriptions'));
         }
-        abort(403);
+        abort(404);
     })->name('studentsinsc');
 
     Route::get('/inscriptionsData/{id}', function ($id) {
@@ -177,10 +176,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/students-import-form', function () {
         if (auth()->user()->hasRole('admin')) {
             $roles = Role::all();
-
             return view('students.import-form', compact('roles'));
         }
-
         return back();
     })->name('students-import-form');
     // IMPORT BULK
@@ -214,6 +211,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // ruta a un FullPage Livewire -> funciona a medias a través del MOUNT // No necesita subjects.index
     Route::get('/subjects/{career_id}', \App\Http\Livewire\SubjectsComponent::class)->name('subjects');
 
+    Route::get('/classbooks', \App\Http\Livewire\Classbooks::class)->name('classbooks');
     Route::get('/mystudents', \App\Http\Livewire\MyStudents::class)->name('mystudents');
 
     Route::get('/books', function () {

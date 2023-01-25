@@ -25,7 +25,13 @@ $nav_links = [
       'permission'=>'menu.teachersubjects',
     ],
     [
-      'name' => 'Clases | Asistencia',
+      'name' => 'Libro de Temas',
+      'route' => route('classbooks'),
+      'active' => request()->routeIs('classbooks'),
+      'permission'=>'menu.classbooks',
+    ],
+    [
+      'name' => 'Mis Estudiantes',
       'route' => route('mystudents'),
       'active' => request()->routeIs('mystudents'),
       'permission'=>'menu.mystudents',
@@ -43,7 +49,7 @@ $nav_links = [
       'permission'=>'menu.calendars',
     ],
     [
-      'name' => 'Libros',
+      'name' => '📚 Biblioteca',
       'route' => route('books'),
       'active' => request()->routeIs('books'),
       'permission'=>'menu.books',
@@ -271,15 +277,14 @@ $nav_links = [
         case 'warning':
           bgcolor = '#d67200';
           break;
-        case 'error':
-          bgcolor = '#b80000';
-          break;
         case 'info':
           bgcolor = '#0a3f80';
           break;
         case 'question':
           bgcolor = '#8a0a61';
           break;
+        default: // none / error / danger
+          bgcolor = '#b80000';
       }
       Swal.fire({
         icon: icon,
