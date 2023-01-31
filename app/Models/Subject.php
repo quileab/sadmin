@@ -23,17 +23,6 @@ class Subject extends Model
         return $this->hasMany(Grade::class);
     }
 
-    // students per subject
-    public function students($subject_id) {
-        // return users_ids array where grades =0 and date=2000-01-01
-        return Grade::join('users', 'id','=','user_id')->
-            where('subject_id',$subject_id)->
-            where('date_id','2000-01-01')->
-            where('approved',1)->
-            select(array('user_id','lastname','firstname','date_id'))->
-            get();//pluck('user_id');
-    }
-
     public static function classes($subject_id) {
         return Classbook::where('subject_id', $subject_id)->get();
     }

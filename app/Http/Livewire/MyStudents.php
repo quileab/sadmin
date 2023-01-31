@@ -33,6 +33,8 @@ class MyStudents extends Component
         //'pid' => 'unique:users,pid|required|numeric',
     ];
 
+    public $subject_id;
+
     public function mount(){
         $this->Me=\App\Models\User::find(Auth::user()->id)->first();
         $this->mySubjects=$this->Me->Subjects()->orderBy('id')->get();
@@ -71,9 +73,15 @@ class MyStudents extends Component
     }
 
     public function loadStudents($subject_id){
-        $subject=new \App\Models\Subject();
-        $students=$subject->students($subject_id)
-          ->sortBy(['lastname','firstname']);
+        $this->subject_id=$subject_id;
+        $students = \App\Models\User::orderBy('lastname','ASC')
+            ->orderBy('firstname','ASC')
+            ->whereHas('subjects', function ($query) {
+                $query->where('subjects.id', $this->subject_id);
+            })
+            ->role('student')
+            //->with('subjects') // if I want the relationship
+            ->get();
         return $students;
     }
 
@@ -81,20 +89,20 @@ class MyStudents extends Component
         $this->studentData=[];
         if (count($this->myStudents)==0){return;};
         foreach($this->myStudents as $student){
-            $grade=\App\Models\Grade::where('user_id',$student->user_id)
+            $grade=\App\Models\Grade::where('user_id',$student->id)
                 ->where('subject_id',$this->subjectId)
                 ->where('date_id',$this->classDate)
                 ->first();
 
             if ($grade==null) {
-                $this->studentData[$student->user_id] = 
+                $this->studentData[$student->id] = 
                     [
                       'attendance' => 0,
                       'grade' => 0,
                       'name' => '', // name of the "grade" attribute
                     ];
             }else{
-                $this->studentData[$student->user_id] =
+                $this->studentData[$student->id] =
                     [
                     'attendance' => $grade->attendance,
                     'grade' => $grade->grade,

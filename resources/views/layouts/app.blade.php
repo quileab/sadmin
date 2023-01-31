@@ -37,6 +37,12 @@ $nav_links = [
       'permission'=>'menu.mystudents',
     ],
     [
+      'name' => 'Estudiantes-Materias (Matricularse)',
+      'route' => route('studentsubjects'),
+      'active' => request()->routeIs('studentsubjects'),
+      'permission'=>'menu.studentsubjects',
+    ],
+    [
       'name' => 'Inscripciones',
       'route' => route('studentsinsc'),
       'active' => request()->routeIs('studentsinsc'),

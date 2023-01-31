@@ -11,29 +11,21 @@ class PaymentsDetails extends Component
 
     // record payment
     public $uid;
-
     public $user;
 
     // auxiliar variables
     public $updating = false;
-
     public $sort = 'id';
-
     public $cant = 10;
-
     public $direction = 'desc';
-
     public $loadData = false;
-
     public $openModal = false;
 
-    public function mount($id)
-    {
+    public function mount($id) {
         $this->user = \App\Models\User::find($id);
     }
 
-    public function render()
-    {
+    public function render() {
         $payments = $this->user->payments()
             ->orderBy('created_at', 'desc')
             ->paginate($this->cant);
@@ -42,13 +34,11 @@ class PaymentsDetails extends Component
             compact('payments'));
     }
 
-    public function loadData()
-    {
+    public function loadData() {
         $this->loadData = true;
     }
 
-    public function cancelPayment($id)
-    {
+    public function cancelPayment($id) {
         //set Paymentrecord description=CAN and paymentAmount=0
         $payment = \App\Models\PaymentRecord::find($id);
         $amount = $payment->paymentAmount;

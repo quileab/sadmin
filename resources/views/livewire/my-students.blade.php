@@ -74,8 +74,8 @@
 
     <x-jet-button wire:click="loadData()">Buscar</x-jet-button>
     {{-- loading indicator --}}
-    <div wire:loading class="spin">
-      <x-svg.redo class="w-[2rem] h-[2rem] m-0 p-0" />
+    <div wire:loading class="spin absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <x-svg.redo class="w-[7rem] h-[7rem] m-0 p-0" />
     </div>
 
     @if (session()->has('message'))
@@ -107,22 +107,24 @@
               {{ ucwords(strtolower($myStudent->firstname)) }}
             </td>
             <td class="border px-4 py-2 text-right">
-              {{ $studentData[$myStudent->user_id]['attendance'] }} %
-              <x-jet-secondary-button wire:click="setAttendance({{ $myStudent->user_id }},100)">
-                100</x-jet-secondary-button>
-              <x-jet-secondary-button wire:click="setAttendance({{ $myStudent->user_id }},50)">
-                50</x-jet-secondary-button>
-              <x-jet-secondary-button wire:click="setAttendance({{ $myStudent->user_id }},0)">
-                0</x-jet-secondary-button>
+              {{ $studentData[$myStudent->id]['attendance'] }} %
+              <div class="inline-flex rounded-md shadow text-sm font-medium text-gray-300 bg-gray-700 overflow-hidden" role="group">
+                <button type="button" class="px-4 py-2 focus:z-10 focus:ring-2 border-gray-400 hover:text-white hover:bg-gray-600 focus:text-white"
+                  wire:click="setAttendance({{ $myStudent->id }},100)">100</button>
+                <button type="button" class="px-4 py-2 focus:z-10 focus:ring-2 border-gray-400 hover:text-white hover:bg-gray-600 focus:text-white"
+                  wire:click="setAttendance({{ $myStudent->id }},50)">50</button>
+                <button type="button" class="px-4 py-2 focus:z-10 focus:ring-2 border-gray-400 hover:text-white hover:bg-gray-600 focus:text-white"
+                  wire:click="setAttendance({{ $myStudent->id }},0)">0</button>
+              </div>
             </td>
             <td class="border px-4 py-2 text-right">
-              {{ $studentData[$myStudent->user_id]['grade'] }} %
+              {{ $studentData[$myStudent->id]['grade'] }} %
             </td>
             <td class="border px-4 py-2">
-              {{ $studentData[$myStudent->user_id]['name'] }}
+              {{ $studentData[$myStudent->id]['name'] }}
             </td>
             <td>
-              <x-jet-button wire:click="edit({{ $myStudent->user_id }})">
+              <x-jet-button wire:click="edit({{ $myStudent->id }})">
                 <x-svg.edit />
               </x-jet-danger-button>
             </td>

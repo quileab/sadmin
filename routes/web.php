@@ -3,6 +3,7 @@
 use App\Http\Controllers\PrintInscriptionsController;
 use App\Http\Controllers\PrivateFilesController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\PrintClassbookController;
 use App\Models\Config;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -221,6 +222,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/inscriptionsPDF/{student}/{career}/{inscription}', [PrintInscriptionsController::class, 'index'])->name('inscriptionsPDF');
     Route::get('/inscriptionsSavePDF/{student}/{career}/{inscription}', [PrintInscriptionsController::class, 'savePDF'])->name('inscriptionsSavePDF');
 
-    //route to TeacherSubjects
     Route::get('/teachersubjects', \App\Http\Livewire\TeacherSubjects::class)->name('teachersubjects');
+    Route::get('/studentsubjects', \App\Http\Livewire\StudentSubjects::class)->name('studentsubjects');
+    Route::get('/printClassbooks/{subject}', [PrintClassbookController::class,'show'])
+        ->name('printclassbooks');
 });

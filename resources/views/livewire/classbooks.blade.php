@@ -107,6 +107,9 @@
         @endforeach
       </select>
 
+      <a href='printClassbooks/{{ $subjectId }}'>
+      <x-jet-button><x-svg.print /> Imprimir</x-jet-button>
+      </a>
       <!-- Loading indicator -->
       <div wire:loading wire:target="subjectId" class="spin">
         <x-svg.redo class="w-7 h-7" />

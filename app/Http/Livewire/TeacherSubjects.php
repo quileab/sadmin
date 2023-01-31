@@ -7,13 +7,9 @@ use Livewire\Component;
 class TeacherSubjects extends Component
 {
     public $subjects;
-
     public $career;
-
     public $careers;
-
     public $user;
-
     public $selected_subjects = [];
 
     //rules for validation
