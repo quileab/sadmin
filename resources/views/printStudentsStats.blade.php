@@ -85,36 +85,23 @@ body {
         {{ $data['subject']->id }}: {{ $data['subject']->name }}
       </td>
       <td class='right'>
-        {{ date('d-m-Y H:i', strtotime(now())) }}    
+        {{ date('d-m-Y H:i', strtotime(now())) }}      
       </td>
     </tr>
   </table>
-
-
+  <hr />
   <table>
     <thead>
       <tr>
-        <th>Fecha</th>
-        <th>Clase - Unidad</th>
-        <th>Tipo</th>
-        <th>Contenido</th>
-        <th>Actividades</th>
-        <th>Observaciones</th>
-        <th>Profesor</th>
-        <th>Autoridad</th>
+        <th>Apellido y Nombre/s</th>
+        <th>Asitencia</th>
       </tr>
     </thead>
     <tbody>
-      @foreach ($classbooks as $classbook)
+      @foreach ($students as $student)
         <tr>
-          <td>{{ date('d-m-Y',strtotime($classbook->date_id)) }}</td>
-          <td>{{ $classbook->ClassNr }} - {{ $classbook->Unit }}</td>      
-          <td>{{ $classbook->Type }}</td>
-          <td>{{ $classbook->Content }}</td>
-          <td>{{ $classbook->Activities }}</td>
-          <td>{{ $classbook->Observations }}</td>
-          <td>{{ \App\Models\User::find($classbook->user_id)->lastname }}</td>
-          <td>{{ $classbook->Authority_user_id }}</td>
+          <td>{{ $student->lastname }}, {{ $student->firstname }}</td>      
+          <td style="text-align: center;">{{ $student->attendance }}%</td>
         </tr>
       @endforeach
     </tbody>

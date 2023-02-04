@@ -107,7 +107,7 @@
         @endforeach
       </select>
 
-      <a href='printClassbooks/{{ $subjectId }}'>
+      <a href='printClassbooks/{{ $subjectId }}' target='_blank'>
       <x-jet-button><x-svg.print /> Imprimir</x-jet-button>
       </a>
       <!-- Loading indicator -->

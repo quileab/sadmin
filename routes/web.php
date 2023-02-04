@@ -4,6 +4,7 @@ use App\Http\Controllers\PrintInscriptionsController;
 use App\Http\Controllers\PrivateFilesController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PrintClassbookController;
+use App\Http\Controllers\PrintStudentsStatsController;
 use App\Models\Config;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -224,6 +225,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/teachersubjects', \App\Http\Livewire\TeacherSubjects::class)->name('teachersubjects');
     Route::get('/studentsubjects', \App\Http\Livewire\StudentSubjects::class)->name('studentsubjects');
-    Route::get('/printClassbooks/{subject}', [PrintClassbookController::class,'show'])
-        ->name('printclassbooks');
+    Route::get('/printClassbooks/{subject}', [PrintClassbookController::class,'show'])->name('printclassbooks');
+    Route::get('/printStudentsStats/{subject}', [PrintStudentsStatsController::class,'listAttendance'])->name('printStudentsStats');
 });

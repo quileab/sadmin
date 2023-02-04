@@ -20,7 +20,7 @@
 
     <div class="p-2 flex flex-wrap">
     @foreach ($subjects as $key => $subject)
-      <div class="flex w-80 rounded shadow-lg shadow-gray-600 bg-gray-50 m-2 overflow-hidden">
+      <div class="flex w-80 rounded shadow-md shadow-gray-700 bg-gray-50 m-2 overflow-hidden">
         <div class="py-2 w-1/4 {{ $selected_subjects[$key] ==  true ? 'bg-green-700' : 'bg-gray-700'  }} text-white text-center">
           {{ $key }}<br />
           {{-- button on/off --}}

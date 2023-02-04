@@ -63,7 +63,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $appends = [
-        'profile_photo_url',
+        'profile_photo_url'
     ];
 
     // *** Guardo como ejemplo ***
@@ -124,4 +124,5 @@ class User extends Authenticatable
             //where('user_id', $user_id)->
             where('date_id','2000-01-01')->count() ? true : false;
     }
+
 }

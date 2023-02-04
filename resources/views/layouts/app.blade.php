@@ -25,6 +25,12 @@ $nav_links = [
       'permission'=>'menu.teachersubjects',
     ],
     [
+      'name' => 'Matriculación a Materias',
+      'route' => route('studentsubjects'),
+      'active' => request()->routeIs('studentsubjects'),
+      'permission'=>'menu.studentsubjects',
+    ],
+    [
       'name' => 'Libro de Temas',
       'route' => route('classbooks'),
       'active' => request()->routeIs('classbooks'),
@@ -35,12 +41,6 @@ $nav_links = [
       'route' => route('mystudents'),
       'active' => request()->routeIs('mystudents'),
       'permission'=>'menu.mystudents',
-    ],
-    [
-      'name' => 'Estudiantes-Materias (Matricularse)',
-      'route' => route('studentsubjects'),
-      'active' => request()->routeIs('studentsubjects'),
-      'permission'=>'menu.studentsubjects',
     ],
     [
       'name' => 'Inscripciones',
