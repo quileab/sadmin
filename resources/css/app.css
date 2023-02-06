@@ -19,6 +19,20 @@ input::file-selector-button {
   @apply focus:ring-2 rounded bg-gray-700 align-middle text-gray-100;
 }
 
+
+details {
+  @apply rounded-md p-1 overflow-hidden;
+  background: #c3c3c3;
+  background: linear-gradient(180deg, #c3c3c3 35%, #76a44400 100%);
+
+}
+summary{
+  @apply mb-3;
+}
+summary p{
+  background-color: #fff;
+}
+
 .d2c {
     background: #0573c0;
     background: linear-gradient(90deg, #0572c0 15%, #76a444 100%);

@@ -226,5 +226,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/teachersubjects', \App\Http\Livewire\TeacherSubjects::class)->name('teachersubjects');
     Route::get('/studentsubjects', \App\Http\Livewire\StudentSubjects::class)->name('studentsubjects');
     Route::get('/printClassbooks/{subject}', [PrintClassbookController::class,'show'])->name('printclassbooks');
-    Route::get('/printStudentsStats/{subject}', [PrintStudentsStatsController::class,'listAttendance'])->name('printStudentsStats');
+    Route::get('/printStudentsAttendance/{subject}', [PrintStudentsStatsController::class,'listAttendance'])->name('printStudentsAttendance');
+    Route::get('/printStudentsStats/{student}/{subject}', [PrintStudentsStatsController::class,'studentClasses'])->name('printStudentsStats');
 });

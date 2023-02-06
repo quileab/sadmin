@@ -13,7 +13,7 @@
 
     </div>
     @if (auth()->user()->enabled == false)
-      <p class="ml-5 mt-1 text-red-700">
+      <p class="ml-5 mt-1 text-red-700 w-full border-2 border-red-600 rounded-md">
         Se ha encontrado una inconsistencia: CONSULTE CON TESORERÍA</p>
     @endif
 
@@ -22,13 +22,13 @@
 
         <div class="inline-flex">
           <a @if ($inscription->value == 'true' && auth()->user()->enabled)
-            href="{{ route('studentsinscdata', $inscription->id) }}"
+              href="{{ route('studentsinscdata', $inscription->id) }}"
           @else
             @hasanyrole('admin|principal|superintendent|administrative')
               href="{{ route('studentsinscdata', $inscription->id) }}"
             @endhasanyrole
-      @endif
-      >
+          @endif
+          >
       <div @class([
           'flex p-3 m-1 rounded-md',
           'bg-gray-200 shadow' => !$inscription->value,

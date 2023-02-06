@@ -78,6 +78,15 @@
       <x-svg.redo class="w-[7rem] h-[7rem] m-0 p-0" />
     </div>
 
+    <details>
+      <summary>Reportes</summary>
+      <p class="flex-center">
+        <a href="printStudentsAttendance/{{ $subjectId }}" target="_blank" class="flex">
+          <x-svg.documentFull />% Asistencia
+        </a>
+      </p>
+    </details>
+
     @if (session()->has('message'))
       <div class="border-2 border-red-300 bg-red-50 p-3 my-1 rounded">
         {{ session('message') }}
@@ -94,27 +103,34 @@
       <thead class="bg-gray-800 text-white">
         <tr>
           <th class="px-4 py-2">Apellido y Nombre</th>
-          <th class="px-4 py-2">Asistencia</th>
-          <th class="px-4 py-2">Calificación</th>
-          <th class="px-4 py-2">Descripción</th>
-          <th class="px-4 py-2"><x-svg.menu />
+          @if (!session()->has('message'))
+            <th class="px-4 py-2">Asistencia</th>
+            <th class="px-4 py-2">Calif.</th>
+            <th class="px-4 py-2">Descripción</th>
+            <th class="px-4 py-2"><x-svg.menu />
+          @endif
         </tr>
       </thead>
       <tbody>
         @foreach ($myStudents as $key => $myStudent)
           <tr wire:key='att-{{ $loop->index }}'>
-            <td class="border px-4 py-2">{{ ucwords(strtolower($myStudent->lastname)) }},
+            <td class="border px-4 py-2">
+              <a href="printStudentsStats/{{$myStudent->id}}/{{$subjectId}}" target="_blank" class="flex">
+              <x-svg.documentFull />&nbsp;
+              {{ ucwords(strtolower($myStudent->lastname)) }},              
               {{ ucwords(strtolower($myStudent->firstname)) }}
+              </a>
             </td>
+            @if (!session()->has('message'))
             <td class="border px-4 py-2 text-right">
               {{ $studentData[$myStudent->id]['attendance'] }} %
               <div class="inline-flex rounded-md shadow text-sm font-medium text-gray-300 bg-gray-700 overflow-hidden" role="group">
-                <button type="button" class="px-4 py-2 focus:z-10 focus:ring-2 border-gray-400 hover:text-white hover:bg-gray-600 focus:text-white"
-                  wire:click="setAttendance({{ $myStudent->id }},100)">100</button>
-                <button type="button" class="px-4 py-2 focus:z-10 focus:ring-2 border-gray-400 hover:text-white hover:bg-gray-600 focus:text-white"
-                  wire:click="setAttendance({{ $myStudent->id }},50)">50</button>
-                <button type="button" class="px-4 py-2 focus:z-10 focus:ring-2 border-gray-400 hover:text-white hover:bg-gray-600 focus:text-white"
-                  wire:click="setAttendance({{ $myStudent->id }},0)">0</button>
+                <button type="button" class="px-2 py-1 focus:z-10 focus:ring-2 border border-gray-400 hover:text-white hover:bg-gray-600 focus:text-white"
+                  wire:click="setAttendance({{ $myStudent->id }},100)"><small>100</small></button>
+                <button type="button" class="px-2 py-1 focus:z-10 focus:ring-2 border border-gray-400 hover:text-white hover:bg-gray-600 focus:text-white"
+                  wire:click="setAttendance({{ $myStudent->id }},50)"><small>50</small></button>
+                <button type="button" class="px-2 py-1 focus:z-10 focus:ring-2 border border-gray-400 hover:text-white hover:bg-gray-600 focus:text-white"
+                  wire:click="setAttendance({{ $myStudent->id }},0)"><small>0</small></button>
               </div>
             </td>
             <td class="border px-4 py-2 text-right">
@@ -128,6 +144,7 @@
                 <x-svg.edit />
               </x-jet-danger-button>
             </td>
+            @endif
           </tr>
         @endforeach
       </tbody>

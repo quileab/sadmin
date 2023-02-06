@@ -61,15 +61,16 @@ class MyStudents extends Component
             ->where('date_id',$this->classDate)
             ->where('Unit','>',0)
             ->first();
+        // load students even if no class was found    
+        $this->myStudents=$this->loadStudents($this->subjectId);
+        //dd($this->myStudents);
+        $this->loadStudentData();
         
         if($this->classDay==null){
-            $this->myStudents=[];
             session()->flash('message', 'No existe una clase en el Libro de Temas para ese día.🤔');
             return;
         }
         session()->forget('message');
-        $this->myStudents=$this->loadStudents($this->subjectId);
-        $this->loadStudentData();
     }
 
     public function loadStudents($subject_id){
