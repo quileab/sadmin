@@ -57,15 +57,12 @@
     background-color: #3271e7;
 			color: #ffffff;
 	}
-/* Grade type */
+
 .EV{
   background-color:rgb(214, 255, 208)
 }
 .TP{
   background-color:rgb(255, 254, 221)
-}
-.FI{
-  background-color:rgb(221, 244, 255)
 }
 
 </style>

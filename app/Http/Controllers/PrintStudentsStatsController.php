@@ -64,6 +64,7 @@ class PrintStudentsStatsController extends Controller
                     $count_TP++; $sum_TP+=$class->grade;
                     $class->type = 'TP';
                 break;
+                case 'FI': $class->type = 'FI'; break;
                 default:
                     $class->type = '';
             }
@@ -77,5 +78,25 @@ class PrintStudentsStatsController extends Controller
 
         //dd($student, $subject, $classes);
         return view('printStudentsStats', compact(['classes','student','subject','data']));
+    }
+
+    public function debug(Request $request, $student, $subject){
+        $teacher=Auth()->user()->id;
+        $data=array();
+        $classes=\App\Models\Classbook::where('subject_id',$subject)
+            ->where('user_id',$teacher)
+            ->get();
+        $grades=\App\Models\Grade::where('subject_id',$subject)
+            ->where('user_id',$student)
+            ->get();
+        $gradesjoin=\App\Models\Grade::query();
+        $gradesjoin=$gradesjoin->join('classbooks', function($join) {
+            $join->on('grades.subject_id', '=', 'classbooks.subject_id')
+                ->on('grades.date_id', '=', 'classbooks.date_id');
+        });
+        $gradesjoin=$gradesjoin->get();
+        
+        dd($classes, $grades, $gradesjoin);
+        return view('printDebug', compact(['classes','grades','gradesjoin','data']));
     }
 }
