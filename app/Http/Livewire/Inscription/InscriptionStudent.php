@@ -11,38 +11,27 @@ use Livewire\Component;
 class InscriptionStudent extends Component
 {
     public $adminID = null;
-
     public $studentID = null;
-
     public $inscription;
-
     public $inscriptionValues;
-
     public $inscriptionUpdated;
-
     public $inscriptionStudent;
-
     public $career;
-
     public $inputType;
-
     public $careers;
-
     public $subjects = [];
 
     protected $rules = [
         'subjects.*.value' => 'string',
     ];
 
-    public function getSubjects($id)
-    {
+    public function getSubjects($id) {
         return $this->subjects = \App\Models\Subject::where('career_id', $id)->
           where('name', '>', '')->
           get();
     }
 
-    public function mount($inscription)
-    {
+    public function mount($inscription) {
         $this->inscription = $inscription;
         $this->studentID = Auth::user()->id;
         $this->adminID = \App\Models\User::where('name', 'admin')->first()->id;
@@ -56,8 +45,7 @@ class InscriptionStudent extends Component
         //     where('subject_id',$this->subjects[0]->id)->first()->type ?? 'text';
     }
 
-    public function render()
-    {
+    public function render() {
         // dd($this->subjects,$this->inscriptionValues);
         return view('livewire.inscription.inscription-student')
             ->with('inputType', $this->inputType)
@@ -68,8 +56,7 @@ class InscriptionStudent extends Component
             ->with('subjects', $this->subjects);
     }
 
-    public function updatedCareer()
-    {
+    public function updatedCareer() {
         $this->inscriptionValues = [];
         $this->inscriptionUpdated = [];
         $this->inscriptionStudent = [];
