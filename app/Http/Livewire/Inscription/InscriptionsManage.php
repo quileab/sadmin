@@ -8,13 +8,9 @@ use Livewire\Component;
 class InscriptionsManage extends Component
 {
     public $files = [];
-
     public $inscripts = [];
-
     public $careers = [];
-
     public $inscripts_id;
-
     public $selectedCount = 0;
 
     public function mount()

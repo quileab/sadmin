@@ -37,7 +37,7 @@
     <tr>
       <td>
         <strong>{{$student->lastname}}, {{$student->firstname}}</strong><br />
-        <small>{{$student->email}} - {{$student->phone}}</small>
+        <small>({{$student->id}}) {{$student->email}} - {{$student->phone}}</small>
       </td>
       <td class='right'>
         {{ date('d-m-Y H:i', strtotime(now())) }}    
@@ -53,7 +53,7 @@
         <th>Materia</th>
         <th>Inscripción</th>
         <th>Nota</th>
-        <th>« Firma »</th>
+        <th>«&nbsp;Firma&nbsp;»</th>
       </tr>
     </thead>
     <tbody>
