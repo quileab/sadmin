@@ -92,14 +92,9 @@
 
            <div class="p-6 border-t border-gray-200">
              <div class="flex items-center">
-               <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24"
-                 stroke="currentColor">
-                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                   d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-               </svg>
+               <x-svg.notepad class="w-7 h-7 text-gray-400" />
                <div class="ml-4 text-lg font-semibold leading-7 text-gray-700">
                  Materias y Calificaciones <small>{{ Auth::user()->hasRole('student') ? '('.Auth::user()->id.')' : '»' }}</small>
-                 
                </div>
              </div>
 
@@ -121,11 +116,7 @@
 
            <div class="p-6 border-t border-gray-200 md:border-l">
              <div class="flex items-center">
-               <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24"
-                 stroke="currentColor">
-                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                   d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-               </svg>
+               <x-svg.infoCircleAlt class="w-7 h-7 text-gray-400" />
                <div class="ml-4 text-lg font-semibold leading-7 text-gray-700">Mensajes</div>
              </div>
 
