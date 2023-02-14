@@ -112,7 +112,7 @@
       </a>
       <!-- Loading indicator -->
       <div wire:loading wire:target="subjectId" class="spin">
-        <x-svg.redo class="w-7 h-7" />
+        <x-svg.wait class="w-7 h-7" />
       </div>
       <!-- ----------------- -->
       {!! $calendar !!}

@@ -75,7 +75,7 @@
     <x-jet-button wire:click="loadData()">Buscar</x-jet-button>
     {{-- loading indicator --}}
     <div wire:loading class="spin absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-      <x-svg.redo class="w-[7rem] h-[7rem] m-0 p-0" />
+      <x-svg.wait class="w-[7rem] h-[7rem] m-0 p-0" />
     </div>
 
     <details>

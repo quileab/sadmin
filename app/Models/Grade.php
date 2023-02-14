@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Grade extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'date_id';
+    // protected $primaryKey = ['user_id','subject_id','date_id'];
+    protected $primaryKey = 'user_id';
     protected $guarded = [];
 
     public function subject() {

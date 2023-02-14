@@ -102,6 +102,15 @@
                   </x-jet-button>
                  </a>
                  @endif
+
+
+                 @if(Auth::user()->hasanyrole('admin|principal|superintendent|administrative'))
+                 <a href="quickgrade">
+                  <x-jet-button class="mt-1">
+                    Calificación Rápida
+                  </x-jet-button>
+                 </a>
+                 @endif
                </div>
              </div>
            </div>
