@@ -90,10 +90,12 @@
           @endif
           Calendario
         </x-jet-button>      
+        @if($subjectId>0)
         <x-jet-button wire:click="createOrUpdate(0)">
           <x-svg.plusCircle />
           Nuevo Registro
         </x-jet-button>
+        @endif
         </div>
     </div>
 

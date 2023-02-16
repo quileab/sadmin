@@ -40,10 +40,11 @@ class Classbooks extends Component
     public function mount(){
         $this->Me=\App\Models\User::find(Auth::user()->id);
         $this->mySubjects=$this->Me->Subjects()->orderBy('id')->get();
-        $this->subjectId=$this->mySubjects->first()->id;
-        // $counts=\App\Models\Classbook::classCount($this->subjectId);
-        // dd($counts);
-        // dd($this->Me, $this->mySubjects, $this->subject);
+        if (count($this->mySubjects)!==0) {
+            $this->subjectId=$this->mySubjects->first()->id;
+        }else{
+            $this->subjectId=0;
+        }
     }
     
     public function render(){
@@ -177,11 +178,11 @@ class Classbooks extends Component
     }
 
     public function createCalendar(){
-if ($this->calendar=='') {
-    $this->calendar = $this->calendar();
-}
-        else {
-            $this->calendar='';
+      if ($this->calendar=='') {
+          $this->calendar = $this->calendar();
+        }
+      else {
+        $this->calendar='';
         }
     }
 }
