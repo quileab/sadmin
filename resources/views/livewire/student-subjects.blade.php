@@ -13,9 +13,9 @@
     </select>
     </div>
 
-    <div class="p-2 flex flex-wrap">
+    <div class="p-0 flex flex-wrap mx-auto">
       @foreach ($subjects as $subject)
-        <div class="flex w-80 rounded shadow-lg shadow-gray-600 bg-gray-50 m-2 overflow-hidden">
+        <div class="flex w-1/3 rounded shadow-md shadow-gray-600 bg-gray-50 m-2 overflow-hidden">
           <div @class([
               'py-2',
               'w-1/4',

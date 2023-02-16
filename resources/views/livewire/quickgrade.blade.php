@@ -116,8 +116,8 @@
   </div>
 
   <!-- Loading indicator -->
-  <div wire:loading class="spin absolute top-0 left-1/2">
-    <x-svg.wait class="w-[7rem] h-[7rem] m-0 p-0" />
+  <div wire:loading class="spin absolute top-2 left-1/2">
+    <x-svg.loading class="w-[2rem] h-[2rem] m-0 p-0 text-white" />
   </div>
 
 {{-- <pre>

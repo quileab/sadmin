@@ -60,7 +60,8 @@
              </div>
 
              <div class="ml-12">
-               <div class="overflow-hidden text-xs text-gray-500 rounded-sm">
+              @if(Auth::user()->hasanyrole('admin|principal|superintendent|administrative')) 
+              <div class="overflow-hidden text-xs text-gray-500 rounded-sm">
                  <table>
                    <thead class="text-white bg-gray-800">
                      <tr>
@@ -77,7 +78,8 @@
                      @endforeach
                    </tbody>
                  </table>
-               </div>
+              </div>
+              @endif
 
              </div>
            </div>
