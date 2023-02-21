@@ -113,6 +113,8 @@
       @endforeach
     </tbody>
   </table>
+  
+  @livewire('inscription.inscriptions-detail')
   </div>
 
   <!-- Loading indicator -->

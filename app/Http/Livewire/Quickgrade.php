@@ -37,6 +37,10 @@ class Quickgrade extends Component
     ];
 
     public function mount(){
+        if (auth()->user()->hasRole(['student','financial','user'])) {
+            return abort(404);
+        }
+    
         $this->gradeDate=today()->toDateString();
         $this->inscriptionTypes=\App\Models\Config::where('group','inscriptions')
             ->get();
