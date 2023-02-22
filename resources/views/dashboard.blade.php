@@ -27,7 +27,7 @@
          <div class="grid grid-cols-1 bg-gray-200 bg-opacity-25 md:grid-cols-2">
            <div class="p-6 border-t border-gray-200 md:border-t-0 md:border-l">
              <div class="flex items-center">
-               <x-svg.house class="w-7 h-7 text-gray-400" />
+               <x-svg.house class="w-[2rem] h-[2rem] text-gray-400" />
                <div class="ml-4 text-lg font-semibold leading-7 text-gray-700">Institución
                </div>
              </div>
@@ -54,7 +54,7 @@
 
            <div class="p-6">
              <div class="flex items-center">
-               <x-svg.users class="w-7 h-7 text-gray-400" />
+               <x-svg.users class="w-[2rem] h-[2rem] text-gray-400" />
                <div class="ml-4 text-lg font-semibold leading-7 text-gray-700">
                  Usuarios Registrados</div>
              </div>
@@ -86,7 +86,7 @@
 
            <div class="p-6 border-t border-gray-200">
              <div class="flex items-center">
-               <x-svg.notepad class="w-7 h-7 text-gray-400" />
+               <x-svg.notepad class="w-[2rem] h-[2rem] text-gray-400" />
                <div class="ml-4 text-lg font-semibold leading-7 text-gray-700">
                  Materias y Calificaciones <small>{{ Auth::user()->hasRole('student') ? '('.Auth::user()->id.')' : '»' }}</small>
                </div>
@@ -119,7 +119,7 @@
 
            <div class="p-6 border-t border-gray-200 md:border-l">
              <div class="flex items-center">
-               <x-svg.infoCircleAlt class="w-7 h-7 text-gray-400" />
+               <x-svg.infoCircleAlt class="w-[2rem] h-[2rem] text-gray-400" />
                <div class="ml-4 text-lg font-semibold leading-7 text-gray-700">Mensajes</div>
              </div>
 

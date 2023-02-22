@@ -43,24 +43,30 @@
     </x-slot>
   </x-jet-dialog-modal>
 
-
-  <div class="bg-gray-300 rounded-md shadow-md overflow-hidden max-w-6xl mx-auto mb-2 mt-2">
+  <div class="bg-gray-300 max-w-6xl mx-auto mb-2 pb-4">
     <div class="w-full d2c px-4 py-1 flex justify-between">
-      <h1 class="py-1 mr-3">Filtros</h1>
+      <h1 class="py-1 mr-3">Calificación Rápida</h1>
+      @if (count($inscriptions) > 0)
+      &nbsp;
+      <x-jet-button wire:click="borrarRegistros" wire:loading.attr="disabled">
+        <x-svg.trash class="h-4 w-4" /> {{ count($inscriptions) ?? 0 }}
+      </x-jet-button>
+    @endif
+
     </div>
 
     <div class="flex justify-evenly mx-2 my-1">
       <div class="w-1/3 mx-1">
-        Inscripcion 
-        <select class="w-full" wire:model.lazy="inscription_id" id="inscription">
+        <small>Inscripcion</small> 
+        <select class="w-full" wire:model.lazy="inscriptionType_id" id="inscriptionType">
           <option value="">Todas</option>
-          @foreach ($inscriptions as $inscription)
-            <option value="{{ $inscription->id }}">{{ $inscription->description }}</option>
+          @foreach ($inscriptionTypes as $inscriptionType)
+            <option value="{{ $inscriptionType->id }}">{{ $inscriptionType->description }}</option>
           @endforeach
         </select>
       </div>
       <div class="w-1/3 mx-1">
-        Carreras
+        <small>Carreras</small>
         <select class="w-full" wire:model.lazy="career_id" id="career">
           <option value="">Todas</option>
           @foreach ($careers as $career)
@@ -69,7 +75,7 @@
         </select>
       </div>
       <div class="w-1/3 mx-1">
-        Materias
+        <small>Materias</small>
         <select class="w-full" wire:model.lazy="subject_id" id="subject">
           <option value="">Todas</option>
           @foreach ($subjects as $subject)
@@ -77,39 +83,42 @@
           @endforeach
         </select>
       </div>
+      <div class="w-1/3 mx-1">
+        <small>Fecha</small>
+        <x-jet-input type="date" wire:model.lazy="gradeDate" class='w-full' />
+      </div>
+  
       <div class="h-full mt-auto ml-2 mb-1 flex">
         <x-jet-button wire:click="buscarFiltros" wire:loading.attr="disabled">
           Buscar
         </x-jet-button>
-        @if (count($detail) > 0)
-          &nbsp;
-          <x-jet-button wire:click="borrarRegistros" wire:loading.attr="disabled">
-            <x-svg.trash class="h-4 w-4" /> {{ count($detail) ?? 0 }}
-          </x-jet-button>
-        @endif
       </div>
     </div>
 
-    <table class="table-auto w-full bg-gray-200 rounded-md overflow-hidden">
+    <table class="table-auto w-full bg-gray-200 rounded-md overflow-hidden shadow-md">
       <thead class="bg-gray-800 text-white">
         <tr>
           <th class="px-4 py-2">Apellido y Nombre</th>
-          <th class="px-4 py-2">Insc_ID</th>
+          <th class="px-4 py-2">Insc / Materia</th>
           <th class="px-4 py-2">Valor</th>
-          <th class="px-4 py-2">Materia</th>
+          <th class="px-4 py-2">Calif.</th>
         </tr>
       </thead>
       <tbody>
-        @foreach ($detail as $key=>$detailItem)
+        @foreach ($inscriptions as $key=>$inscription)
           <tr @class([
-            'bg-red-200'=>!$detailItem->enabled
+            'text-green-700 font-bold'=>$inscription['approved'],
+            'bg-red-200'=>!$inscription['enabled']
             ])>
-            <td class="border px-4 py-2">
-              {{ $detailItem->lastname ?? '' }}, {{ $detailItem->firstname ?? ''}} <small>({{ $detailItem->user_id }})</small></td>
-            <td class="border px-4 py-2">{{ $detailItem->inscription ?? '' }}</td>
-            <td class="border px-4 py-2">{{ $detailItem->value ?? '' }}</td>
-            <td class="border px-4 py-2 text-right">
-              {{ $detailItem->subject_name ?? '' }}
+            <td class="border px-4 py-1">
+              {{ $inscription['full_name'] ?? '' }} <small>({{ $inscription['user_id'] }})</small></td>
+            <td class="border px-4 py-1 text-xs">
+              {{ $inscription['inscription'] ?? '' }}<br />
+              {{ $inscription['subject_name'] ?? '' }}
+            </td>
+            <td class="border px-4 py-1">{{ $inscription['value'] ?? '' }}</td>
+            <td class="border px-4 py-1 text-right text-lg">
+              {{ $inscription['grade'] ?? '' }}&nbsp;
               <x-jet-button wire:click="edit({{$key}})"><x-svg.edit /></x-jet-button>
             </td>
           </tr>

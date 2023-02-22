@@ -46,10 +46,5 @@
     @endforeach
   </div>
   </div>
-
-  @hasanyrole('admin|principal|superintendent|administrative')
-    @livewire('inscription.inscriptions-detail')
-  @endhasanyrole
-    @livewire('inscription.inscriptions-manage')
-
+  @livewire('inscription.inscriptions-manage')
 </x-app-layout>
