@@ -11,10 +11,12 @@ class Config extends Model
 
     //protected $fillable = ['id','group','description','value'];
     protected $guarded = [];
-    public $incrementing = false; // evita que el ID al "no ser" autoincrementable mantenga su valor 
 
-    public function getValue($id){
+    public $incrementing = false; // evita que el ID al "no ser" autoincrementable mantenga su valor
+
+    public function getValue($id)
+    {
         //return User::where('pid','>','1000000')->count();
-        return Config::where('id',$id)->get();
+        return Config::where('id', $id)->get();
     }
 }

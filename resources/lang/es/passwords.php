@@ -17,6 +17,6 @@ return [
     'sent' => 'Hemos enviado por email el link para resetear su contraseña!',
     'throttled' => 'Por favor, espere antes de reintentar.',
     'token' => 'Este Token de reseteo de contraseña no es válido.',
-    'user' => "No existe un usuario con ese email.",
+    'user' => 'No existe un usuario con ese email.',
 
 ];

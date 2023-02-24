@@ -18,7 +18,11 @@
 
   table td, table th{
     border:1px solid;
-    padding:0.5rem 1rem;
+    padding:0.4rem 0.5rem;
+  }
+
+  .right{
+    text-align:right;
   }
 
 </style>
@@ -33,9 +37,9 @@
     <tr>
       <td>
         <strong>{{$student->lastname}}, {{$student->firstname}}</strong><br />
-        <small>{{$student->email}} - {{$student->phone}}</small>
+        <small>({{$student->id}}) {{$student->email}} - {{$student->phone}}</small>
       </td>
-      <td>
+      <td class='right'>
         {{ date('d-m-Y H:i', strtotime(now())) }}    
       </td>
     </tr>
@@ -48,6 +52,8 @@
         <th>ID</th>
         <th>Materia</th>
         <th>Inscripción</th>
+        <th>Nota</th>
+        <th>«&nbsp;Firma&nbsp;»</th>
       </tr>
     </thead>
     <tbody>
@@ -57,6 +63,8 @@
           <td>{{ $inscription->subject_id }}</td>
           <td>{{ $inscription->subject['name'] }}</td>      
           <td>{{ $inscription->value }}</td>
+          <td></td>
+          <td></td>
         </tr>
         @endif
       @endforeach

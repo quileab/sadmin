@@ -14,20 +14,19 @@ class CreateGradesTable extends Migration
     public function up()
     {
         Schema::create('grades', function (Blueprint $table) {
-            $table->primary(['user_id', 'subject_id','date_id']);
+            $table->primary(['user_id', 'subject_id', 'date_id']);
             //$table->unsignedBigInteger('user_id');
             //$table->unsignedBigInteger('subject_id');
             // $table->unique(["user_id","subject_id"],"user_subject_unique");
             $table->foreignId('user_id')->constrained();
             $table->foreignId('subject_id')->constrained();
             $table->date('date_id')->key();
-            $table->tinyText('name');
-            
-            $table->tinyInteger('grade')->default(0);
-            $table->tinyInteger('approved')->default(0);
+            $table->tinyText('name')->nullable();
+
+            $table->tinyInteger('grade')->unsigned()->default(0);
+            $table->tinyInteger('approved')->unsigned()->default(0);
+            $table->tinyInteger('attendance')->unsigned()->default(0); // percentage
             $table->timestamps();
-            
-            
         });
     }
 

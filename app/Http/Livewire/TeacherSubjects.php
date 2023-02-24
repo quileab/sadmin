@@ -10,7 +10,7 @@ class TeacherSubjects extends Component
     public $career;
     public $careers;
     public $user;
-    public $selected_subjects=[];
+    public $selected_subjects = [];
 
     //rules for validation
     public $rules = [
@@ -21,7 +21,7 @@ class TeacherSubjects extends Component
     public function mount()
     {
         //if session 'bookmark' not exists redirect to students
-        if (!session()->has('bookmark')) {
+        if (! session()->has('bookmark')) {
             return redirect()->route('students');
         }
         // get user from session 'bookmark'
@@ -42,7 +42,7 @@ class TeacherSubjects extends Component
     // on career change get subjects from subjects table where career_id is equal to career id
     public function updatedCareer($career)
     {
-        $this->subjects = \App\Models\Subject::where('career_id', $career)->pluck('name','id')->toArray();
+        $this->subjects = \App\Models\Subject::where('career_id', $career)->pluck('name', 'id')->toArray();
         //$this->render();
         $this->updateSubjects($career);
     }
@@ -50,7 +50,7 @@ class TeacherSubjects extends Component
     public function toggleSubject($key)
     {
         //switch $selected_subjects[$key] value to opposite
-        $this->selected_subjects[$key] = !$this->selected_subjects[$key];
+        $this->selected_subjects[$key] = ! $this->selected_subjects[$key];
         //set user_subjects table value to 1 if subject is selected
         if ($this->selected_subjects[$key]) {
             $this->user->subjects()->attach($key);
@@ -61,19 +61,18 @@ class TeacherSubjects extends Component
         //$this->render();
     }
 
-
     public function updateSubjects($career)
     {
         //get all subjects from subjects table where career_id is equal to career id
-        $this->subjects = \App\Models\Subject::where('career_id', $career)->pluck('name','id')->toArray();
+        $this->subjects = \App\Models\Subject::where('career_id', $career)->pluck('name', 'id')->toArray();
 
-        $user_subjects = $this->user->subjects->pluck('name','id')->toArray();        //remove from subjects items already in user_subjects
-        $this->selected_subjects=[];
-        foreach ($this->subjects as $key=>$subject) {
+        $user_subjects = $this->user->subjects->pluck('name', 'id')->toArray();        //remove from subjects items already in user_subjects
+        $this->selected_subjects = [];
+        foreach ($this->subjects as $key => $subject) {
             //add attibute "disabled" to each selected_subject if it is already in user_subjects
             if (in_array($subject, $user_subjects)) {
                 $this->selected_subjects[$key] = true;
-            }else{
+            } else {
                 $this->selected_subjects[$key] = false;
             }
         }

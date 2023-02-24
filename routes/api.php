@@ -1,8 +1,8 @@
 <?php
 
+use App\Models\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\Config;
 
 /*
 |--------------------------------------------------------------------------

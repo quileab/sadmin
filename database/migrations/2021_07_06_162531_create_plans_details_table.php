@@ -18,7 +18,7 @@ class CreatePlansDetailsTable extends Migration
             $table->foreignId('plans_master_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->date('date')->key();
             $table->string('title');
-            $table->decimal('amount',10,2);
+            $table->decimal('amount', 10, 2);
             $table->timestamps();
         });
     }

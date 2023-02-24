@@ -1,32 +1,165 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* @import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities"; */
 
-.form-label{
-  @apply block text-xs font-bold text-gray-700;
+.form-label {
+    @apply block text-xs font-bold text-gray-700;
 }
 
-.d2c{
-  background: #0573c0;
-  background: linear-gradient(90deg, #0572c0 15%, #76a444 100%);
-  text-shadow: 1px 1px 4px black;
-  font-size: large;
-  color: white !important;
-}
-.c2d{
-  background: #0573c0;
-  background: linear-gradient(0deg, #0572c0 15%, #76a444 100%);
-  text-shadow: 1px 1px 4px black;
-  color: white !important;
+input[type="checkbox"] {
+  @apply w-4 h-4 align-middle;
 }
 
-tbody > tr:nth-of-type(odd) {
+input::file-selector-button {
+  @apply focus:ring-2 rounded bg-gray-700 align-middle text-gray-100;
+}
+
+
+details {
+  @apply rounded-md p-1 overflow-hidden;
+  background: #c3c3c3;
+  background: linear-gradient(180deg, #c3c3c3 35%, #76a44400 100%);
+
+}
+summary{
+  @apply mb-3;
+}
+summary p{
+  background-color: #fff;
+}
+
+.d2c {
+    background: #0573c0;
+    background: linear-gradient(90deg, #0572c0 15%, #76a444 100%);
+    text-shadow: 1px 1px 4px black;
+    font-size: large;
+    color: white !important;
+}
+.c2d {
+    background: #0573c0;
+    background: linear-gradient(0deg, #0572c0 15%, #76a444 100%);
+    text-shadow: 1px 1px 4px black;
+    color: white !important;
+}
+
+.gradl2r{
+  @apply bg-gradient-to-br from-gray-600 to-gray-800 
+    hover:bg-gradient-to-br hover:from-gray-500 hover:to-gray-700;
+}
+.spin{
+  animation-name: spinkeys;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear; 
+}
+@keyframes spinkeys {
+  from {
+      transform:rotate(0deg);
+  }
+  to {
+      transform:rotate(360deg);
+  }
+}
+
+thead{
+  @apply bg-gray-800 text-gray-100;
+}
+
+/* tbody > tr:nth-of-type(odd) {
   background-color: rgba(0, 0, 0, 0.04);
+} */
+
+select, textarea {
+    @apply my-1 px-2 py-2 border-gray-500 rounded-md shadow-sm bg-gray-50 text-gray-900;
 }
 
-select{
-  @apply my-1 px-2 py-2 border-gray-500 rounded-md shadow-sm bg-gray-50 text-gray-900
+/* Calendar Styles */
+.calendar {
+  display: flex;
+  position: relative;
+  padding: 1rem;
+  margin: 0 auto;
+  /* max-width: 320px; */
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
+.month-year {
+  position: absolute;
+  bottom:62px;
+  right: -27px;
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 500;
+  color: #94A3B8;
+  transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+}
 
+.year {
+  margin-left: 4px;
+  color: #CBD5E1;
+}
 
+.days {
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  margin-right: 46px;
+}
+
+.day-label {
+  position: relative;
+  flex-basis: calc(14.286% - 2px);
+  margin: 1px 1px 12px 1px;
+  font-weight: 700;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: #1E293B;
+}
+
+.day {
+  position: relative;
+  flex-basis: calc(14.286% - 2px);
+  margin: 1px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 300;
+}
+
+.day.dull {
+  color: #94A3B8;
+}
+
+.day.today {
+  color: #0EA5E9;
+  font-weight: 600;
+}
+
+.day::before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+
+.day:hover {
+  background: #E0F2FE;
+}
+
+.day .content {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

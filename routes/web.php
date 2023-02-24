@@ -1,67 +1,122 @@
 <?php
 
+use App\Http\Controllers\PrintInscriptionsController;
+use App\Http\Controllers\PrivateFilesController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\PrintClassbookController;
+use App\Http\Controllers\PrintStudentsStatsController;
 use App\Models\Config;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\PrivateFilesController;
-use App\Http\Controllers\PrintInscriptionsController;
+use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Role;
 
 Route::get('/', function () {
     // $info=\App\Models\Config::find('shortname')->value.
     //   ' '.\App\Models\Config::find('longname')->value;
     //return view('welcome',compact('info'));
+
     return redirect()->route('login');
 });
 Route::get('/register', function () {
     return redirect()->route('login');
 });
 
+Route::get('/previewReceipt', function () {
+    return view('pdf.paymentReceipt');
+});
+
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    
+    Route::get('/clear', function () {
+        if (! auth()->user()->hasRole('admin')) {
+            return abort(404);
+        }
+        $log = '';
+        try {
+            Artisan::call('cache:clear');
+            $log = $log.'Cache...clear<br />';
+        } catch (\Exception $e) {
+            $log = $log.'Cache...ERROR<br />';
+        }
+        try {
+            Artisan::call('config:clear');
+            $log = $log.'Config...clear<br />';
+        } catch (\Exception $e) {
+            $log = $log.'Config...ERROR<br />';
+        }
+        try {
+            Artisan::call('optimize:clear');
+            $log = $log.'Optimize...clear<br />';
+        } catch (\Exception $e) {
+            $log = $log.'Optimize...ERROR<br />';
+        }
+        try {
+            Artisan::call('optimize');
+            $log = $log.'Optimized...< OK ><br />';
+        } catch (\Exception $e) {
+            $log = $log.'Optimized...ERROR<br />';
+        }
+
+        $log = $log.'<hr />EXTRAS<br />';
+        try {
+            Artisan::call('debugbar:clear');
+            $log = $log.'DebugBar...clear<br />';
+        } catch (\Exception $e) {
+            $log = $log.'DebugBar...ERROR<br />';
+        }
+
+        try {
+            Artisan::call('storage:link');
+            $log = $log.'Storage Link...< OK ><br />';
+        } catch (\Exception $e) {
+            $log = $log.'Storage Link...ERROR<br />';
+        }
+
+        return $log;
+    });
+
     Route::get('/dashboard', function () {
         // get first record from config table
-        $temp = new NumberFormatter("es", NumberFormatter::SPELLOUT);
-        
-        $dashInfo=[
+        // $temp = new NumberFormatter('es', NumberFormatter::SPELLOUT);
+
+        $dashInfo = [
             'shortname' => Config::where('id', 'shortname')->first()->value ?? 'false',
             'longname' => Config::where('id', 'longname')->first()->value ?? 'false',
             'modalities' => Config::where('id', 'modalities')->first()->value ?? 'false',
-            'careers'=>Auth::user()->careers()->get(),
-            'number'=> $temp->format(Auth::user()->userCount()),
-            'rolesUsersCount'=>Auth::user()->getCountByRole(),
+            'careers' => Auth::user()->careers()->get(),
+            'rolesUsersCount' => Auth::user()->getCountByRole(),
         ];
-        $inscriptions= Config::where('group', 'inscriptions')->get();
-        return view('dashboard',compact('dashInfo','inscriptions'));
+        $inscriptions = Config::where('group', 'inscriptions')->get();
+
+        return view('dashboard', compact('dashInfo', 'inscriptions'));
     })->name('dashboard');
 
-    Route::get('PDFs/{filename}', function ($filename)
-    {
-        $path = storage_path('public/' . $filename);
-    
-        if (!File::exists($path)) {
+    Route::get('PDFs/{filename}', function ($filename) {
+        $path = storage_path('public/'.$filename);
+
+        if (! File::exists($path)) {
             abort(404);
         }
-    
+
         $file = File::get($path);
         $type = File::mimeType($path);
-    
+
         $response = Response::make($file, 200);
-        $response->header("Content-Type", $type);
-    
+        $response->header('Content-Type', $type);
+
         return $response;
     });
 
     Route::get('/files/private/{filename}', [PrivateFilesController::class, 'files']);
-  
+
     Route::get('/permissions', function () {
-        if (auth()->user()->can('menu.security')) {
-            return view('permissions.index');
+        if (! auth()->user()->hasRole(['admin', 'principal'])) {
+            return abort(404);
         }
-        return abort(403);
+
+        return view('permissions.index');
     })->name('permissions');
 
     Route::get('/assignrole/{id}', function ($id) {
@@ -81,6 +136,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('careers');
 
     Route::get('/students', function () {
+        if (! auth()->user()->can('menu.students')) {
+            abort(404);
+        }
+
         return view('students.index');
     })->name('students');
 
@@ -98,9 +157,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
                     $inscriptions = [];
                 }
             }
+
             return view('students.inscriptions', compact('inscriptions'));
         }
-        abort(403);
+        abort(404);
     })->name('studentsinsc');
 
     Route::get('/inscriptionsData/{id}', function ($id) {
@@ -109,28 +169,39 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             if ($inscription == []) {
                 return redirect()->route('studentsinsc');
             }
+
             return view('students.inscriptionsData', compact('inscription', 'id'));
         }
     })->name('studentsinscdata');
 
     // IMPORT FORM
     Route::get('/students-import-form', function () {
-      if (auth()->user()->hasRole('admin')) {
-          $roles=Role::all();
-          return view('students.import-form', compact('roles'));
-      }
-      return back();
+        if (auth()->user()->hasRole('admin')) {
+            $roles = Role::all();
+            return view('students.import-form', compact('roles'));
+        }
+        return back();
     })->name('students-import-form');
     // IMPORT BULK
-    Route::post('/students-import-bulk', [StudentController::class,'importBulk'])->name('students-import-bulk');
+    Route::post('/students-import-bulk', [StudentController::class, 'importBulk'])->name('students-import-bulk');
 
     Route::get('/grades/{id}', function ($id) {
-        return view('grades.index',compact('id'));
+        if (auth()->user()->hasRole(['admin', 'principal', 'teacher', 'student'])) {
+            return view('grades.index', compact('id'));
+        }
+
+        return back();
     })->name('grades');
 
+    Route::get('/grades/{id}/{career}', function ($id, $career) {
+        return view('grades.student', compact(['id', 'career']));
+    })->name('gradesCareer');
+
     Route::get('/userpayments/{id}', function ($id) {
-        return view('userpayments',compact('id'));
+        return view('userpayments', compact('id'));
     })->name('userpayments');
+
+    Route::get('/paymentsDetails/{id}', \App\Http\Livewire\PaymentsDetails::class)->name('paymentsDetails');
 
     Route::get('/calendars', function () {
         return view('calendars.index');
@@ -142,14 +213,23 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // ruta a un FullPage Livewire -> funciona a medias a través del MOUNT // No necesita subjects.index
     Route::get('/subjects/{career_id}', \App\Http\Livewire\SubjectsComponent::class)->name('subjects');
 
+    Route::get('/classbooks', \App\Http\Livewire\Classbooks::class)->name('classbooks');
+    Route::get('/mystudents', \App\Http\Livewire\MyStudents::class)->name('mystudents');
+
     Route::get('/books', function () {
         return view('books');
     })->name('books');
 
-    Route::get('/inscriptionsPDF/{student}/{career}/{inscription}', [PrintInscriptionsController::class,'index'])->name('inscriptionsPDF');
-    Route::get('/inscriptionsSavePDF/{student}/{career}/{inscription}', [PrintInscriptionsController::class,'savePDF'])->name('inscriptionsSavePDF');
+    Route::get('/inscriptionsPDF/{student}/{career}/{inscription}', [PrintInscriptionsController::class, 'index'])->name('inscriptionsPDF');
+    Route::get('/inscriptionsSavePDF/{student}/{career}/{inscription}', [PrintInscriptionsController::class, 'savePDF'])->name('inscriptionsSavePDF');
 
-    //route to TeacherSubjects
     Route::get('/teachersubjects', \App\Http\Livewire\TeacherSubjects::class)->name('teachersubjects');
-        
+    Route::get('/studentsubjects', \App\Http\Livewire\StudentSubjects::class)->name('studentsubjects');
+    // TODO: quick grade component -> delete
+    // Route::get('/quickgrade', \App\Http\Livewire\Quickgrade::class)->name('quickgrade');
+    Route::get('/quickgrade', \App\Http\Livewire\Inscription\InscriptionsDetail::class)->name('quickgrade');
+    Route::get('/printClassbooks/{subject}', [PrintClassbookController::class,'show'])->name('printclassbooks');
+    Route::get('/printStudentsAttendance/{subject}', [PrintStudentsStatsController::class,'listAttendance'])->name('printStudentsAttendance');
+    Route::get('/printStudentsStats/{student}/{subject}', [PrintStudentsStatsController::class,'studentClasses'])->name('printStudentsStats');
+    Route::get('/debug/{student}/{subject}', [PrintStudentsStatsController::class,'debug'])->name('debug');
 });

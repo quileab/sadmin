@@ -15,6 +15,17 @@ class UserPayments extends Model
         'amount',
     ];
 
-    protected $table = "userpayments";
+    protected $table = 'userpayments';
+
     use HasFactory;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function paymentrecords()
+    {
+        return $this->hasMany(PaymentRecord::class);
+    }
 }

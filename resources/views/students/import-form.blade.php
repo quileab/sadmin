@@ -15,21 +15,21 @@
         {{ csrf_field() }}
         <label for="file">Seleccione el archivo a importar</label>
         <input type="file" name="file" id="file" accept=".csv" class="form-input">
-        <div class="flex mt-2 p-1 bg-gray-300 rounded-md">
+        <div class="flex mt-2 p-1 bg-gray-300 rounded-md justify-between">
           <select name="role" class="border border-gray-400 mx-1">
             <option value="">Seleccione un Rol</option>
             @foreach ($roles as $role)
               <option value="{{ $role->id }}">{{ $role->name }}</option>
             @endforeach
           </select>
+          <x-jet-button class="text-white font-bold px-3 py-1 my-1 rounded text-xs">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>&nbsp;Importar
+          </x-jet-button>
         </div>
-        <x-jet-button class="text-white font-bold px-3 py-1 mt-2 rounded text-xs">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-          </svg>&nbsp;Importar
-        </x-jet-button>
       </form>
 
       @isset($message)

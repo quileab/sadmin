@@ -16,9 +16,9 @@ class CreateSubjectsTable extends Migration
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('career_id');
-            $table->string('name',70);
+            $table->string('name', 70);
             $table->string('correl')->nullable();
-            
+
             $table->foreign('career_id')->references('id')->on('careers')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');

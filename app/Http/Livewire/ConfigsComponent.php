@@ -7,37 +7,50 @@ use Livewire\Component;
 
 class ConfigsComponent extends Component
 {
-    public $uid, $group, $description, $value, $type;
-    public $formAction = "store";
+    public $uid;
+
+    public $group;
+
+    public $description;
+
+    public $value;
+
+    public $type;
+
+    public $formAction = 'store';
+
     public $updateForm = false;
-    
+
     public function render()
     {
-        $configs=Config::orderBy('group','asc')->orderBy('id','asc')->get();
-        return view('livewire.configs-component',compact('configs'));
+        $configs = Config::orderBy('group', 'asc')->orderBy('id', 'asc')->get();
+
+        return view('livewire.configs-component', compact('configs'));
     }
 
-    public function saveChange(){
-        $config=Config::find($this->uid);
-        $config->value=$this->value;
-        $config->type=$this->type;
-        
+    public function saveChange()
+    {
+        $config = Config::find($this->uid);
+        $config->value = $this->value;
+        $config->type = $this->type;
+
         $config->save();
-        $this->updateForm=false;
+        $this->updateForm = false;
     }
 
-    public function showModalForm(Config $config){
-        $this->uid=$config->id;
-        $this->group=$config->group;
-        $this->description=$config->description;
-        $this->value=$config->value;
-        $this->type=$config->type;
-        $this->updateForm=true;
+    public function showModalForm(Config $config)
+    {
+        $this->uid = $config->id;
+        $this->group = $config->group;
+        $this->description = $config->description;
+        $this->value = $config->value;
+        $this->type = $config->type;
+        $this->updateForm = true;
     }
 
     // public function store(){
     //     $user = auth()->user();
-        
+
     //     Infocard::create([
     //         'title'=>$this->title,
     //         'text'=>$this->text,
@@ -59,7 +72,7 @@ class ConfigsComponent extends Component
     //     $user = auth()->user();
 
     //     $infocard=Infocard::find($this->uid);
-        
+
     //     $infocard->update([
     //         'title'=>$this->title,
     //         'text'=>$this->text,
@@ -76,5 +89,4 @@ class ConfigsComponent extends Component
     // public function destroy(Infocard $infocard){
     //     $infocard->delete();
     // }
-
 }

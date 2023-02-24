@@ -5,6 +5,7 @@
     <x-slot name="title">Calificaciones » <small>{{ $subjID }} »</small> {{ $subjName }}</x-slot>
     <x-slot name="content">
       {{-- Altas --}}
+      @if (!auth()->user()->hasRole('student'))
       <div class="flex mb-2">
         <div class="w-1/3">
         <x-jet-label value="Fecha" />
@@ -54,6 +55,7 @@
         </div>
 
       </div>
+      @endif
 
 
       <div class="px-0 mx-6">
@@ -72,16 +74,17 @@
           <tbody class="bg-white divide-y divide-gray-200">
             @foreach ($grades as $grade)
               <tr class="hover:bg-gray-100">
-                <td class="px-6 py-4">
+                <td class="px-5 py-2">
                   {{ $grade->date_id }}<br />
                 </td>
-                <td class="px-6 py-4">
+                <td class="px-5">
                   {{$grade->name}}
                 </td>
-                <td class="px-6 py-4">
+                <td class="px-5">
                   {{$grade->grade}}
                 </td>
-                <td class="px-6 py-4 text-sm font-medium text-right bg-gray-100 w-28 whitespace-nowrap">
+                <td class="px-6 text-sm font-medium text-right bg-gray-100 w-28 whitespace-nowrap">
+                  @if (!auth()->user()->hasRole('student'))
                   {{-- Edit --}}
                   <button wire:click="editGrade('{{ $grade->date_id }}')" class="mr-2">
                     <x-svg.edit class="w-5 h-5 text-gray-700" />
@@ -90,6 +93,7 @@
                   <button wire:click="$emit('confirmDelete','{{$grade->date_id}}, {{ $grade->name }}','{{ $grade->date_id }}','deleteGrade')">
                     <x-svg.trash class="w-5 h-5 text-red-700" />
                   </button>
+                  @endif
                 </td>
               </tr>
             @endforeach

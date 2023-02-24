@@ -2,8 +2,7 @@
   {{-- Formulario CRUD Estudiantes --}}
   <x-jet-dialog-modal icon='edit' wire:model="openModal">
     <x-slot name="title">
-      <small>ID: </small><strong>{{ $uid }}</strong> » <small>Usuario:
-      </small><strong>{{ $name }}</strong>
+      <small>{{ $uid }}</small> » <strong>{{ $name }}</strong>
     </x-slot>
 
     <x-slot name="content">
@@ -68,7 +67,7 @@
           @endforeach
           <div class="p-2 flex justify-between items-center">
             <span class="text-gray-50">Agregar Carrera/s</span>
-            <select wire:model.lazy="career_id" name="career_id" id="career_id" class="bg-white">
+            <select wire:model="career_id" name="career_id" id="career_id">
               @foreach ($careers as $career)
                 <option value="{{ $career->id }}">{{ $career->name }}</option>
               @endforeach
@@ -92,10 +91,7 @@
 
         @if ($formAction == 'store')
           <x-jet-button wire:click="store" class="text-white font-bold px-3 py-1 rounded text-xs">
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>&nbsp;Crear
+            <x-svg.plusCircle class="w-5 h-5" />&nbsp;Crear
           </x-jet-button>
         @else
           <x-jet-button class="ml-2" wire:click="saveChange" wire:loading.attr="disabled">
@@ -107,18 +103,10 @@
     </x-slot>
   </x-jet-dialog-modal>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <p class="text-indigo-800 text-sm px-1 py-2">
-    | <b>Career:</b> {{ $careerSelected}} 
-    | <b>Role:</b> {{ $roleSelected }} 
-    | <b>Search:</b> {{ $search }}
-    | <b>Debug:</b> {{ $debug }}
-    {{-- RdyToLd:{{ $readyToLoad}}  | Students:{{ $students }} --}}
-    </p>
+  <div class="w-full px-3 sm:px-4 lg:px-6">
     <x-table>
-      <div class="px-4 py-1 flex items-center d2c">
+      <div class="px-3 py-1 flex items-center d2c">
         <div class="flex item center">
-          <span class="mt-3">Mostrar&nbsp;</span>
           <select wire:model="cant"
             class="mr-2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
             <option value="10">10</option>
@@ -128,8 +116,10 @@
           </select>
         </div>
         {{-- SEARCH --}}
-        <x-jet-input class="flex-1 mr-2" type="search" placeholder="Ingrese su búsqueda aquí" wire:model.lazy="search" />
-
+        <x-jet-input class="flex-1" type="search" placeholder="Ingrese su búsqueda aquí" wire:model.lazy="search" />
+        <x-jet-secondary-button wire:click="render" class="mr-2 py-2.5">
+          <x-svg.search />
+        </x-jet-secondary-button>
         {{-- select career --}}
         <div class="inline text-sm mr-2">
         <select wire:model="careerSelected" name="careerSelected" id="careerSelected" 
@@ -137,6 +127,7 @@
           @foreach ($careers as $career)
             <option value="{{ $career->id }}">{{ $career->name }}</option>
           @endforeach
+            <option value="">*none*</option>
         </select><br>
         {{-- select role --}}
         <select wire:model="roleSelected" name="roleSelected" id="roleSelected"
@@ -151,11 +142,13 @@
         <div class="block">
         <x-jet-button wire:click="create">Nuevo Ingreso</x-jet-button>
         <br>
-        <x-jet-secondary-button wire:click="render"><x-svg.search /></x-jet-secondary-button>
+        <div class="bg-gray-800 text-gray-100 rounded my-1 pb-1 px-2">
+          <label><input type="checkbox" wire:model="globalSearch"> <span class="uppercase text-xs">GLOBAL por ROL</span></label>
+        </div>
         </div>
       </div>
       <table class="min-w-full divide-y divide-gray-200">
-        <thead class="text-gray-100 bg-gray-700">
+        <thead>
           <tr>
             <th scope="col" class="cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
               wire:click="order('id')">
@@ -203,47 +196,49 @@
         </thead>
         <tbody class="bg-white text-black divide-y divide-gray-400">
           @foreach ($students as $student)
-            <tr class="hover:bg-yellow-100 {{ !$student->enabled ? 'bg-red-200' : '' }}">
+            <tr @class([
+              'hover:bg-yellow-100',
+              'text-red-800'=>!$student->enabled,
+              ])>
               <td class="px-6 py-1">
                 <div>{{ $student->id }}</div>
               </td>
               <td class="px-6 py-1">
-                <div class="text-sm text-gray-900">{{ $student->pid }}</div>
+                <div class="text-sm">{{ $student->pid }}</div>
               </td>
               <td class="px-6 py-1">
                 <div><b>{{ $student->lastname }}</b>, {{ $student->firstname }}<br />
-                  {{ $student->email }} | {{ $student->phone }}
+                  <small>{{ $student->email }} | {{ $student->phone }}</small>
                 </div>
               </td>
 
               <td class="mt-1 text-sm">
                 <div class="inline-flex rounded-lg overflow-hidden">
-                {{-- <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a> --}}
-                <button wire:click="edit('{{ $student->id }}')" class="bg-blue-600 text-white px-3 py-2">
-                  <x-svg.edit class="h-6 w-6" />
-                </button>
+                  <button wire:click="edit('{{ $student->id }}')" class="gradl2r text-white border-r px-3 py-1">
+                    <x-svg.edit class="h-6 w-6" />
+                  </button>
                 {{-- Add/Edit Materias --}}
                 @if (count($student->careers))
                   <a href='grades/{{ $student->id }}'>
-                    <button class="bg-indigo-600 text-white px-3 py-2">
+                    <button class="gradl2r text-white border-r px-3 py-1">
                       <x-svg.academicCap class="h-7 w-7" />
                     </button>
                   </a>
                 @else
-                  <button class="bg-indigo-600 text-white px-3 opacity-50">
+                  <button class="gradl2r text-white border-r px-3 py-1">
                     <x-svg.academicCap class="h-7 w-7" />
                   </button>
                 @endif
                 <a href='userpayments/{{ $student->id }}'>
-                <button class="bg-green-600 text-white px-3 py-2">
+                <button class="gradl2r text-white border-r px-3 py-1">
                   <x-svg.dolarRound class="h-7 w-7" />
                 </button>
                 </a>
-                <button class="bg-yellow-600 text-white px-3 py-2"
+                <button class="gradl2r text-white border-r px-3 py-1"
                   wire:click="$emit('setBookmark','{{ $student->id }}')">
                   <x-svg.bookmarkPlus class="h-6 w-6" />
                 </button>
-                <button class="bg-red-600 text-white px-3 py-2 ml-1"
+                <button class="bg-red-700 text-white px-3 py-1 ml-1"
                   wire:click="$emit('confirmDelete','{{ $student->lastname }}, {{ $student->firstname }}','{{ $student->id }}','delete')">
                   <x-svg.trash class="h-6 w-6" />
                 </button>

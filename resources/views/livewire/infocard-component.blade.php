@@ -17,7 +17,7 @@
         </div>
         <div class="mx-2">
           <label for="text" class="block form-label">Información</label>
-          <textarea wire:model.lazy="text" name="text" id="text" cols="30" rows="5" class="form-textarea"></textarea>
+          <textarea wire:model.lazy="text" name="text" id="text" cols="40" rows="5" class="form-textarea w-full"></textarea>
         </div>
       </div>
     </x-slot>
@@ -29,11 +29,8 @@
         </x-jet-secondary-button>
 
         @if ($formAction == 'store')
-          <x-jet-button wire:click="store" color="green" class="text-white font-bold px-3 py-1 rounded text-xs">
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>&nbsp;Crear
+          <x-jet-button wire:click="store">
+            <x-svg.plusCircle class="w-5 h-5" />&nbsp;Crear
           </x-jet-button>
         @else
           <x-jet-button class="ml-2" wire:click="update" wire:loading.attr="disabled">
@@ -44,22 +41,18 @@
     </x-slot>
   </x-jet-confirmation-modal>
 
-
   <div class="bg-gray-200 rounded-md shadow-md overflow-hidden max-w-6xl mx-auto mb-2 mt-4">
-    <div class="w-full d2c px-4 py-3 text-white">
-      <h1 class="inline-block">Tarjetas de Información</h1>
+    <div class="flex justify-between w-full d2c px-4 py-2">
+      <h1 class="text-xl">Tarjetas de Información</h1>
+      @hasanyrole('secretary|admin')
+      {{-- NEW Infocard --}}
+      <x-jet-button wire:click="create">
+        <x-svg.edit />&nbsp;Nueva
+      </x-jet-button>
+      @endhasanyrole
     </div>
 
     <div class="container my-3 mx-auto px-4 md:px-12">
-      @hasanyrole('secretary|admin')
-      {{-- NEW Infocard --}}
-      <x-jet-button color='green' wire:click="create">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-        </svg> Nueva
-      </x-jet-button>
-      @endhasanyrole
 
       <div class="flex flex-wrap -mx-1 lg:-mx-4">
         @foreach ($infocards as $infocard)
@@ -71,13 +64,13 @@
             <article class="overflow-hidden rounded-lg shadow-lg">
 
               <div style="background-color:{{ $infocard->type }}; text-shadow: 1px 1px 4px black;"
-                class="block h-12 w-full overflow-hidden text-white font-bold">
-                <p class="block p-2 mx-2 mt-2">
+                class="block w-full overflow-hidden text-white">
+                <p class="block mx-3 my-2">
                   {{ $infocard->title }}
                 </p>
               </div>
 
-              <header class="items-center text-right py-2 px-2 border-b md:px-4 bg-gray-100">
+              <header class="items-center text-right pb-2 px-2 border-b md:px-4 bg-gray-100">
                 <p class="text-xs"><small>{{ $infocard->updated_at->format('d-m-Y') }}</small></p>
                 <p class="text-left">
                   @php
@@ -87,22 +80,25 @@
               </header>
 
               <footer class="bg-gray-300 border-t flex items-center justify-between leading-none p-1 md:p-2">
-                <a class="flex items-center no-underline hover:underline text-black" href="#">
+                <span class="flex items-center text-black">
                   <img class="h-8 w-8 rounded-full object-cover" src="{{ $infocard->user->profile_photo_url }}"
                     alt="{{ $infocard->user->name }}" />
                   <p class="ml-2 text-sm">
                     {{ $infocard->user->name }}
                   </p>
-                </a>
+                </span>
                 @hasanyrole('secretary|admin')
-                <a class="no-underline text-grey-darker hover:text-red-dark" href="#">
+                <span>
                   <button wire:click="edit({{ $infocard }})"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded text-xs">Editar</button>
-
-
+                    class="bg-blue-600 hover:bg-blue-800 text-white font-bold px-3 py-2 rounded text-xs">
+                    <x-svg.edit class="w-5 h-5" />
+                  </button>
                   <button wire:click="$emit('triggerDelete',{{ $infocard }})"
-                    class="bg-red-500 hover:bg-red-700 text-white font-bold px-4 py-2 rounded text-xs">Borrar</button>
-                </a>
+                    class="bg-red-600 hover:bg-red-800 text-white font-bold px-3 py-2 rounded text-xs">
+                    <x-svg.trash class="w-5 h-5" />  
+                  </button>
+                </span>
+
                 @endhasanyrole
               </footer>
 

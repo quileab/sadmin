@@ -13,7 +13,7 @@ $nav_links = [
       'permission'=>'menu.students',
     ],
     [
-      'name' => 'Carreras',
+      'name' => 'Carreras / Cursos-Divisiones',
       'route' => route('careers'),
       'active' => request()->routeIs('careers'),
       'permission'=>'menu.careers',
@@ -23,6 +23,24 @@ $nav_links = [
       'route' => route('teachersubjects'),
       'active' => request()->routeIs('teachersubjects'),
       'permission'=>'menu.teachersubjects',
+    ],
+    [
+      'name' => 'Matriculación a Materias',
+      'route' => route('studentsubjects'),
+      'active' => request()->routeIs('studentsubjects'),
+      'permission'=>'menu.studentsubjects',
+    ],
+    [
+      'name' => 'Libro de Temas',
+      'route' => route('classbooks'),
+      'active' => request()->routeIs('classbooks'),
+      'permission'=>'menu.classbooks',
+    ],
+    [
+      'name' => 'Mis Estudiantes',
+      'route' => route('mystudents'),
+      'active' => request()->routeIs('mystudents'),
+      'permission'=>'menu.mystudents',
     ],
     [
       'name' => 'Inscripciones',
@@ -37,7 +55,7 @@ $nav_links = [
       'permission'=>'menu.calendars',
     ],
     [
-      'name' => 'Libros',
+      'name' => '📚 Biblioteca',
       'route' => route('books'),
       'active' => request()->routeIs('books'),
       'permission'=>'menu.books',
@@ -82,7 +100,7 @@ $nav_links = [
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+  @vite('resources/css/app.css')
   <style>
     .swal2-title {
       color: aliceblue !important;
@@ -93,7 +111,7 @@ $nav_links = [
   @livewireStyles
 
   <!-- Scripts -->
-  <script src="{{ mix('js/app.js') }}" defer></script>
+  @vite('resources/js/app.js')
 </head>
 
 <body>
@@ -217,18 +235,20 @@ $nav_links = [
           </x-jet-dropdown>
         </div>
       </div>
+      
+      {{-- float information --}}    
+      @livewire('book-marks')
 
       <nav class="text-gray-50">
         @foreach ($nav_links as $nav_link)
           @can($nav_link['permission'])
             <x-jet-nav-link class="block py-2 px-4 w-full" href="{{ $nav_link['route'] }}"
               :active="$nav_link['active']">
-              {{ __($nav_link['name']) }}
+              &nbsp;{{ __($nav_link['name']) }}
             </x-jet-nav-link><br />
           @endcan
         @endforeach
       </nav>
-
     </div>
 
     {{-- content --}}
@@ -240,9 +260,6 @@ $nav_links = [
       </main>
 
     </div>
-
-    {{-- float information --}}    
-    @livewire('book-marks')
 
   </div>
   {{-- end qb template --}}
@@ -266,15 +283,14 @@ $nav_links = [
         case 'warning':
           bgcolor = '#d67200';
           break;
-        case 'error':
-          bgcolor = '#b80000';
-          break;
         case 'info':
           bgcolor = '#0a3f80';
           break;
         case 'question':
           bgcolor = '#8a0a61';
           break;
+        default: // none / error / danger
+          bgcolor = '#b80000';
       }
       Swal.fire({
         icon: icon,
