@@ -118,16 +118,7 @@
            </div>
 
            <div class="p-6 border-t border-gray-200 md:border-l">
-             <div class="flex items-center">
-               <x-svg.infoCircleAlt class="w-[2rem] h-[2rem] text-gray-400" />
-               <div class="ml-4 text-lg font-semibold leading-7 text-gray-700">Mensajes</div>
-             </div>
-
-             <div class="ml-12">
-               <div class="mt-2 text-sm text-gray-500">
-                 🗒✏
-               </div>
-             </div>
+               @livewire('infocard-component')
            </div>
 
          </div>

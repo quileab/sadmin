@@ -61,7 +61,7 @@
   </div>
 
   <div class="p-3">
-    Carrera <select wire:model.defer="subjectId">
+    Materia <select wire:model.defer="subjectId">
       @foreach ($mySubjects as $mySubject)
         <option value="{{ $mySubject->id }}">
           {{ $mySubject->id }} : {{ $mySubject->name }}

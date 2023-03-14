@@ -100,7 +100,7 @@
     </div>
 
     <div class="p-2">
-      <label for="carrera">Carrera </label>
+      <label for="carrera">Materia </label>
       <select id='carrera' wire:model="subjectId">
         @foreach ($mySubjects as $mySubject)
         <option value="{{ $mySubject->id }}">

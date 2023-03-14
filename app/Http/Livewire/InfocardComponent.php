@@ -8,15 +8,10 @@ use Livewire\Component;
 class InfocardComponent extends Component
 {
     public $uid;
-
     public $title;
-
     public $text;
-
     public $type = '#991211';
-
     public $formAction = 'store';
-
     public $updateForm = false;
 
     // rules

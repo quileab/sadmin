@@ -5,6 +5,11 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities"; */
 
+input:-webkit-autofill {
+  -webkit-box-shadow:0 0 0 50px white inset;
+  -webkit-text-fill-color: #666;
+}
+
 .form-label {
     @apply block text-xs font-bold text-gray-700;
 }

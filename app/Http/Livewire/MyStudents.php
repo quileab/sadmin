@@ -36,7 +36,7 @@ class MyStudents extends Component
     public $subject_id;
 
     public function mount(){
-        $this->Me=\App\Models\User::find(Auth::user()->id)->first();
+        $this->Me=\App\Models\User::find(Auth::user()->id);
         $this->mySubjects=$this->Me->Subjects()->orderBy('id')->get();
         $this->subjectId= ($this->subjectId=='') ? $this->mySubjects->first()->id : '';
         $this->myStudents=$this->loadStudents($this->subjectId);
