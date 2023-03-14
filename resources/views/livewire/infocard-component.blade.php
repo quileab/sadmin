@@ -77,7 +77,7 @@
                 </p>
               </header>
 
-              <footer class="bg-gray-300 border-t flex items-center justify-between leading-none p-1 md:p-2">
+              <footer class="bg-gray-300 flex justify-between">
                 <span class="flex items-center text-black">
                   <img class="h-8 w-8 rounded-full object-cover" src="{{ $infocard->user->profile_photo_url }}"
                     alt="{{ $infocard->user->name }}" />
