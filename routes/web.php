@@ -231,5 +231,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/printClassbooks/{subject}', [PrintClassbookController::class,'show'])->name('printclassbooks');
     Route::get('/printStudentsAttendance/{subject}', [PrintStudentsStatsController::class,'listAttendance'])->name('printStudentsAttendance');
     Route::get('/printStudentsStats/{student}/{subject}', [PrintStudentsStatsController::class,'studentClasses'])->name('printStudentsStats');
+    Route::get('/printStudentsReportCard/{student}', [PrintStudentsStatsController::class,'studentReportCard'])->name('printStudentsReportCard');
     Route::get('/debug/{student}/{subject}', [PrintStudentsStatsController::class,'debug'])->name('debug');
 });

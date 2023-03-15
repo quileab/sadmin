@@ -77,7 +77,7 @@
     </x-slot>
   </x-jet-dialog-modal>
 <!-- --- Listado de Classes --- -->
-  <div class="bg-gray-300 rounded-md shadow-md overflow-hidden max-w-6xl mx-auto">
+  <div class="bg-gray-300 rounded-md shadow-md overflow-hidden w-full">
     <div class="w-full d2c px-4 py-1 flex justify-between">
       <h1 class="py-1 mr-3">Libro de Temas</h1>
 

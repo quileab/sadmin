@@ -9,6 +9,11 @@
     margin:1rem;
   }
 
+  hr {
+    height: 1rem;
+    border: 0px;
+  }
+
   h2{
     margin: 0rem;
     padding: 0rem;
@@ -17,14 +22,19 @@
     margin: 0rem;
     padding: 0rem;
   }
-
+  
   table{
-    width:100%; border:1px solid; border-collapse:collapse;
+    width:100%; border:2px solid; border-collapse:collapse;
   }
-
+  
   table td, table th{
     border:1px solid;
     padding:0.4rem 0.5rem;
+  }
+  
+  table th{
+    border-bottom: 2px solid black;
+    background-color:#eee;
   }
 
   .right{
@@ -48,7 +58,6 @@
 </style>
 
 <style media="print">
-/* @page {size:landscape}  */ 
 @media print {
 
 @page {
@@ -77,44 +86,33 @@ body {
     <button type="button" onclick="window.close();return false;"
       style=".">❌ Cerrar</button>
   </div>
-  <h2>{{ $config['shortname'] }} - {{ $config['longname'] }}</h2>
+  <h2>{{ $data['shortname'] }} - {{ $data['longname'] }}</h2>
 
   <table>
     <tr>
       <td>
-        {{ $data['subject']->id }}: {{ $data['subject']->name }}
+        subject
       </td>
       <td class='right'>
-        {{ date('d-m-Y H:i', strtotime(now())) }}    
+        {{ date('d-m-Y H:i', strtotime(now())) }}      
       </td>
     </tr>
   </table>
-
-
+  <hr />
   <table>
     <thead>
       <tr>
         <th>Fecha</th>
-        <th>Clase - Unidad</th>
         <th>Tipo</th>
-        <th>Contenido</th>
-        <th>Actividades</th>
-        <th>Observaciones</th>
-        <th>Profesor</th>
-        <th>Autoridad</th>
+        <th>Calif.</th>
       </tr>
     </thead>
     <tbody>
-      @foreach ($classbooks as $classbook)
+      @foreach ($grades as $grade)
         <tr>
-          <td>{{ date('d-m-Y',strtotime($classbook->date_id)) }}</td>
-          <td>{{ $classbook->ClassNr }} - {{ $classbook->Unit }}</td>      
-          <td>{{ $classbook->Type }}</td>
-          <td>{{ $classbook->Contents }}</td>
-          <td>{{ $classbook->Activities }}</td>
-          <td>{{ $classbook->Observations }}</td>
-          <td>{{ \App\Models\User::find($classbook->user_id)->lastname }}</td>
-          <td>{{ $classbook->Authority_user_id }}</td>
+          <td>{{ date('d-m-Y', strtotime($grade->date_id)) }}</td>
+          <td>{{ $grade->user_id }} {{ $grade->name }}</td>      
+          <td style="text-align: center;">{{ $grade->grade }}</td>
         </tr>
       @endforeach
     </tbody>

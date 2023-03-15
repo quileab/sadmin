@@ -107,7 +107,7 @@ body {
         {{ $subject->id }}: {{ $subject->name }}
       </td>
       <td class='right'>
-        {{ date('d-m-Y H:i', strtotime(now())) }}      
+        {{ date('d-m-Y H:i', strtotime(now())) }}
       </td>
     </tr>
     <tr>

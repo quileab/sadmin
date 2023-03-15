@@ -98,7 +98,7 @@
                  {{ $career->name }}<br />
                  @endforeach
                  @if(Auth::user()->hasRole('student'))
-                 <a href="grades/{{Auth::user()->id}}">
+                 <a target='_blank' href="printStudentsReportCard/{{Auth::user()->id}}">
                   <x-jet-button class="mt-1">
                     Libreta Digital
                   </x-jet-button>

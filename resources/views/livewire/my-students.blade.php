@@ -1,4 +1,4 @@
-<div class="bg-gray-300 rounded-md shadow-md overflow-hidden max-w-6xl mx-auto">
+<div class="bg-gray-300 rounded-md shadow-md overflow-hidden w-full">
   {{-- Formulario CRUD --}}
   <x-jet-dialog-modal wire:model="openModal">
     <x-slot name="title">

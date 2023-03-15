@@ -5,10 +5,7 @@
       </h2>
   </x-slot>
 
-  <div class="py-12">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-          {{-- @livewire('show-books',['title'=>'Testing title']) --}}
-          @livewire('show-books')
-      </div>
+  <div class="w-full">
+    @livewire('show-books')
   </div>
 </x-app-layout>

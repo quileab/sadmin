@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 class PrintStudentsStatsController extends Controller
 {
     private $subject;
+    private $filterWords;
 
     function listAttendance(Request $request, $subject){
         $this->subject = $subject;
@@ -14,6 +15,9 @@ class PrintStudentsStatsController extends Controller
         $classCount=\App\Models\Classbook::where('subject_id',$subject)
             ->where('Unit','>',0)
             ->count();
+        if($classCount==0){
+          return "⚠️ No existen clases aún";
+        }
         $data=[];
         $data['subject']=\App\Models\Subject::find($subject);
         $data['user']=auth()->user();
@@ -78,6 +82,28 @@ class PrintStudentsStatsController extends Controller
 
         //dd($student, $subject, $classes);
         return view('printStudentsStats', compact(['classes','student','subject','data']));
+    }
+
+    function studentReportCard($student){
+        $data=[];
+        $data = \App\Models\Config::where('group', 'main')->get()->pluck('value', 'id')->toArray();
+        //todo in config file
+        $filterReporCard='tp%|ev%|final%';
+        $this->filterWords=explode('|',$filterReporCard);
+        //dd($this->filterWords);
+        $grades=\App\Models\Grade::where('user_id',$student)
+            ->where('grade', '>', 0)
+            ->where(function($query){
+                foreach($this->filterWords as $filter){
+                    $query->orWhere('name','LIKE',$filter);
+                }
+            });
+        $grades=$grades->orderBy('subject_id','ASC')
+            ->orderBy('date_id','ASC')->get();
+        
+        $student=\App\Models\User::find($student);
+        //dd($student, $grades, $data);
+        return view('printStudentsReportCard', compact(['grades','student','data']));
     }
 
     public function debug(Request $request, $student, $subject){
