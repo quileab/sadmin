@@ -21,7 +21,13 @@
     </div>
     @endif
   </div>
-    <section class="container mx-auto p-4">
+
+    <!-- Loading indicator -->
+    <div wire:loading class="spin fixed top-2 left-1/2 rounded-full bg-black bg-opacity-50">
+      <x-svg.loading class="w-[3rem] h-[3rem] m-0 p-0 text-white" />
+    </div>
+
+    <section class="container mx-auto p-2">
       <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
         <div class="w-full overflow-x-auto">
           <table class="w-full">
@@ -45,7 +51,7 @@
             <tbody class="bg-white">
               @foreach ($subjects as $subject)
               @if (!empty(trim($inscriptionValues[$subject->id])))
-              <tr class="text-gray-700 even:bg-gray-300">
+              <tr class="text-gray-800 even:bg-gray-300">
                 <td class="px-3 py-2 border">
                   <div class="flex items-center text-sm">
                     {{ $subject->id }}
@@ -63,13 +69,9 @@
                         <x-jet-button wire:click="csv1AddRemove('{{$subject->id}}','{{$value}}')" class="mb-1"
                           color='{{(strpos($inscriptionStudent[$subject->id],$value) === false) ? "gray" : "green" }}'>
                           @if (strpos($inscriptionStudent[$subject->id],$value) === false)
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                          </svg>
+                            <x-svg.x />
                           @else
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                          </svg>
+                            <x-svg.check />
                           @endif
                             &nbsp;{{$value}}
                         </x-jet-button>  
@@ -138,15 +140,11 @@
 
                 </td>
                 <td class="px-3 py-2 text-sm inline-flex">
-                  <button wire:click="updateOrCreateValue({{$subject->id}})" class="flex items-center justify-center bg-green-500 hover:bg-green-700 text-white font-semibold rounded-full m-1 px-1 py-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
+                  <button wire:click="updateOrCreateValue({{$subject->id}})" class="flex items-center justify-center bg-green-500 hover:bg-green-700 text-white rounded-l-md px-1 py-1">
+                    <x-svg.check class="h-6 w-6" />
                   </button>
-                  <button wire:click="clearValue({{$subject->id}})" class="flex items-center justify-center bg-red-500 hover:bg-red-700 text-white font-semibold rounded-full m-1 px-1 py-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                  <button wire:click="clearValue({{$subject->id}})" class="flex items-center justify-center bg-red-500 hover:bg-red-700 text-white rounded-r-md px-1 py-1">
+                    <x-svg.x class="h-6 w-6" />
                   </button>
                 </td>
               </tr>

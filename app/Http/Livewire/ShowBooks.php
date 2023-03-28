@@ -9,60 +9,34 @@ use Livewire\WithPagination;
 class ShowBooks extends Component
 {
     use WithPagination;
-
     public $search = '';
-
     public $sort = 'id';
-
     public $cant = '10';
-
     public $direction = 'asc';
-
     public $openModal = false;
-
     public $updating = false;
-
     public $readyToLoad = false;
-
     public $book;
 
     // --- Record ---
     public $uid;
-
     public $title;
-
     public $publisher;
-
     public $author;
-
     public $gender;
-
     public $extent;
-
     public $edition;
-
     public $isbn;
-
     public $container;
-
     public $signature;
-
     public $digital;
-
     public $origin;
-
     public $date_added;
-
     public $price;
-
     public $discharge_date;
-
     public $discharge_reason;
-
     public $synopsis;
-
     public $note;
-
     public $user_id;
 
     // *** VARIOS PROTECTED de Livewire ***
@@ -80,23 +54,23 @@ class ShowBooks extends Component
 
     protected $rules = [
         'uid' => 'required|numeric',
-        'title' => 'required',
-        'publisher' => 'required',
-        'author' => 'required',
-        'gender' => 'required',
+        'title' => 'required|max:120',
+        'publisher' => 'required|max:60',
+        'author' => 'required|max:60',
+        'gender' => 'required|max:30',
         'extent' => 'required|numeric',
         'edition' => 'required|date',
-        // 'isbn',
-        // 'container',
-        // 'signature',
-        // 'digital',
+        'isbn'=>'max:20',
+        'container'=>'max:40',
+        'signature'=>'max:30',
+        'digital'=>'max:250',
         'origin' => 'required',
         'date_added' => 'required',
         'price' => 'required',
         'discharge_date' => 'required',
         // 'discharge_reason',
         'synopsis' => 'required',
-        // 'note',
+        'note'=>'max:300',
         // 'user_id'
 
     ];
@@ -153,7 +127,7 @@ class ShowBooks extends Component
         ]);
         $this->updating = false;
         $this->openModal = true;
-        $this->emit('toast', 'Nuevo Libro', 'success');
+        //$this->emit('toast', 'Nuevo Libro', 'success');
     }
 
     public function save()

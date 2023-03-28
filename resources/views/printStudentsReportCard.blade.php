@@ -91,7 +91,7 @@ body {
   <table>
     <tr>
       <td>
-        subject
+        {{ auth()->user()->lastname }}, {{ auth()->user()->firstname }} » ({{ auth()->user()->pid }})
       </td>
       <td class='right'>
         {{ date('d-m-Y H:i', strtotime(now())) }}      

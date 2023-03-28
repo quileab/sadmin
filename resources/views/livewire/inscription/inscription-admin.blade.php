@@ -1,29 +1,34 @@
 <div class="m-4">
   <div class="flex">
     <div>
-  Carrera&nbsp; 
-  <select wire:model.lazy="career" name="career" id="career">
-    {{-- opcion 0 por default --}}
-    @foreach ($careers as $c)
-      <option value="{{ $c->id }}">
-        {{ $c->name }}
-      </option>
-    @endforeach
-  </select>
+ 
+    <select wire:model.lazy="career" name="career" id="career">
+      {{-- opcion 0 por default --}}
+      @foreach ($careers as $c)
+        <option value="{{ $c->id }}">
+          {{ $c->name }}
+        </option>
+      @endforeach
+    </select>
 
-  &nbsp; » Tipo de ingreso
-  <select wire:model.lazy="inputType" name="inputtype" id="">
-    {{-- <option value="text">Texto Simple</option> --}}
-    {{-- <option value="bool">Si/No (Ej. Habilitar/Deshabilitar)</option> --}}
-    <option value="csv-1">Texto separado por comas. Acepta solo un valor</option>
-    <option value="csv-n">Texto separado por comas. Acepta varios valores</option>
-    {{-- <option value="num">Valor numerico</option> --}}
-  </select>
+    &nbsp; Tipo <small>(opciones separadas por comas.)</small>
+    <select wire:model.lazy="inputType" name="inputtype" id="">
+      {{-- <option value="text">Texto Simple</option> --}}
+      {{-- <option value="bool">Si/No (Ej. Habilitar/Deshabilitar)</option> --}}
+      <option value="csv-1">Acepta solo un valor</option>
+      <option value="csv-n">Acepta varios valores</option>
+      {{-- <option value="num">Valor numerico</option> --}}
+    </select>
   </div>
 
   </div>
 
-  <section class="container mx-auto p-4">
+    <!-- Loading indicator -->
+    <div wire:loading class="spin fixed top-2 left-1/2 rounded-full bg-black bg-opacity-50">
+      <x-svg.loading class="w-[3rem] h-[3rem] m-0 p-0 text-white" />
+    </div>
+
+  <section class="container mx-auto p-2">
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
       <div class="w-full overflow-x-auto">
         <table class="w-full">
