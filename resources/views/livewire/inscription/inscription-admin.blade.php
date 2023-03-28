@@ -64,15 +64,11 @@
                   type="text" class="w-full border border-gray-500" /> 
               </td>
               <td class="px-3 py-2 text-sm inline-flex">
-                <button wire:click="updateOrCreateValue({{$subject->id}})" class="flex items-center justify-center bg-green-500 hover:bg-green-700 text-white font-semibold rounded-full m-1 px-1 py-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
+                <button wire:click="updateOrCreateValue({{$subject->id}})" class="flex items-center justify-center bg-green-500 hover:bg-green-700 text-white rounded-l-md px-1 py-1">
+                  <x-svg.check class="h-6 w-6" />
                 </button>
-                <button wire:click="clearValue({{$subject->id}})" class="flex items-center justify-center bg-red-500 hover:bg-red-700 text-white font-semibold rounded-full m-1 px-1 py-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
+                <button wire:click="clearValue({{$subject->id}})" class="flex items-center justify-center bg-red-500 hover:bg-red-700 text-white rounded-r-md px-1 py-1">
+                  <x-svg.x class="h-6 w-6" />
                 </button>
               </td>
             </tr>
