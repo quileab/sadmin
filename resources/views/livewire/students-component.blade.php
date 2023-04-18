@@ -2,7 +2,12 @@
   {{-- Formulario CRUD Estudiantes --}}
   <x-jet-dialog-modal icon='edit' wire:model="openModal">
     <x-slot name="title">
-      <small>{{ $uid }}</small> » <strong>{{ $name }}</strong>
+      <div class="flex justify-between">
+      <div><small>{{ $uid }}</small> » <strong>{{ $name }}</strong></div>
+      <div class="flex"><x-svg.password class="w-9 h-9" /><details><summary></summary>
+        <x-jet-button wire:click="passReset()">Reset Password</x-jet-button>
+      </details></div>
+      </div>
     </x-slot>
 
     <x-slot name="content">
@@ -49,34 +54,26 @@
       </div>
 
       @if ($updating)
-        <fieldset class="bg-gray-500 my-2 rounded-md overflow-hidden">
-          <legend class="px-2 bg-gray-500 p-1 rounded-md text-gray-50">Carreras</legend>
+        <fieldset class="bg-gray-300 my-2 rounded-md overflow-hidden">
+          <legend class="px-2 bg-gray-300 p-1 rounded-md text-gray-900">Carreras</legend>
           @foreach ($student_careers as $item)
-            <div class="mx-1 rounded-md flex justify-between bg-gradient-to-b from-gray-200 to-gray-300 my-1">
+            <div class="mx-1 rounded-md flex justify-between bg-gray-100 my-1">
               <span class="p-2">{{ $item->name }}</span>
-              <x-jet-button
+              <x-jet-secondary-button
                 wire:click="$emit('confirmDelete','{{ $item->name }}','{{ $item->id }}','deleteCareer')"
-                color="red" class="w-4/4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd"
-                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                    clip-rule="evenodd" />
-                </svg>
-              </x-jet-button>
+                class="w-4/4">
+                <x-svg.trash class="h-5 w-5 text-red-700" />
+              </x-jet-secondary-button>
             </div>
           @endforeach
           <div class="p-2 flex justify-between items-center">
-            <span class="text-gray-50">Agregar Carrera/s</span>
+            <span class="text-gray-900">Agregar Carrera/s</span>
             <select wire:model="career_id" name="career_id" id="career_id">
               @foreach ($careers as $career)
                 <option value="{{ $career->id }}">{{ $career->name }}</option>
               @endforeach
             </select>
-            <x-jet-button wire:click="addCareer">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-              </svg>&nbsp;Agregar</x-jet-button>
+            <x-jet-button wire:click="addCareer">Agregar</x-jet-button>
           </div>
         </fieldset>
       @endif
@@ -255,6 +252,11 @@
         </div>
       @endif
     </x-table>
+
+    <!-- Loading indicator -->
+    <div wire:loading class="spin fixed top-2 left-1/2 rounded-full bg-black bg-opacity-50">
+      <x-svg.loading class="w-[3rem] h-[3rem] m-0 p-0 text-white" />
+    </div>
   </div>
 
 </div>

@@ -57,7 +57,9 @@
 
 
   <div class="w-full d2c px-4 py-1 flex justify-between">
-    <h1 class="py-1 mr-3">Mis Estudiantes</h1>
+    <h1 class="py-1 mr-3">
+      <small>Mis Estudiantes de </small>{{ $mySubjects->find($subjectId)->name }}
+      <small> fecha </small>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $classDate)->format('d-m-Y') }}</h1>
   </div>
 
   <div class="p-3">
@@ -68,14 +70,13 @@
         </option>
       @endforeach
     </select>
-
     fecha
     <x-jet-input type="date" wire:model.defer="classDate" />
 
     <x-jet-button wire:click="loadData()">Buscar</x-jet-button>
-    {{-- loading indicator --}}
-    <div wire:loading class="spin absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-      <x-svg.wait class="w-[7rem] h-[7rem] m-0 p-0" />
+    <!-- Loading indicator -->
+    <div wire:loading class="spin fixed top-2 left-1/2 rounded-full bg-black bg-opacity-50">
+      <x-svg.loading class="w-[3rem] h-[3rem] m-0 p-0 text-white" />
     </div>
 
     <details>

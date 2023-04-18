@@ -15,56 +15,35 @@ class StudentsComponent extends Component
 
     // display
     public $careers = [];
-
     public $careerSelected;
-
     public $roles = [];
-
     public $roleSelected;
-
     public $users = [];
-
     protected $students;
 
     // record
     public $uid;
-
     public $pid;
-
     public $name;
-
     public $lastname;
-
     public $firstname;
-
     public $phone;
-
     public $email;
-
     public $enabled;
-
     public $career_id = 0;
-
     public $student_careers = [];
 
     // Livewire utilities
     public $search = '';
-
     public $sort = 'id';
-
     public $cant = '10';
-
     public $direction = 'asc';
-
     public $openModal = false;
-
     public $readyToLoad = false;
-
     public $globalSearch = null;
 
     // TODO: leave just one
     public $formAction = 'store';
-
     public $updating = false;
 
     // Listener para los EMIT - Conexión entre PHP-JS
@@ -91,8 +70,7 @@ class StudentsComponent extends Component
         // 'career_id'
     ];
 
-    public function mount()
-    {
+    public function mount() {
         $this->careers = Career::all();
         if (count($this->careers) > 0) {
             $this->careerSelected = $this->careers[0]->id;
@@ -104,8 +82,7 @@ class StudentsComponent extends Component
         $this->roleSelected = 3;
     }
 
-    public function getSearch()
-    {
+    public function getSearch() {
         // regex clean $search to only letters, numbers and spaces
         $this->search = preg_replace('/[^A-Za-z0-9 ]/', '', $this->search);
 
@@ -147,8 +124,7 @@ class StudentsComponent extends Component
         return $users;
     }
 
-    public function render()
-    {
+    public function render() {
         if ($this->readyToLoad) {
             $this->students = $this->getSearch();
         } else {
@@ -159,31 +135,26 @@ class StudentsComponent extends Component
             ['students' => $this->students]);
     }
 
-    public function loadData()
-    {
+    public function loadData() {
         $this->readyToLoad = true;
     }
 
-    public function updatedCareerSelected()
-    {
+    public function updatedCareerSelected() {
         $this->render();
     }
 
-    public function updatedRoleSelected()
-    {
+    public function updatedRoleSelected() {
         $this->render();
     }
 
-    public function updatedSearch()
-    {
+    public function updatedSearch() {
         // when "$this->search" is "updated" reset pagination
         // to proper function of search in all records (not only visible ones).
         $this->resetPage();
         $this->render();
     }
 
-    public function order($sort)
-    {
+    public function order($sort) {
         if ($sort == $this->sort) {
             if ($this->direction == 'desc') {
                 $this->direction = 'asc';
@@ -195,8 +166,7 @@ class StudentsComponent extends Component
         }
     }
 
-    public function store()
-    {
+    public function store() {
         $this->name = $this->pid;
         $this->validate();
         \App\Models\User::create([
@@ -215,6 +185,24 @@ class StudentsComponent extends Component
 
         $this->openModal = false;
         $this->emit('toast', 'Registro Guardado', 'success');
+    }
+
+    public function passReset(){
+        // reset user password to pid
+        $user = User::find($this->uid);
+        $user->password = Hash::make($this->pid);
+        // set two_factor_secret to null
+        $user->two_factor_secret = null;
+        // set two_factor_recovery_codes to null
+        $user->two_factor_recovery_codes = null;
+        // check if saved
+        if ($user->save()) {
+            $this->emit('toast', 'Password Reset', 'success');
+        }
+        else{
+            $this->emit('toast', 'Reset Error', 'error');
+        }
+
     }
 
     public function edit(User $user)
@@ -236,8 +224,7 @@ class StudentsComponent extends Component
         $this->student_careers = User::find($user->id)->careers()->get();
     }
 
-    public function create()
-    {
+    public function create() {
         $this->reset([
             'name', 'uid', 'pid', 'lastname',
             'firstname', 'phone', 'email',
@@ -249,8 +236,7 @@ class StudentsComponent extends Component
         $this->openModal = true;
     }
 
-    public function saveChange()
-    {
+    public function saveChange() {
         $this->formAction = 'update';
 
         $student = User::find($this->uid);
@@ -267,8 +253,7 @@ class StudentsComponent extends Component
         $this->openModal = false;
     }
 
-    public function showModalForm(User $student)
-    {
+    public function showModalForm(User $student) {
         $this->uid = $student->id;
         $this->lastname = $student->lastname;
         $this->firstname = $student->firstname;
@@ -280,8 +265,7 @@ class StudentsComponent extends Component
         $this->openModal = true;
     }
 
-    public function delete(User $student)
-    {
+    public function delete(User $student) {
         try {
             $student->delete();
             $this->emit('toast', 'Registro eliminado', 'error');
@@ -290,8 +274,7 @@ class StudentsComponent extends Component
         }
     }
 
-    public function addCareer()
-    {
+    public function addCareer() {
         // todo: asignar carrera corregir bug
         // dd($this->uid." / ".$this->career_id);
 
@@ -309,8 +292,7 @@ class StudentsComponent extends Component
         }
     }
 
-    public function deleteCareer($id)
-    {
+    public function deleteCareer($id) {
         $user = User::find($this->uid);
         $user->careers()->detach($id);
 

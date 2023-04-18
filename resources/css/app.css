@@ -25,8 +25,8 @@ input::file-selector-button {
 
 details {
   @apply rounded-md p-1 overflow-hidden;
-  background: #c3c3c3;
-  background: linear-gradient(180deg, #c3c3c3 35%, #76a44400 100%);
+  /* background: #c3c3c3;
+  background: linear-gradient(180deg, #c3c3c3 35%, #76a44400 100%); */
 
 }
 summary{

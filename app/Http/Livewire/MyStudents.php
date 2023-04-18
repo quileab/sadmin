@@ -13,6 +13,7 @@ class MyStudents extends Component
     public $myStudents;
     public $studentData;
     public $subjectId='';
+    public $subject_id;
     public $classDate;
     public $user_id;
     public $classDay=null;
@@ -32,8 +33,6 @@ class MyStudents extends Component
         //'name' => 'required|unique:users,name',
         //'pid' => 'unique:users,pid|required|numeric',
     ];
-
-    public $subject_id;
 
     public function mount(){
         $this->Me=\App\Models\User::find(Auth::user()->id);
