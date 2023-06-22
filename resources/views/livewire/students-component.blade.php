@@ -4,8 +4,8 @@
     <x-slot name="title">
       <div class="flex justify-between">
       <div><small>{{ $uid }}</small> » <strong>{{ $name }}</strong></div>
-      <div class="flex"><x-svg.password class="w-9 h-9" /><details><summary></summary>
-        <x-jet-button wire:click="passReset()">Reset Password</x-jet-button>
+      <div class="flex"><details class="w-32 text-right"><summary>⚙️</summary>
+        <p><x-jet-button wire:click="passReset()">Reset Password</x-jet-button></p>
       </details></div>
       </div>
     </x-slot>

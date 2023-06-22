@@ -33,48 +33,25 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         if (! auth()->user()->hasRole('admin')) {
             return abort(404);
         }
-        $log = '';
-        try {
-            Artisan::call('cache:clear');
-            $log = $log.'Cache...clear<br />';
-        } catch (\Exception $e) {
-            $log = $log.'Cache...ERROR<br />';
+        $logs = [];
+        $maintenance=[
+            'Cache'=>'cache:clear',
+            'Config'=>'config:clear',
+            'Optimize Clear'=>'optimize:clear',
+            'Optimize'=>'optimize',
+            'DebugBar'=>'debugbar:clear',
+            'Storage Link'=>'storage:link',
+            'Route Clear'=>'route:clear',
+        ];
+        foreach ($maintenance as $key => $value) {
+            try {
+                Artisan::call($value);
+                $logs[$key]='✔️';
+            } catch (\Exception $e) {
+                $logs[$key]='❌';
+            }
         }
-        try {
-            Artisan::call('config:clear');
-            $log = $log.'Config...clear<br />';
-        } catch (\Exception $e) {
-            $log = $log.'Config...ERROR<br />';
-        }
-        try {
-            Artisan::call('optimize:clear');
-            $log = $log.'Optimize...clear<br />';
-        } catch (\Exception $e) {
-            $log = $log.'Optimize...ERROR<br />';
-        }
-        try {
-            Artisan::call('optimize');
-            $log = $log.'Optimized...< OK ><br />';
-        } catch (\Exception $e) {
-            $log = $log.'Optimized...ERROR<br />';
-        }
-
-        $log = $log.'<hr />EXTRAS<br />';
-        try {
-            Artisan::call('debugbar:clear');
-            $log = $log.'DebugBar...clear<br />';
-        } catch (\Exception $e) {
-            $log = $log.'DebugBar...ERROR<br />';
-        }
-
-        try {
-            Artisan::call('storage:link');
-            $log = $log.'Storage Link...< OK ><br />';
-        } catch (\Exception $e) {
-            $log = $log.'Storage Link...ERROR<br />';
-        }
-
-        return $log;
+        return view('clearMaintenance', compact('logs'));    
     });
 
     Route::get('/dashboard', function () {
@@ -88,9 +65,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             'careers' => Auth::user()->careers()->get(),
             'rolesUsersCount' => Auth::user()->getCountByRole(),
         ];
-        $inscriptions = Config::where('group', 'inscriptions')->get();
+        $inscriptions = Config::where('group', 'inscriptions')->get()->toArray();
 
-        return view('dashboard', compact('dashInfo', 'inscriptions'));
+        // get student subjects inscriptions
+        $subjects=\App\Models\User::find(Auth::user()->id)->subjects()->get(['id','name','career_id'])->toArray();
+
+        return view('dashboard', compact('dashInfo', 'inscriptions','subjects'));
     })->name('dashboard');
 
     Route::get('PDFs/{filename}', function ($filename) {
@@ -228,7 +208,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // TODO: quick grade component -> delete
     // Route::get('/quickgrade', \App\Http\Livewire\Quickgrade::class)->name('quickgrade');
     Route::get('/quickgrade', \App\Http\Livewire\Inscription\InscriptionsDetail::class)->name('quickgrade');
-    Route::get('/printClassbooks/{subject}', [PrintClassbookController::class,'show'])->name('printclassbooks');
+    Route::get('/printClassbooks/{subject?}', [PrintClassbookController::class,'show'])->name('printclassbooks');
     Route::get('/printStudentsAttendance/{subject}', [PrintStudentsStatsController::class,'listAttendance'])->name('printStudentsAttendance');
     Route::get('/printStudentsStats/{student}/{subject}', [PrintStudentsStatsController::class,'studentClasses'])->name('printStudentsStats');
     Route::get('/printStudentsReportCard/{student}', [PrintStudentsStatsController::class,'studentReportCard'])->name('printStudentsReportCard');

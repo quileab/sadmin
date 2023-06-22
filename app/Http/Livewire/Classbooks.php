@@ -12,9 +12,11 @@ class Classbooks extends Component
 {
     public $openModal = false;
     public $updating = false;
+    public $deleteModal = false;
 
     // record
     public $date_id;
+    public $subject_id;
     public $user_id = null;
     public $classnr=0;
     public $unit=0;
@@ -27,7 +29,6 @@ class Classbooks extends Component
     public $Me;
     public $mySubjects; 
     public $subject_classes=[];
-    public $subjectId;
     public $calendar='';
 
     protected $rules = [
@@ -41,20 +42,20 @@ class Classbooks extends Component
         $this->Me=\App\Models\User::find(Auth::user()->id);
         $this->mySubjects=$this->Me->Subjects()->orderBy('id')->get();
         if (count($this->mySubjects)!==0) {
-            $this->subjectId=$this->mySubjects->first()->id;
+            $this->subject_id=$this->mySubjects->first()->id;
         }else{
-            $this->subjectId=0;
+            $this->subject_id=0;
         }
     }
     
     public function render(){
-        $this->subject_classes=$this->loadClasses($this->subjectId);
+        $this->subject_classes=$this->loadClasses($this->subject_id);
         return view('livewire.classbooks');
     }
 
     public function updatedSubjectId($value){
-        $this->subjectId=$value;
-        //$this->subject_classes=$this->loadClasses($this->subjectId);
+        $this->subject_id=$value;
+        //$this->subject_classes=$this->loadClasses($this->subject_id);
     }
 
     public function loadClasses($subject_id){
@@ -71,13 +72,13 @@ class Classbooks extends Component
             ]);
             //set defaults
             $this->date_id=today()->toDateString();
-            $this->classnr=\App\Models\Classbook::where('subject_id',$this->subjectId)
+            $this->classnr=\App\Models\Classbook::where('subject_id',$this->subject_id)
                 ->max('ClassNr')+1;
             $this->openModal=true;
             }
         else{ // update
             $this->updating=true;
-            $class=Subject::getClass($this->subjectId,$date_id);            
+            $class=Subject::getClass($this->subject_id,$date_id);            
             $this->date_id=$class->date_id;
             $this->user_id = $this->Me;
             $this->classnr=$class->ClassNr;
@@ -93,10 +94,10 @@ class Classbooks extends Component
 
     public function update(){
         $class=new \App\Models\Classbook();
-        $result=$class::where('subject_id',$this->subjectId)
+        $result=$class::where('subject_id',$this->subject_id)
           ->where('date_id',$this->date_id)
           ->update([
-            'subject_id'=>$this->subjectId,
+            'subject_id'=>$this->subject_id,
             'user_id'=>$this->Me->id,
             'ClassNr'=>$this->classnr,
             'Unit'=>$this->unit,
@@ -105,16 +106,16 @@ class Classbooks extends Component
             'Activities'=>$this->activities,
             'Observations'=>$this->observations
           ]);
-        $kind=$result>0 ? 'info':'error';
-        $this->emit('toast', 'Actualizado ('.$result.')', $kind);
+        $type=$result>0 ? 'info':'error';
+        $this->emit('toast', 'Actualizado ('.$result.')', $type);
         $this->openModal=false;
-        //$this->subject_classes=$this->loadClasses($this->subjectId);
+        //$this->subject_classes=$this->loadClasses($this->subject_id);
     }
 
     public function save(){
         try {
             $class=new \App\Models\Classbook();
-            $class->subject_id=$this->subjectId;
+            $class->subject_id=$this->subject_id;
             $class->date_id=$this->date_id;
             $class->user_id=$this->Me->id;
             $class->ClassNr=$this->classnr;
@@ -138,7 +139,7 @@ class Classbooks extends Component
 
     public function calendar($date = null) {
         // create date keyed event texts
-        $this->subject_classes=$this->loadClasses($this->subjectId);
+        $this->subject_classes=$this->loadClasses($this->subject_id);
         $captions=[];
         foreach($this->subject_classes as $subject){
             $captions[$subject->date_id]=$subject->Contents;
@@ -175,6 +176,24 @@ class Classbooks extends Component
         }
         $html .= '</div></div>';
         return $html;
+    }
+
+    public function confirmDeletion($subject_id,$date_id){
+        $this->deleteModal=true;
+        $this->subject_id=$subject_id;
+        $this->date_id=$date_id;
+    }
+
+    public function delete($subject_id,$date_id){
+        // delete from classbook
+        $result=\App\Models\Classbook::where('subject_id',$subject_id)
+        ->where('date_id',$date_id)->delete();
+        if($result){
+            $this->emit('toast', 'Borrado ('.$result.')', 'info');
+        }else{
+            $this->emit('toast', 'No se pudo borrar', 'error');
+        }
+        $this->deleteModal=false;  
     }
 
     public function createCalendar(){

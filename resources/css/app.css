@@ -22,18 +22,44 @@ input::file-selector-button {
   @apply focus:ring-2 rounded bg-gray-700 align-middle text-gray-100;
 }
 
+summary {
+  padding: 0.5rem;
+}
 
 details {
-  @apply rounded-md p-1 overflow-hidden;
-  /* background: #c3c3c3;
-  background: linear-gradient(180deg, #c3c3c3 35%, #76a44400 100%); */
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 5px;
+}
+details:hover {
+  background: #eee;
+  color:#000;
+}
 
+details p {
+  cursor: auto;
+  background: #fff;
+  padding: 0.5rem;
+  position: absolute;
+  left: 0;
+  top: 3rem;
+  box-shadow: 0px 10px 19px -7px rgba(0,0,0,0.75);
+  border-radius: 7px;
+  right: 0;
 }
-summary{
-  @apply mb-3;
-}
-summary p{
-  background-color: #fff;
+
+/* Tiny triangle that points up */
+details p:before {
+  content: "";
+  border-bottom: 12px solid #fff;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  height: 0;
+  left: 10px;
+  position: absolute;
+  top: -10px;
+  width: 0;
 }
 
 .d2c {

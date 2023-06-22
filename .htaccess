@@ -1,0 +1,2 @@
+#Timezone por defecto
+SetEnv TZ America/Argentina/Buenos_Aires

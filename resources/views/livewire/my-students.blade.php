@@ -79,11 +79,11 @@
       <x-svg.loading class="w-[3rem] h-[3rem] m-0 p-0 text-white" />
     </div>
 
-    <details>
-      <summary>Reportes</summary>
+    <details class="w-full">
+      <summary class="m-1">Reportes</summary>
       <p class="flex-center">
         <a href="printStudentsAttendance/{{ $subjectId }}" target="_blank" class="flex">
-          <x-svg.documentFull />% Asistencia
+          <x-jet-button>% Asistencia</x-jet-button>
         </a>
       </p>
     </details>

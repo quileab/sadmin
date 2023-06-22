@@ -1,4 +1,19 @@
 <div>
+  {{-- delete modal --}}
+  <x-jet-dialog-modal wire:model='deleteModal'>
+    <x-slot name="title">
+      Confirmar Eliminación
+    </x-slot>
+    <x-slot name="content">
+      {{date('d-m-Y',strtotime($date_id)) }} : {{$subject_id}}:
+    </x-slot>
+    <x-slot name="footer">
+      <div class="flex justify-evenly">
+        <x-jet-button wire:click="$set('deleteModal',false)">Cancelar</x-jet-button>
+        <x-jet-danger-button wire:click="delete('{{$subject_id}}','{{$date_id}}')">Eliminar</x-jet-danger-button>
+      </div>
+    </x-slot>
+  </x-jet-dialog-modal>
   {{-- Formulario CRUD --}}
   <x-jet-dialog-modal wire:model="openModal">
     <x-slot name="title">
@@ -90,7 +105,7 @@
           @endif
           Calendario
         </x-jet-button>      
-        @if($subjectId>0)
+        @if($subject_id>0)
         <x-jet-button wire:click="createOrUpdate(0)">
           <x-svg.plusCircle />
           Nuevo Registro
@@ -101,7 +116,7 @@
 
     <div class="p-2">
       <label for="carrera">Materia </label>
-      <select id='carrera' wire:model="subjectId">
+      <select id='carrera' wire:model="subject_id">
         @foreach ($mySubjects as $mySubject)
         <option value="{{ $mySubject->id }}">
           {{ $mySubject->id }} : {{ $mySubject->name }}
@@ -109,11 +124,11 @@
         @endforeach
       </select>
 
-      <a href='printClassbooks/{{ $subjectId }}' target='_blank'>
+      <a href='printClassbooks/{{ $subject_id }}' target='_blank'>
       <x-jet-button><x-svg.print /> Imprimir</x-jet-button>
       </a>
       <!-- Loading indicator -->
-      <div wire:loading wire:target="subjectId" class="spin">
+      <div wire:loading wire:target="subject_id" class="spin">
         <x-svg.wait class="w-7 h-7" />
       </div>
       <!-- ----------------- -->
@@ -140,7 +155,7 @@
                 <x-jet-button wire:click="createOrUpdate('{{ $class->date_id }}')">
                   <x-svg.edit />
                 </x-jet-button>
-                <x-jet-danger-button>
+                <x-jet-danger-button wire:click="confirmDeletion('{{$class->subject_id}}','{{$class->date_id}}')">
                   <x-svg.trash />
                 </x-jet-danger-button>
               </td>

@@ -74,7 +74,7 @@ body {
   <div class="dontPrint" style="width:100%; text-align:right; padding:0.4rem; margin-bottom:1rem; background-color: #ddd; border:3px solid #aaa;">
     <button type="button" onclick="window.print();return false;"
       style=".">🖨️ Imprimir</button>
-    <button type="button" onclick="window.close();return false;"
+    <button type="button" onclick="history.back(); window.close();return false;"
       style=".">❌ Cerrar</button>
   </div>
   <h2>{{ $config['shortname'] }} - {{ $config['longname'] }}</h2>
@@ -82,7 +82,8 @@ body {
   <table>
     <tr>
       <td>
-        {{ $data['subject']->id }}: {{ $data['subject']->name }}
+        <small>{{ $data['subject']->id }}</small>: {{ $data['subject']->name }}
+        » {{auth()->user()->lastname}},{{auth()->user()->firstname}} »&nbsp;<small>Asistencia: {{$data['attendance']}}</small>
       </td>
       <td class='right'>
         {{ date('d-m-Y H:i', strtotime(now())) }}    
@@ -99,9 +100,9 @@ body {
         <th>Tipo</th>
         <th>Contenido</th>
         <th>Actividades</th>
-        <th>Observaciones</th>
+        {{-- <th>Observaciones</th> --}}
         <th>Profesor</th>
-        <th>Autoridad</th>
+        {{-- <th>Autoridad</th> --}}
       </tr>
     </thead>
     <tbody>
@@ -109,12 +110,24 @@ body {
         <tr>
           <td>{{ date('d-m-Y',strtotime($classbook->date_id)) }}</td>
           <td>{{ $classbook->ClassNr }} - {{ $classbook->Unit }}</td>      
-          <td>{{ $classbook->Type }}</td>
-          <td>{{ $classbook->Contents }}</td>
+          <td><small>{{ $classbook->Type }}</small></td>
+          <td>{{ $classbook->Contents }}
+          @role('student')
+            <div class="right">
+            <hr />
+            <small>
+            @if($classbook->grade>0)
+            Calif. {{ $classbook->attendance }} -&nbsp;
+            @endif
+            Asist. {{ $classbook->attendance }}%
+            </small>
+            </div>
+          @endrole
+          </td>
           <td>{{ $classbook->Activities }}</td>
-          <td>{{ $classbook->Observations }}</td>
+          {{-- <td>{{ $classbook->Observations }}</td> --}}
           <td>{{ \App\Models\User::find($classbook->user_id)->lastname }}</td>
-          <td>{{ $classbook->Authority_user_id }}</td>
+          {{-- <td>{{ $classbook->Authority_user_id }}</td> --}}
         </tr>
       @endforeach
     </tbody>
