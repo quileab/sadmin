@@ -103,7 +103,7 @@ body {
     <thead>
       <tr>
         <th>Apellido y Nombre/s</th>
-        <th>Asitencia</th>
+        <th>Asistencia</th>
       </tr>
     </thead>
     <tbody>

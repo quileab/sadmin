@@ -92,6 +92,7 @@ class PrintStudentsStatsController extends Controller
         $this->filterWords=explode('|',$filterReporCard);
         //dd($this->filterWords);
         $grades=\App\Models\Grade::where('user_id',$student)
+            ->with('subject')
             ->where('grade', '>', 0)
             ->where(function($query){
                 foreach($this->filterWords as $filter){
@@ -99,7 +100,7 @@ class PrintStudentsStatsController extends Controller
                 }
             });
         $grades=$grades->orderBy('subject_id','ASC')
-            ->orderBy('date_id','ASC')->get();
+            ->orderBy('date_id','DESC')->get();
         
         $student=\App\Models\User::find($student);
         //dd($student, $grades, $data);

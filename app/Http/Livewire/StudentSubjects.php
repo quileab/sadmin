@@ -42,9 +42,9 @@ class StudentSubjects extends Component
     public function toggleSubject($key){
         //set user_subjects table value to 1 if subject is selected
         if (isset($this->subjects_selected[$key])) {
-            $this->student->subjects()->detach($key);
+            $this->student->enroll($key,false);
         } else {
-            $this->student->subjects()->attach($key);
+            $this->student->enroll($key);
         }
         $this->updatedCareerId();
     }

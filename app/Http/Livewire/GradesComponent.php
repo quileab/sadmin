@@ -11,47 +11,29 @@ class GradesComponent extends Component
 {
     // display
     public $uid;
-
     public $lastname;
-
     public $firstname;
-
     // record
     public $date;
-
     public $name;
-
     public $grade;
-
     public $approved;
-
     public $selectedCareer = 0;
-
     public $subjID;
-
     public $subjName;
-
     public $canEdit;
-
     public $grades = [];
-
     // Livewire utilities
     public $search = '';
-
     public $openModal = false;
-
     public $readyToLoad = false;
 
     // TODO: leave just one
     public $formAction = 'store';
-
     public $updating = false;
-
     public $edittingGrade = false;
-
     // Listener para los EMIT - Conexión entre PHP-JS
     protected $listeners = ['delete', 'deleteGrade'];
-
     // Rules of validation
     protected $rules = [
         'uid' => ['required', 'exists:users,id'],
@@ -63,13 +45,11 @@ class GradesComponent extends Component
     ];
 
     // toma el valor enviado desde el Router (web.php) // livewire no utiliza __construct
-    public function mount($id)
-    {
+    public function mount($id){
         $this->uid = $id;
     }
 
-    public function render()
-    {
+    public function render(){
         $careers = [];
         $subjects = [];
         if ($this->readyToLoad) {
@@ -105,13 +85,11 @@ class GradesComponent extends Component
         return view('livewire.grades-component', compact('careers', 'subjects'));
     }
 
-    public function loadData()
-    {
+    public function loadData(){
         $this->readyToLoad = true;
     }
 
-    public function addGrade()
-    {
+    public function addGrade(){
         $this->validate();
         Grade::create([
             'user_id' => $this->uid,
@@ -128,13 +106,11 @@ class GradesComponent extends Component
         $this->grades = $this->loadGrades($this->uid, $this->subjID);
     }
 
-    public function loadGrades($userId, $subjectId)
-    {
+    public function loadGrades($userId, $subjectId){
         return Grade::where('user_id', $userId)->where('subject_id', $subjectId)->get();
     }
 
-    public function setGrades($subjID, $subjName)
-    {
+    public function setGrades($subjID, $subjName){
         $this->date = date('Y-m-d');
         $this->subjID = $subjID;
         $this->subjName = $subjName;
@@ -146,8 +122,7 @@ class GradesComponent extends Component
         $this->openModal = true;
     }
 
-    public function cancelEditGrades()
-    {
+    public function cancelEditGrades(){
         $this->reset(['name', 'grade', 'approved']);
         $this->date = date('Y-m-d');
         //$this->openModal = false;
@@ -156,8 +131,7 @@ class GradesComponent extends Component
         $this->grades = $this->loadGrades($this->uid, $this->subjID);
     }
 
-    public function editGrade($date_id)
-    {
+    public function editGrade($date_id){
         $date_id = \Carbon\Carbon::createFromFormat('d-m-Y', $date_id)->format('Y-m-d');
         $grade = Grade::where('user_id', $this->uid)
             ->where('subject_id', $this->subjID)
@@ -172,8 +146,7 @@ class GradesComponent extends Component
         $this->edittingGrade = true;
     }
 
-    public function updateGrade()
-    {
+    public function updateGrade(){
         $grade = Grade::where('user_id', $this->uid)
             ->where('subject_id', $this->subjID)
             ->where('date_id', $this->date)
@@ -193,16 +166,19 @@ class GradesComponent extends Component
         $this->grades = $this->loadGrades($this->uid, $this->subjID);
     }
 
-    public function deleteGrade($date_id)
-    {
-        $date_id = \Carbon\Carbon::createFromFormat('d-m-Y', $date_id)->format('Y-m-d');
+    public function deleteGrade($date_id){
+        $date_id = \Carbon\Carbon::createFromFormat('d-m-Y', $date_id);//->format('Y-m-d');
+        //** Composite Key handled by model -> Grade */
         $grade = Grade::where('user_id', $this->uid)
             ->where('subject_id', $this->subjID)
-            ->where('date_id', $date_id)
-            ->first(); // first() return model
-        $grade->delete();
-        $this->emit('toast', 'Registro eliminado', 'error');
-        // cargo las notas
+            ->whereDate('date_id', $date_id)
+            ->delete();
+        if($grade){
+            $this->emit('toast', 'Registro eliminado', 'error');
+        } else {
+            $this->emit('toast', 'Error al eliminar', 'error');
+        }
+        // recargo las notas
         $this->grades = $this->loadGrades($this->uid, $this->subjID);
     }
 }

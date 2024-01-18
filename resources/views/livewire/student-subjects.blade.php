@@ -1,7 +1,8 @@
 <div>
   <div class="px-4 py-2 flex items-center d2c w-full">
-    Matriculación » Estudiantes » Materias »
-    Estudiante: {{ $student->lastname }}, {{ $student->firstname }}
+    Matriculación » Materias » Estudiante »
+    <small>({{ $student->id }})</small>
+    &nbsp;{{ $student->lastname }}, {{ $student->firstname }}
   </div>
   <div class="bg-gray-200 overflow-hidden rounded-lg shadow-md">
     <div class="mx-3 my-1">

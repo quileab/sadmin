@@ -51,11 +51,11 @@ class TeacherSubjects extends Component
     {
         //switch $selected_subjects[$key] value to opposite
         $this->selected_subjects[$key] = ! $this->selected_subjects[$key];
-        //set user_subjects table value to 1 if subject is selected
+        //set GRADES "magic record", user_id + subject_id + date(2000-01-01)
         if ($this->selected_subjects[$key]) {
-            $this->user->subjects()->attach($key);
+            $this->user->enroll($key);
         } else {
-            $this->user->subjects()->detach($key);
+            $this->user->enroll($key, false);
         }
         //$this->emit('toast','Subjects updated','success');
         //$this->render();
@@ -65,12 +65,11 @@ class TeacherSubjects extends Component
     {
         //get all subjects from subjects table where career_id is equal to career id
         $this->subjects = \App\Models\Subject::where('career_id', $career)->pluck('name', 'id')->toArray();
-
-        $user_subjects = $this->user->subjects->pluck('name', 'id')->toArray();        //remove from subjects items already in user_subjects
+        $user_subjects = $this->user->subjects()->pluck('name', 'id')->toArray();       //remove from subjects items already in user_subjects
         $this->selected_subjects = [];
         foreach ($this->subjects as $key => $subject) {
             //add attibute "disabled" to each selected_subject if it is already in user_subjects
-            if (in_array($subject, $user_subjects)) {
+            if (isset($user_subjects[$key])) {
                 $this->selected_subjects[$key] = true;
             } else {
                 $this->selected_subjects[$key] = false;

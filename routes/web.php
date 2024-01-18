@@ -68,7 +68,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         $inscriptions = Config::where('group', 'inscriptions')->get()->toArray();
 
         // get student subjects inscriptions
+        if (auth()->user()->hasRole('student')){
         $subjects=\App\Models\User::find(Auth::user()->id)->subjects()->get(['id','name','career_id'])->toArray();
+        }
+        else{
+            $subjects=[];
+        }
 
         return view('dashboard', compact('dashInfo', 'inscriptions','subjects'));
     })->name('dashboard');

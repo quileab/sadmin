@@ -68,17 +68,15 @@
              </div>
 
              <div>
-               <div class="overflow-hidden text-xs text-gray-500 rounded-sm flex justify-center">
-                 <table>
-                   <tbody>
-                     @foreach ($dashInfo['rolesUsersCount'] as $role => $count)
-                       <tr class="border-y border-y-gray-300">
-                         <td class="px-2">{{ $role }}</td>
-                         <td class="px-2 text-right strong">{{ $count }}</td>
-                       </tr>
-                     @endforeach
-                   </tbody>
-                 </table>
+               <div
+                 class="overflow-hidden text-xs text-gray-500 rounded-sm 
+                  grid grid-cols-4 gap-x-2 gap-y-1">
+                 @foreach ($dashInfo['rolesUsersCount'] as $role => $count)
+                   <div class="flex justify-between w-full border-b border-gray-400">
+                     <span>{{ $role }}</span>
+                     <span class="text-right strong">{{ $count }}</span>
+                   </div>
+                 @endforeach
                </div>
 
              </div>
@@ -105,21 +103,21 @@
                    </x-jet-button>
                  </a>
 
-                   <form method="get" action="{{ route('printclassbooks') }}">
-                     <!-- CROSS Site Request Forgery Protection -->
-                     @csrf
-                     Materia <select name="subject" class="border border-gray-400 shadow-md w-full">
-                       @foreach ($subjects as $subject)
-                         <option value='{{ $subject['id'] }}'>{{ $subject['name'] }}</option>
-                       @endforeach
-                     </select>
-                      @if(Session::has('error'))
-                      <p class="bg-red-200 border-red-800 text-red-900">{{ Session::get('error') }}</p>
-                      @endif
-                     <x-jet-button type="submit" class="mt-1" >
-                       Libro de Temas
-                     </x-jet-button>
-                   </form>
+                 <form method="get" action="{{ route('printclassbooks') }}">
+                   <!-- CROSS Site Request Forgery Protection -->
+                   @csrf
+                   Materia <select name="subject" class="border border-gray-400 shadow-md w-full">
+                     @foreach ($subjects as $subject)
+                       <option value='{{ $subject['id'] }}'>{{ $subject['name'] }}</option>
+                     @endforeach
+                   </select>
+                   @if (Session::has('error'))
+                     <p class="bg-red-200 border-red-800 text-red-900">{{ Session::get('error') }}</p>
+                   @endif
+                   <x-jet-button type="submit" class="mt-1">
+                     Libro de Temas
+                   </x-jet-button>
+                 </form>
 
 
                @endif

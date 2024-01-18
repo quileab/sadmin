@@ -103,7 +103,7 @@ body {
     <thead>
       <tr>
         <th>Fecha</th>
-        <th>Tipo</th>
+        <th>Descripción</th>
         <th>Calif.</th>
       </tr>
     </thead>
@@ -111,7 +111,7 @@ body {
       @foreach ($grades as $grade)
         <tr>
           <td>{{ date('d-m-Y', strtotime($grade->date_id)) }}</td>
-          <td>{{ $grade->user_id }} {{ $grade->name }}</td>      
+          <td><b>{{ $grade->subject->name }}</b> » {{ $grade->name }}</td>      
           <td style="text-align: center;">{{ $grade->grade }}</td>
         </tr>
       @endforeach

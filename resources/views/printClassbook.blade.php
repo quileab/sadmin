@@ -117,7 +117,7 @@ body {
             <hr />
             <small>
             @if($classbook->grade>0)
-            Calif. {{ $classbook->attendance }} -&nbsp;
+            Calif. {{ $classbook->grade }} -&nbsp;
             @endif
             Asist. {{ $classbook->attendance }}%
             </small>

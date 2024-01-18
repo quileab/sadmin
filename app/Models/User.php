@@ -88,20 +88,26 @@ class User extends Authenticatable
     }
 
     public function subjects() {
-        return $this->belongsToMany(Subject::class);
+        // return records from 'subjects' that have a record in 'grades' table with date_id=2000-01-01 and user_id=this->id and subject_id=subject_id
+        return
+            \App\Models\Subject::select('subjects.*')
+            ->join('grades', function ($join) {
+                $join->on('subjects.id', '=', 'grades.subject_id')
+                    ->where('grades.date_id', '=', '2000-01-01')
+                    ->where('grades.user_id', '=', $this->id);
+            });
+        
+        // return $this->hasMany(Grade::class)
+        // ->where('date_id','2000-01-01');
     }
 
     public function grades() {
-        return $this->belongsToMany(Grades::class);
+        return $this->belongsToMany(Grade::class);
     }
 
     public function payments() {
         return $this->hasMany('App\Models\PaymentRecord');
     }
-
-    // public function userCount() {
-    //     return User::where('pid', '>', '1000000')->count();
-    // }
 
     public function getCountByRole() {
         // return array with key=role and value=count
@@ -125,4 +131,21 @@ class User extends Authenticatable
             where('date_id','2000-01-01')->count() ? true : false;
     }
 
+    public function enroll(int $subject, bool $enroll = true) {
+        if ($enroll){
+            $result=\App\Models\Grade::create([
+                'user_id'=>$this->id,
+                'subject_id'=>$subject,
+                'date_id'=>'2000-01-01'])
+                ->save();
+            return $result;
+        } else {
+            $result=\App\Models\Grade::where('user_id',$this->id)
+                ->where('subject_id',$subject)
+                ->where('date_id','2000-01-01')
+                ->delete();
+            return $result;
+        }
+
+    }
 }

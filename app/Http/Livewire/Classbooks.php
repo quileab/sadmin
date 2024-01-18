@@ -40,7 +40,9 @@ class Classbooks extends Component
 
     public function mount(){
         $this->Me=\App\Models\User::find(Auth::user()->id);
-        $this->mySubjects=$this->Me->Subjects()->orderBy('id')->get();
+        $this->mySubjects=$this->Me->subjects()->get();
+        //$this->mySubjects=\App\Models\Subject::where('user_id',$this->Me->id)
+        //orderBy('name')->get();
         if (count($this->mySubjects)!==0) {
             $this->subject_id=$this->mySubjects->first()->id;
         }else{
