@@ -75,13 +75,7 @@ class MyStudents extends Component
     public function loadStudents($subject_id){
         $this->subject_id=$subject_id;
         // get all students in Grades table for this subject and date='2000-01-01'
-        $students = \App\Models\User::join('grades', 'users.id', '=', 'grades.user_id')
-            ->where('grades.subject_id', $subject_id)
-            ->where('grades.date_id', '2000-01-01')
-            ->orderBy('lastname','ASC')
-            ->orderBy('firstname','ASC')
-            ->role('student')
-            ->get();
+        $students=\App\Models\Subject::find($subject_id)->Students();
 
         return $students;
     }

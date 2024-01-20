@@ -101,14 +101,12 @@ class InscriptionStudent extends Component
     {
         if ($this->studentID == null || $this->studentID == User::where('name', 'admin')->first()->id) {
             $this->emit('toast', '💥 ERROR', 'error');
-
             return;
         }
 
         $value = $this->inscriptionStudent[$key];
         if ($value == null) {
             $this->clearValue($key);
-
             return;
         }
         //$this->validate();
@@ -139,7 +137,6 @@ class InscriptionStudent extends Component
         // security check for null studentID & user as admin
         if ($this->studentID == null || $this->studentID == User::where('name', 'admin')->first()->id) {
             $this->emit('toast', '💥 ERROR', 'error');
-
             return;
         }
         //delete record

@@ -21,13 +21,7 @@ class PrintStudentsStatsController extends Controller
         $data=[];
         $data['subject']=\App\Models\Subject::find($subject);
         $data['user']=auth()->user();
-        $students = \App\Models\User::orderBy('lastname','ASC')
-            ->orderBy('firstname','ASC')
-            ->whereHas('subjects', function ($query) {
-                $query->where('subjects.id', $this->subject);
-            })
-            ->role('student')
-            ->get();
+        $students = \App\Models\Subject::find($subject)->students();
 
         foreach ($students as $student) {
             $student->attendance=\App\Models\Grade::

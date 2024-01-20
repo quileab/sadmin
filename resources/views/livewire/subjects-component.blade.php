@@ -6,18 +6,43 @@
     </x-slot>
 
     <x-slot name="content">
-      <div class="flex items-stretch flex-1 justify-between">
-        <div class="w-full px-1">
+      <div class="flex gap-x-2 justify-evenly">
+        <div class="w-1/4">
           ID<br />
-          <x-jet-input type='number' wire:model.lazy='uid' value='{{ $uid }}' /><br />
+          <x-jet-input type='number' wire:model.lazy='uid' value='{{ $uid }}' class="w-full"/><br />
         </div>
-        <div class="w-full px-1">
-          IDs Correlatividades<br />
-          <x-jet-input wire:model.lazy='correl' value={{ $correl }} /><br />
+        <div class="w-3/4">
+          Nombre<br />
+          <x-jet-input wire:model.lazy='name' value='{{ $name }}' class="w-full" /><br />
         </div>
       </div>
-      Nombre
-      <x-jet-input wire:model.lazy='name' value='{{ $name }}' class="w-full" /><br />
+      IDs Correlatividades
+      <x-jet-input wire:model.lazy='correl' value={{ $correl }} class="w-full" /><br />
+
+      <div class="grid grid-cols-2 gap-2 p-2 shadow-md">
+      @if ($correl_exam!=[])
+      <table class="border-collapse border border-gray-800">
+        <tr><th></th><th>Para Exámenes</th></tr>
+        @foreach ($correl_exam as $key => $Correl)
+          <tr>
+            <td class="border border-slate-600">{{ $key }}</td>
+            <td class="border border-slate-600">{{ $Correl  }}</td>
+          </tr>          
+        @endforeach
+      </table>
+      @endif
+      @if ($correl_course!=[])
+      <table class="border-collapse border border-gray-800">
+        <tr><th></th><th>Para Cursar</th></tr>
+        @foreach ($correl_course as $key => $Correl)
+          <tr>
+            <td class="border border-slate-600">{{ $key }}</td>
+            <td class="border border-slate-600">{{ $Correl  }}</td>
+          </tr>          
+        @endforeach
+      </table>
+      @endif
+    </div>
     </x-slot>
 
     <x-slot name="footer">
@@ -36,8 +61,9 @@
         @else
           <x-jet-button class="ml-2" wire:click="saveSubjectChange" wire:loading.attr="disabled">
             Modificar
-            </x-jet-danger-button>
+          </x-jet-danger-button>
         @endif
+
       </div>
     </x-slot>
   </x-jet-dialog-modal>

@@ -100,7 +100,7 @@
     </x-slot>
   </x-jet-dialog-modal>
 
-  <div class="w-full px-3 sm:px-4 lg:px-6">
+  <div class="w-full px-3">
     <x-table>
       <div class="px-3 py-1 flex items-center d2c">
         <div class="flex item center">

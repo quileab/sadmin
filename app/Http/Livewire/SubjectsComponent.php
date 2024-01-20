@@ -12,13 +12,11 @@ class SubjectsComponent extends Component
     public $name;
 
     public $correl;
-
+    public $correl_course;
+    public $correl_exam;
     public $career_id;
-
     public $career_name;
-
     public $formAction = 'store';
-
     public $updateSubjectForm = false;
 
     // toma el valor enviado desde el Router (web.php) // livewire no utiliza __construct
@@ -36,6 +34,7 @@ class SubjectsComponent extends Component
         $this->career_id = $career_id;
         $career = \App\Models\Career::find($career_id);
         $this->career_name = $career->name;
+
         //dd('mount',$career_id);
     }
 
@@ -67,6 +66,9 @@ class SubjectsComponent extends Component
         $this->name = $subject->name;
         $this->correl = $subject->correl;
         //$this->exam_dates=$subject->exam_dates;
+
+        $this->correl_course = $subject->Correlativities();
+        $this->correl_exam = $subject->Correlativities("Exam");
 
         $this->formAction = 'update';
         $this->updateSubjectForm = true;
@@ -116,4 +118,5 @@ class SubjectsComponent extends Component
             $this->emit('toast', 'ERROR: Esta MATERIA puede contener INSCRIPCIONES', 'error');
         }
     }
+
 }

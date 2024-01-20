@@ -61,7 +61,8 @@
 @media print {
 
 @page {
-  size: A4 landscape;
+  size: A4 portrait;
+  /*landscape;*/
   max-height:100%;
   max-width:100%;
   margin: 1cm;

@@ -7,7 +7,7 @@
     <x-slot name="content">
       <div class="flex justify-between">
         <div class="w-1/5">
-          <x-jet-label value="Calificación %" /></abbr>
+          <x-jet-label value="Calificación" /></abbr>
           <x-jet-input type="number" wire:model.defer='Dgrade' min="0" step="5" max="100" class="w-full" />
           <x-jet-input-error for="Dgrade" />
         </div>
