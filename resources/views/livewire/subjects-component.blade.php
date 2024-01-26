@@ -17,31 +17,44 @@
         </div>
       </div>
       IDs Correlatividades
-      <x-jet-input wire:model.lazy='correl' value={{ $correl }} class="w-full" /><br />
+      <x-jet-input readonly tabindex="-1" wire:model.lazy='correl' value={{ $correl }} class="w-full" /><br />
 
-      <div class="grid grid-cols-2 gap-2 p-2 shadow-md">
-      @if ($correl_exam!=[])
-      <table class="border-collapse border border-gray-800">
-        <tr><th></th><th>Para Exámenes</th></tr>
-        @foreach ($correl_exam as $key => $Correl)
-          <tr>
-            <td class="border border-slate-600">{{ $key }}</td>
-            <td class="border border-slate-600">{{ $Correl  }}</td>
-          </tr>          
-        @endforeach
-      </table>
-      @endif
-      @if ($correl_course!=[])
-      <table class="border-collapse border border-gray-800">
+      <div class="grid grid-cols-2 gap-2 rounded-md">
+
+      <table class="border-collapse border rounded-md bg-gray-100 overflow-hidden shadow">
         <tr><th></th><th>Para Cursar</th></tr>
-        @foreach ($correl_course as $key => $Correl)
-          <tr>
-            <td class="border border-slate-600">{{ $key }}</td>
-            <td class="border border-slate-600">{{ $Correl  }}</td>
+        @if($correl_course != [])
+        @foreach($correl_course as $key=>$value)
+          <tr wire:click="toggleSelection({{ $key }},'course')"
+            @class([
+              'cursor-pointer',
+              'bg-blue-600 text-white'=>$correl_course[$key]['selected']
+            ])
+          >
+            <td class="border border-gray-300 text-xs px-1">{{ $key }}</td>
+            <td class="border border-gray-300 text-xs px-1">{{ $correl_course[$key]['name'] }}</td>
           </tr>          
         @endforeach
+        @endif
       </table>
-      @endif
+
+      <table class="border-collapse border rounded-md bg-gray-100 overflow-hidden shadow">
+        <tr><th></th><th>Para Exámenes</th></tr>
+        @if($correl_exam != [])
+        @foreach($correl_exam as $key=>$value)
+        <tr wire:click="toggleSelection({{ $key }},'exam')"
+        @class([
+          'cursor-pointer',
+          'bg-blue-600 text-white'=>$correl_exam[$key]['selected']
+        ])
+      >
+            <td class="border border-gray-300 text-xs px-1">{{ $key }}</td>
+            <td class="border border-gray-300 text-xs px-1">{{ $correl_exam[$key]['name'] }}</td>
+          </tr>          
+        @endforeach
+        @endif
+      </table>
+
     </div>
     </x-slot>
 
@@ -68,21 +81,21 @@
     </x-slot>
   </x-jet-dialog-modal>
 
-  <div class="bg-white rounded-md shadow-md overflow-hidden max-w-6xl mx-auto my-4">
-    <div class="w-full d2c px-4 py-3 text-white">
-      <h1 class="inline-block">Materias</h1><small> » {{ $career_id }} » </small>
+  <div class="bg-white rounded-md shadow-md overflow-hidden w-full">
+    <div class="w-full d2c px-4 py-3 text-white flex justify-between">
+      <h1 class="inline-block">Materias<small> » {{ $career_id }} » </small>
       <strong>{{ $career_name }}</strong>
-    </div>
-    <div class="px-4 py-2">
+      </h1>
+
       {{-- NEW Career --}}
-      <x-jet-button color='green' wire:click="create" class="mb-2">
+      <x-jet-button wire:click="create">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
         </svg> Nueva
       </x-jet-button>
-
-
+    </div>
+    <div class="px-4 py-2">
       <table class="w-full bg-white rounded-lg overflow-hidden">
         <thead class="bg-gray-700 text-white">
           <tr>
@@ -125,7 +138,6 @@
     </div>
   </div>
 
-
   {{-- //scripts stack --}}
   @push('scripts')
     <script type="text/javascript">
@@ -157,5 +169,4 @@
       })
     </script>
   @endpush
-
 </div>

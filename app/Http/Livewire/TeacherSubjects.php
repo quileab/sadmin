@@ -29,8 +29,6 @@ class TeacherSubjects extends Component
         // get all careers from careers table
         $this->careers = \App\Models\Career::all();
         // $this->career = first career from careers table
-        $this->career = $this->careers->first();
-
         $this->updateSubjects($this->career->id);
     }
 
@@ -43,7 +41,6 @@ class TeacherSubjects extends Component
     public function updatedCareer($career)
     {
         $this->subjects = \App\Models\Subject::where('career_id', $career)->pluck('name', 'id')->toArray();
-        //$this->render();
         $this->updateSubjects($career);
     }
 
@@ -65,7 +62,7 @@ class TeacherSubjects extends Component
     {
         //get all subjects from subjects table where career_id is equal to career id
         $this->subjects = \App\Models\Subject::where('career_id', $career)->pluck('name', 'id')->toArray();
-        $user_subjects = $this->user->subjects()->pluck('name', 'id')->toArray();       //remove from subjects items already in user_subjects
+        $user_subjects = $this->user->enrolled_subjects()->pluck('name', 'id')->toArray();       //remove from subjects items already in user_subjects
         $this->selected_subjects = [];
         foreach ($this->subjects as $key => $subject) {
             //add attibute "disabled" to each selected_subject if it is already in user_subjects

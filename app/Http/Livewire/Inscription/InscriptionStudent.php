@@ -63,7 +63,7 @@ class InscriptionStudent extends Component
         // Obtengo las materias de la carrera seleccionada
         $subjects = $this->getSubjects($this->career);
         // Seteo el valor del InputType Default
-        $this->inputType = \App\Models\Studentinscription::where('user_id', $this->adminID)->
+        $this->inputType = Studentinscription::where('user_id', $this->adminID)->
             where('subject_id', $subjects[0]->id)->first()->type ?? 'csv-1';
         // Seteo arrays de trabajo
         $this->inscriptionValues = DB::table('subjects')

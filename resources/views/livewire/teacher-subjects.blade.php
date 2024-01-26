@@ -18,9 +18,9 @@
     @else
 
 
-    <div class="p-2 flex flex-wrap">
+    <div class="grid md:grid-cols-2 grid-cols-1 lg:grid-cols-3 gap-3 w-full p-2">
     @foreach ($subjects as $key => $subject)
-      <div class="flex w-80 rounded shadow-md shadow-gray-700 bg-gray-50 m-2 overflow-hidden">
+    <div class="flex w-full rounded shadow shadow-gray-600 bg-gray-50 overflow-hidden">
         <div class="py-2 w-1/4 {{ $selected_subjects[$key] ==  true ? 'bg-green-700' : 'bg-gray-700'  }} text-white text-center">
           {{ $key }}<br />
           {{-- button on/off --}}
@@ -43,4 +43,9 @@
     @endif
 
   </x-table>
+  <!-- Loading indicator -->
+  <div wire:loading class="spin fixed top-2 left-1/2 rounded-full bg-black bg-opacity-50">
+    <x-svg.loading class="w-[3rem] h-[3rem] m-0 p-0 text-white" />
+  </div>
+  
 </div>

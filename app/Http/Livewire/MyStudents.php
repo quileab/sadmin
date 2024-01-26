@@ -12,7 +12,7 @@ class MyStudents extends Component
     public $mySubjects; 
     public $myStudents;
     public $studentData;
-    public $subjectId='';
+    //public $subjectId='';
     public $subject_id;
     public $classDate;
     public $user_id;
@@ -35,33 +35,41 @@ class MyStudents extends Component
     ];
 
     public function mount(){
-        $this->Me=\App\Models\User::find(Auth::user()->id);
-        $this->mySubjects=$this->Me->Subjects()->orderBy('id')->get();
-        $this->subjectId= ($this->subjectId=='') ? $this->mySubjects->first()->id : '';
-        $this->myStudents=$this->loadStudents($this->subjectId);
+        $this->Me=Auth::user();
+        $this->mySubjects=$this->Me->enrolled_subjects()->orderBy('id')->get();
+        if (session()->has('subject_id')){
+            $this->subject_id=1*session('subject_id');
+        } else {
+            $this->subject_id=$this->mySubjects->first()->id;
+        }
+        
+        $this->myStudents=$this->loadStudents($this->subject_id);
         $this->loadStudentData();
         $this->classDate=today()->toDateString();
+
+        $this->loadData();
     }
 
     public function render(){
-        $this->loadData();
+        //$this->loadData();
         return view('livewire.my-students');
     }
 
-    // public function updatedSubjectId($value){
+    //public function updatedSubjectId($value){  
     //     //$this->subjectId=$value;
     //     $this->myStudents=$this->loadStudents($this->subjectId);
     //     $this->loadStudentData();
-    // }
+    //}
 
     public function loadData(){
         // check if there was a class that day
-        $this->classDay=\App\Models\Classbook::where('subject_id',$this->subjectId)
+        $this->classDay=\App\Models\Classbook::where('subject_id',$this->subject_id)
             ->where('date_id',$this->classDate)
             ->where('Unit','>',0)
             ->first();
         // load students even if no class was found    
-        $this->myStudents=$this->loadStudents($this->subjectId);
+        $this->myStudents=$this->loadStudents($this->subject_id);
+        session(['subject_id' => $this->subject_id]);
         //dd($this->myStudents);
         $this->loadStudentData();
         
@@ -85,7 +93,7 @@ class MyStudents extends Component
         if (count($this->myStudents)==0){return;};
         foreach($this->myStudents as $student){
             $grade=\App\Models\Grade::where('user_id',$student->id)
-                ->where('subject_id',$this->subjectId)
+                ->where('subject_id',$this->subject_id)
                 ->where('date_id',$this->classDate)
                 ->first();
 
@@ -110,7 +118,7 @@ class MyStudents extends Component
     public function setAttendance($user_id,$attendance){
         // try to update it
         $grade=\App\Models\Grade::where('user_id',$user_id)
-        ->where('subject_id',$this->subjectId)
+        ->where('subject_id',$this->subject_id)
         ->where('date_id',$this->classDate)
         ->update(['attendance' => $attendance,]);
         // if it doesn't exist create it
@@ -118,7 +126,7 @@ class MyStudents extends Component
             $grade=new \App\Models\Grade();
             $grade::create([
               'user_id' => $user_id,
-              'subject_id' => $this->subjectId,
+              'subject_id' => $this->subject_id,
               'date_id' => $this->classDate,
               'attendance' => $attendance,
             ]);
@@ -127,7 +135,7 @@ class MyStudents extends Component
 
     public function update(){
         $grade=\App\Models\Grade::where('user_id',$this->user_id)
-        ->where('subject_id',$this->subjectId)
+        ->where('subject_id',$this->subject_id)
         ->where('date_id',$this->classDate)
         ->update([
           'attendance' => $this->Dattendance,
@@ -145,7 +153,7 @@ class MyStudents extends Component
         $grade=new \App\Models\Grade();
         $result=$grade::create([
           'user_id' => $this->user_id,
-          'subject_id' => $this->subjectId,
+          'subject_id' => $this->subject_id,
           'date_id' => $this->classDate,
           'attendance' => $this->Dattendance,
           'grade' => $this->Dgrade,
@@ -163,7 +171,7 @@ class MyStudents extends Component
     public function edit($user_id){
         $this->user_id=$user_id;
         $grade=\App\Models\Grade::where('user_id',$user_id)
-        ->where('subject_id',$this->subjectId)
+        ->where('subject_id',$this->subject_id)
         ->where('date_id',$this->classDate)
         ->first();
         if($grade==null){

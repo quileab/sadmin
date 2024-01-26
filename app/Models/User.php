@@ -87,7 +87,7 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Books');
     }
 
-    public function subjects() {
+    public function enrolled_subjects() {
         // return records from 'subjects' that have a record in 'grades' table with date_id=2000-01-01 and user_id=this->id and subject_id=subject_id
         return
             \App\Models\Subject::select('subjects.*')
@@ -96,9 +96,65 @@ class User extends Authenticatable
                     ->where('grades.date_id', '=', '2000-01-01')
                     ->where('grades.user_id', '=', $this->id);
             });
+    }
+
+    public function subjects_status($career_id){
+        // temp_subjects: all subjects in career array[id=>name]
+        $temp_subjects=\App\Models\Career::find($career_id)
+            ->subjects()
+            ->get()->pluck('name','id')->all();
+        $subjects_selected=$this->enrolled_subjects()->pluck('correl','id')->all();
         
-        // return $this->hasMany(Grade::class)
-        // ->where('date_id','2000-01-01');
+        $subjects_FINAL=\App\Models\Grade::where('user_id', $this->id)
+            ->where('grade', '>', 0)
+            ->where('name','FINAL')
+            ->whereIn('subject_id', \App\Models\Career::find($career_id)->subjects->pluck('id'))
+            ->orderBy('date_id', 'asc')
+            ->get()
+            ->pluck('grade', 'subject_id'); 
+
+        $subjects_REGULAR=\App\Models\Grade::where('user_id', $this->id)
+            ->where('grade', '>', 0)
+            ->where('name','REGULAR')
+            ->whereIn('subject_id', \App\Models\Career::find($career_id)->subjects->pluck('id'))
+            ->orderBy('date_id', 'asc')
+            ->get()
+            ->pluck('grade', 'subject_id');
+        
+        $subjects=[];
+        foreach($temp_subjects as $key=>$value){
+            $subjects[$key]['id']=$key;
+            $subjects[$key]['name']=$value;
+            $subjects[$key]['selected']=isset($subjects_selected[$key]) ? true : false;
+            $subjects[$key]['grade']=isset($subjects_FINAL[$key]) ? $subjects_FINAL[$key] : null;
+            $subjects[$key]['grade_status']=isset($subjects_FINAL[$key]) ? 'FINAL' : false;
+            if(!$subjects[$key]['grade_status']){
+                $subjects[$key]['grade_status']=isset($subjects_REGULAR[$key]) ? 'REGULAR' : false;
+                $subjects[$key]['grade']=isset($subjects_REGULAR[$key]) ? $subjects_REGULAR[$key]: null;
+            }
+        }
+
+        return $subjects;
+    }
+
+    public function can_take(int $subject_id,String $type="exam") {
+        define('equiv',['exam'=>'FINAL','course'=>'REGULAR']);
+        // check if I can take this subject for "course" or "exam"
+        // return empty array if can take it or array of subjects need to take before
+        $correl=\App\Models\Subject::find($subject_id);
+        if(!$correl){ return []; }
+        $career_id=$correl->career_id;
+        $correl=$correl->Correlativities($type);
+        $subjects_status=$this->subjects_status($career_id);
+
+        $needsubjects=[];
+        foreach($correl as $key=>$value){ 
+            if (isset($subjects_status[$key]) && $subjects_status[$key]['grade_status']!=equiv[$type]){
+                $needsubjects[$key]=$value;
+            }
+        }
+        
+        return $needsubjects;
     }
 
     public function grades() {
@@ -125,9 +181,9 @@ class User extends Authenticatable
     }
 
     // return true if the user has grade approved on date=2000-01-01
-    public function enrolled($subject_id): bool{
+    public function is_enrolled($subject_id): bool{
         return \App\Models\Grade::where('subject_id', $subject_id)->
-            //where('user_id', $user_id)->
+            where('user_id', $this->id)->
             where('date_id','2000-01-01')->count() ? true : false;
     }
 

@@ -46,8 +46,12 @@ class Quickgrade extends Component
             ->get();
         $this->inscriptionType_id=$this->inscriptionTypes->first()->id;
         $this->careers=\App\Models\Career::all();
-        $this->career_id=$this->careers->first()->id;
-        $this->updatedCareerId($this->career_id);
+
+        if (session()->has('subject_id')){
+            $this->subject_id=session('subject_id');
+        } else {
+            $this->subject_id=$this->careers->first()->subjects->first()->id;
+        }
     }
 
     public function render() {
@@ -97,22 +101,13 @@ class Quickgrade extends Component
         //dd($this->inscriptions);
     }
 
-    // public function updatedStudentSrch($value) {
-    //     if ($value[0]=='@'){
-    //         $search=substr($value,1,20);
-    //         $this->student=\App\Models\User::where('email','LIKE','%'.$search.'%')->first();
-    //     }
-    //     else {
-    //         $this->student=\App\Models\User::find($value);
-    //     }
-    // }
-
     public function updatedCareerId($value) {
         $this->subjects=\App\Models\Subject::
             select(['id','name'])->
             where('career_id',$value)->
             get();
         $this->subject_id=$this->subjects->first()->id;
+        session(['subject_id'=>$this->subject_id]);
     }
 
     public function edit($key){

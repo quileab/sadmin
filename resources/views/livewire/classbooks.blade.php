@@ -128,10 +128,10 @@
       <x-jet-button><x-svg.print /> Imprimir</x-jet-button>
       </a>
       <!-- Loading indicator -->
-      <div wire:loading wire:target="subject_id" class="spin">
-        <x-svg.wait class="w-7 h-7" />
+      <div wire:loading class="spin fixed top-2 left-1/2 rounded-full bg-black bg-opacity-50">
+        <x-svg.loading class="w-[3rem] h-[3rem] m-0 p-0 text-white" />
       </div>
-      <!-- ----------------- -->
+
       {!! $calendar !!}
       <br />
       <table class="table-auto w-full bg-gray-200 rounded-md overflow-hidden">

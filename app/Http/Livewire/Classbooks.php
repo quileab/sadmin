@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use Throwable;
 use Carbon\Carbon;
-use App\Models\Subject;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,29 +38,30 @@ class Classbooks extends Component
     ];
 
     public function mount(){
-        $this->Me=\App\Models\User::find(Auth::user()->id);
-        $this->mySubjects=$this->Me->subjects()->get();
-        //$this->mySubjects=\App\Models\Subject::where('user_id',$this->Me->id)
-        //orderBy('name')->get();
+        $this->Me=Auth::user();
+        $this->mySubjects=$this->Me->enrolled_subjects()->get();
+
         if (count($this->mySubjects)!==0) {
-            $this->subject_id=$this->mySubjects->first()->id;
+            if (session()->has('subject_id')){
+                $this->subject_id=session('subject_id');
+            } else {
+                $this->subject_id=$this->mySubjects->first()->id;
+            }
+            $this->updatedSubjectId($this->subject_id);
         }else{
             $this->subject_id=0;
         }
     }
     
     public function render(){
-        $this->subject_classes=$this->loadClasses($this->subject_id);
+        $this->subject_classes=\App\Models\Subject::classes($this->subject_id);
         return view('livewire.classbooks');
     }
-
+    
     public function updatedSubjectId($value){
         $this->subject_id=$value;
-        //$this->subject_classes=$this->loadClasses($this->subject_id);
-    }
-
-    public function loadClasses($subject_id){
-        return \App\Models\Subject::classes($subject_id);
+        $this->subject_classes=\App\Models\Subject::classes($this->subject_id);
+        session(['subject_id'=>$this->subject_id]);
     }
 
     // @param $date_id datetime
@@ -80,7 +80,7 @@ class Classbooks extends Component
             }
         else{ // update
             $this->updating=true;
-            $class=Subject::getClass($this->subject_id,$date_id);            
+            $class=\App\Models\Subject::getClass($this->subject_id,$date_id);            
             $this->date_id=$class->date_id;
             $this->user_id = $this->Me;
             $this->classnr=$class->ClassNr;
@@ -111,7 +111,6 @@ class Classbooks extends Component
         $type=$result>0 ? 'info':'error';
         $this->emit('toast', 'Actualizado ('.$result.')', $type);
         $this->openModal=false;
-        //$this->subject_classes=$this->loadClasses($this->subject_id);
     }
 
     public function save(){
@@ -136,12 +135,10 @@ class Classbooks extends Component
   
         $this->emit('toast', 'Guardado ('.$result.')', 'info');
         $this->openModal=false;
-        //$this->subject_classes=$this->loadClasses($this->subjectId);
     }
 
     public function calendar($date = null) {
         // create date keyed event texts
-        $this->subject_classes=$this->loadClasses($this->subject_id);
         $captions=[];
         foreach($this->subject_classes as $subject){
             $captions[$subject->date_id]=$subject->Contents;

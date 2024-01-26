@@ -11,11 +11,10 @@ class StudentSubjects extends Component
     public $careers;
     public $career_id;
     public $subjects=[];
-    public $subjects_selected=[];
 
     public function mount(){
         if (auth()->user()->hasRole('student')){
-            $this->student = \App\Models\User::find(Auth()->user()->id);
+            $this->student = Auth()->user();
         }
         if (auth()->user()->hasRole(['admin', 'administrative','principal','superintendent'])){
             if (! session()->has('bookmark')) {
@@ -23,9 +22,8 @@ class StudentSubjects extends Component
             }
             $this->student = \App\Models\User::find(session('bookmark'));
         }
-
+        
         $this->careers=$this->student->careers()->get();
-        $this->career_id=$this->careers->first()->id;
         $this->updatedCareerId();
     }
 
@@ -34,18 +32,17 @@ class StudentSubjects extends Component
     }
 
     public function updatedCareerId(){
-        $this->subjects=\App\Models\Career::find($this->career_id)->subjects()->get();
-        $this->subjects_selected=$this->student
-            ->subjects()->pluck('correl','id')->all();
+        $this->subjects=$this->student->subjects_status($this->career_id);
     }
 
     public function toggleSubject($key){
         //set user_subjects table value to 1 if subject is selected
-        if (isset($this->subjects_selected[$key])) {
+        if ($this->subjects[$key]['selected']) {
             $this->student->enroll($key,false);
+            $this->subjects[$key]['selected']=false;
         } else {
             $this->student->enroll($key);
+            $this->subjects[$key]['selected']=true;
         }
-        $this->updatedCareerId();
     }
 }

@@ -16,13 +16,13 @@ class BookMarks extends Component
     {
         $bkmk = $this->bkmk;
 
+        $bookmarked = [];
+
         //check if session bookmark exists and set it to $boormarked
         if (session()->has('bookmark')) {
             //$this->bookmark=session()->get('bookmark');
             $bookmarked = User::where('id', session('bookmark'))->first();
         //dd($bookmarked);
-        } else {
-            $bookmarked = [];
         }
 
         return view('livewire.book-marks', compact('bookmarked'));

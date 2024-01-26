@@ -60,22 +60,54 @@ class SubjectsComponent extends Component
         $this->updateSubjectForm = false;
     }
 
-    public function edit(Subject $subject)
-    {
+    public function edit(Subject $subject){
         $this->uid = $subject->id;
         $this->name = $subject->name;
         $this->correl = $subject->correl;
         //$this->exam_dates=$subject->exam_dates;
 
-        $this->correl_course = $subject->Correlativities();
-        $this->correl_exam = $subject->Correlativities("Exam");
+        $subjects=Subject::where('career_id', $this->career_id)->pluck('name', 'id');
+        $correl_course_temp = $subject->Correlativities();
+        $correl_exam_temp = $subject->Correlativities("exam");
+        foreach($subjects as $key=>$name){
+            $this->correl_course[$key]['name']=$name;
+            $this->correl_course[$key]['selected']=isset($correl_course_temp[$key]);
+        }
+        foreach($subjects as $key=>$name){
+            $this->correl_exam[$key]['name']=$name;
+            $this->correl_exam[$key]['selected']=isset($correl_exam_temp[$key]);
+        }
+
+        //dd( $this->correl_course, $this->correl_exam));
 
         $this->formAction = 'update';
         $this->updateSubjectForm = true;
     }
 
-    public function saveSubjectChange()
-    {
+    public function toggleSelection($key, $type='exam'){
+        if($type=='exam'){
+            $this->correl_exam[$key]['selected'] = !$this->correl_exam[$key]['selected'];
+        }else{
+            $this->correl_course[$key]['selected'] = !$this->correl_course[$key]['selected'];
+        }
+        $correl='';
+        foreach($this->correl_course as $key=>$value){
+            if($value['selected']){
+                $correl.=$key.' ';
+            }
+        }
+        $correl.='/';
+        foreach($this->correl_exam as $key=>$value){
+            if($value['selected']){
+                $correl.=$key.' ';
+            }
+        }
+        $this->correl=$correl;
+        //dd($this->correl)
+
+    }
+
+    public function saveSubjectChange(){
         //$this->exam_dates=$this->cleanDates($this->exam_dates);
 
         $this->formAction = 'update';

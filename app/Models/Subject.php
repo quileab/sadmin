@@ -36,20 +36,14 @@ class Subject extends Model
         return $this->hasMany(Grade::class);
     }
     public function Correlativities(string $type="exam"){
-        //split correls
+        $equiv=['exam'=>1,'course'=>0];
+        //split correls into course / exams
         $correl=explode('/',$this->correl);
         if (count($correl)!=2){ // wrong format string correl
             return [];
-        }
-        
+        }        
         // subdivide courses and exams
-        if ($type=='exam'){
-            $subjects_ids= array_filter( preg_split("/[\s,]+/", $correl[0]) );
-        }
-        else {
-            $subjects_ids= array_filter( preg_split("/[\s,]+/", $correl[1]) );
-        }
-        // return subjects
+        $subjects_ids= array_filter( preg_split("/[\s,]+/", $correl[$equiv[$type]]) );
         return Subject::whereIn('id', $subjects_ids)->get(['id','name'])
             ->pluck('name', 'id')->all();
     }

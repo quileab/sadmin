@@ -58,12 +58,12 @@
 
   <div class="w-full d2c px-4 py-1 flex justify-between">
     <h1 class="py-1 mr-3">
-      <small>Mis Estudiantes de </small>{{ $mySubjects->find($subjectId)->name }}
+      <small>Mis Estudiantes de </small>{{ $mySubjects->find($subject_id)->name }}
       <small> fecha </small>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $classDate)->format('d-m-Y') }}</h1>
   </div>
 
   <div class="p-3">
-    Materia <select wire:model.defer="subjectId">
+    Materia <select wire:model.defer="subject_id">
       @foreach ($mySubjects as $mySubject)
         <option value="{{ $mySubject->id }}">
           {{ $mySubject->id }} : {{ $mySubject->name }}
@@ -82,7 +82,7 @@
     <details class="w-full">
       <summary class="m-1">Reportes</summary>
       <p class="flex-center">
-        <a href="printStudentsAttendance/{{ $subjectId }}" target="_blank" class="flex">
+        <a href="printStudentsAttendance/{{ $subject_id }}" target="_blank" class="flex">
           <x-jet-button>% Asistencia</x-jet-button>
         </a>
       </p>
@@ -115,11 +115,11 @@
       <tbody>
         @foreach ($myStudents as $key => $myStudent)
           <tr wire:key='att-{{ $loop->index }}'>
-            <td class="border px-4 py-2">
-              <a href="printStudentsStats/{{$myStudent->id}}/{{$subjectId}}" target="_blank" class="flex">
+            <td class="border px-4 py-2 hover:bg-gray-800 hover:text-white">
+              <a href="printStudentsStats/{{$myStudent->id}}/{{$subject_id}}" target="_blank" class="flex">
               <x-svg.documentFull />&nbsp;
-              {{ ucwords(strtolower($myStudent->lastname)) }},              
-              {{ ucwords(strtolower($myStudent->firstname)) }}
+              {{ ucwords(mb_strtolower($myStudent->lastname,'UTF-8')) }},              
+              {{ ucwords(mb_strtolower($myStudent->firstname,'UTF-8')) }}
               </a>
             </td>
             @if (!session()->has('message'))

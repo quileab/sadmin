@@ -69,7 +69,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
         // get student subjects inscriptions
         if (auth()->user()->hasRole('student')){
-        $subjects=\App\Models\User::find(Auth::user()->id)->subjects()->get(['id','name','career_id'])->toArray();
+        $subjects=\App\Models\User::find(Auth::user()->id)->enrolled_subjects()->get(['id','name','career_id'])->toArray();
         }
         else{
             $subjects=[];

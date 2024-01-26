@@ -102,7 +102,7 @@
 
   <div class="w-full px-3">
     <x-table>
-      <div class="px-3 py-1 flex items-center d2c">
+      <div class="px-3 pt-1 flex items-center d2c">
         <div class="flex item center">
           <select wire:model="cant"
             class="mr-2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
@@ -144,7 +144,7 @@
         </div>
         </div>
       </div>
-      <table class="min-w-full divide-y divide-gray-200">
+      <table class="min-w-full">
         <thead>
           <tr>
             <th scope="col" class="cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
