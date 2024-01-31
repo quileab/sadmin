@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Inscription;
 
 use App\Models\Studentinscription;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -34,6 +33,7 @@ class InscriptionStudent extends Component
     public function mount($inscription) {
         $this->inscription = $inscription;
         $this->studentID = Auth::user()->id;
+        // the Admin is the "creator" of the inscription data, so we need to get his ID
         $this->adminID = \App\Models\User::where('name', 'admin')->first()->id;
         $this->careers = Auth::user()->careers()->get();
         if ($this->career == null) {
@@ -99,7 +99,7 @@ class InscriptionStudent extends Component
 
     public function updateOrCreateValue($key)
     {
-        if ($this->studentID == null || $this->studentID == User::where('name', 'admin')->first()->id) {
+        if ($this->studentID == null || $this->studentID == \App\Models\User::where('name', 'admin')->first()->id) {
             $this->emit('toast', '💥 ERROR', 'error');
             return;
         }
@@ -135,7 +135,7 @@ class InscriptionStudent extends Component
     public function clearValue($key)
     {
         // security check for null studentID & user as admin
-        if ($this->studentID == null || $this->studentID == User::where('name', 'admin')->first()->id) {
+        if ($this->studentID == null || $this->studentID == \App\Models\User::where('name', 'admin')->first()->id) {
             $this->emit('toast', '💥 ERROR', 'error');
             return;
         }
@@ -151,6 +151,15 @@ class InscriptionStudent extends Component
 
     public function csvnAddRemove($id, $value)
     {
+        $owed=\App\Models\User::find($this->studentID)->can_take($id);
+        if($owed!=[]){
+            $message="--- Debe Aprobar ---\n";
+            foreach($owed as $subject){
+                $message.="\n".$subject;
+            }
+            $this->emit('toast', $message, 'error');
+            return;
+        }
         $value = str_replace(['"', ' '], '', $value.',');
         if (strpos($this->inscriptionStudent[$id], $value) === false) {
             $this->inscriptionStudent[$id] = $this->inscriptionStudent[$id].$value;
@@ -161,6 +170,15 @@ class InscriptionStudent extends Component
 
     public function csv1AddRemove($id, $value)
     {
+        $owed=\App\Models\User::find($this->studentID)->can_take($id);
+        if($owed!=[]){
+            $message="--- Debe Aprobar ---\n";
+            foreach($owed as $subject){
+                $message.="\n".$subject;
+            }
+            $this->emit('toast', $message, 'error');
+            return;
+        }
         $value = str_replace(['"', ' '], '', $value.',');
         if (strpos($this->inscriptionStudent[$id], $value) === false) {
             $this->inscriptionStudent[$id] = $value;

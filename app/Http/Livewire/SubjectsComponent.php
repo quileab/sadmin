@@ -67,7 +67,7 @@ class SubjectsComponent extends Component
         //$this->exam_dates=$subject->exam_dates;
 
         $subjects=Subject::where('career_id', $this->career_id)->pluck('name', 'id');
-        $correl_course_temp = $subject->Correlativities();
+        $correl_course_temp = $subject->Correlativities("course");
         $correl_exam_temp = $subject->Correlativities("exam");
         foreach($subjects as $key=>$name){
             $this->correl_course[$key]['name']=$name;

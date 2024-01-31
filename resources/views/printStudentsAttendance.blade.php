@@ -37,6 +37,10 @@
     background-color:#eee;
   }
 
+  table tr{
+    page-break-inside: avoid !important;
+  }
+
   .right{
     text-align:right;
   }

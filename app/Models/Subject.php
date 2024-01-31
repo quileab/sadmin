@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Subject extends Model
 {
@@ -22,9 +23,13 @@ class Subject extends Model
     // return array of students in Grades table for this subject and date='2000-01-01'
     // order by lastname and firstname 
     public function students(){
+        $dateFrom=date('Y-m-d', strtotime(session('cycle').'-01-01'));
+        $dateTo=date('Y-m-d', strtotime(session('cycle').'-12-31'));
+
         $students = \App\Models\User::join('grades', 'users.id', '=', 'grades.user_id')
         ->where('grades.subject_id', $this->id)
         ->where('grades.date_id', '2000-01-01')
+        ->whereBetween('grades.updated_at', [$dateFrom, $dateTo])
         ->orderBy('lastname','ASC')
         ->orderBy('firstname','ASC')
         ->role('student')
@@ -49,7 +54,12 @@ class Subject extends Model
     }
 
     public static function classes($subject_id) {
-        return Classbook::where('subject_id', $subject_id)->get();
+        $dateFrom=date('Y-m-d', strtotime(session('cycle').'-01-01'));
+        $dateTo=date('Y-m-d', strtotime(session('cycle').'-12-31'));
+
+        return Classbook::where('subject_id', $subject_id)
+            ->whereBetween('date_id', [$dateFrom, $dateTo])
+            ->get();
     }
 
     public static function getClass($subject_id,$date_id){

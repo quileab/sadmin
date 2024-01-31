@@ -66,10 +66,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             'rolesUsersCount' => Auth::user()->getCountByRole(),
         ];
         $inscriptions = Config::where('group', 'inscriptions')->get()->toArray();
+        if (session('cycle') == null) {
+            session(['cycle'=>Config::where('id', 'cycle')->first()->value ?? date("Y")]);
+        }
 
         // get student subjects inscriptions
         if (auth()->user()->hasRole('student')){
-        $subjects=\App\Models\User::find(Auth::user()->id)->enrolled_subjects()->get(['id','name','career_id'])->toArray();
+        $subjects=Auth::user()->enrolled_subjects()->get(['id','name','career_id'])->toArray();
         }
         else{
             $subjects=[];
@@ -213,9 +216,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // TODO: quick grade component -> delete
     // Route::get('/quickgrade', \App\Http\Livewire\Quickgrade::class)->name('quickgrade');
     Route::get('/quickgrade', \App\Http\Livewire\Inscription\InscriptionsDetail::class)->name('quickgrade');
-    Route::get('/printClassbooks/{subject?}', [PrintClassbookController::class,'show'])->name('printclassbooks');
+    Route::get('/printClassbooks/{subject?}', [PrintClassbookController::class,'printClassbooks'])->name('printclassbooks');
     Route::get('/printStudentsAttendance/{subject}', [PrintStudentsStatsController::class,'listAttendance'])->name('printStudentsAttendance');
     Route::get('/printStudentsStats/{student}/{subject}', [PrintStudentsStatsController::class,'studentClasses'])->name('printStudentsStats');
     Route::get('/printStudentsReportCard/{student}', [PrintStudentsStatsController::class,'studentReportCard'])->name('printStudentsReportCard');
-    Route::get('/debug/{student}/{subject}', [PrintStudentsStatsController::class,'debug'])->name('debug');
 });

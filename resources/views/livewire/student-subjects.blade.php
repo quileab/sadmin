@@ -40,8 +40,11 @@
               'bg-blue-800 text-white'=>$subject['grade_status']=='REGULAR',
             ])>
               <small>{{ $subject['id'] }}</small>&nbsp;»&nbsp;{{ $subject['name'] }}
-              @if($subject['grade_status'])
               <hr class="shadow-black" />
+              <span class="text-red-800">
+                {!! $subject['owed'] !!}
+              </span>
+              @if($subject['grade_status'])
               <div class="w-full text-right">
               Calif.: {{$subject['grade']}} {{$subject['grade_status']}}
               </div>

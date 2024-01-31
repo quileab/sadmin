@@ -100,6 +100,10 @@ class User extends Authenticatable
 
     public function subjects_status($career_id){
         // temp_subjects: all subjects in career array[id=>name]
+        if(!$career_id){
+            $career_id=$this->careers->first()->id;
+        }
+
         $temp_subjects=\App\Models\Career::find($career_id)
             ->subjects()
             ->get()->pluck('name','id')->all();
@@ -144,16 +148,25 @@ class User extends Authenticatable
         $correl=\App\Models\Subject::find($subject_id);
         if(!$correl){ return []; }
         $career_id=$correl->career_id;
-        $correl=$correl->Correlativities($type);
+        $approved=$correl->Correlativities('exam');
+        
+        if($type=='exam'){ $correl=$approved; }
+        else{            
+            $correl=$correl->Correlativities('course');
+            // remove approved subjects
+            foreach($approved as $key=>$value){
+                unset($correl[$key]);
+            }
+        }
         $subjects_status=$this->subjects_status($career_id);
 
         $needsubjects=[];
         foreach($correl as $key=>$value){ 
-            if (isset($subjects_status[$key]) && $subjects_status[$key]['grade_status']!=equiv[$type]){
+            if (isset($subjects_status[$key]) && 
+                $subjects_status[$key]['grade_status']!=equiv[$type]){
                 $needsubjects[$key]=$value;
             }
-        }
-        
+        }        
         return $needsubjects;
     }
 
@@ -202,6 +215,5 @@ class User extends Authenticatable
                 ->delete();
             return $result;
         }
-
     }
 }

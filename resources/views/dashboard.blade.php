@@ -14,7 +14,7 @@
          <div class="flex text-2xl">
            <div class="flex">
              <x-jet-application-mark class="w-auto h-8" />&nbsp;
-             Bienvenidos
+             {{ Auth::user()->lastname }}, {{ Auth::user()->firstname }} 
            </div>
          </div>
          <p class="text-sm opacity-60">
@@ -39,17 +39,17 @@
              </div>
 
              <table class="w-full mt-2 text-sm text-gray-800">
+              <tr>
+                <td>Ciclo</td><td><livewire:cycle /></td>
+              </tr>
                @foreach ($inscriptions as $inscription)
                  <tr class="border-y border-y-gray-400">
                    <td>
-                     {{ $inscription['description'] }}&nbsp;
+                     {{ $inscription['description'] }}
                    </td>
-                   <td>
-                     @if ($inscription['value'] == 'true')
-                       <span class="font-bold text-green-700">Abierta</span>
-                     @else
-                       <span class="font-bold text-red-700">Cerrada</span>
-                     @endif
+                   <td class="font-bold 
+                   {{ $inscription['value']=='true' ? 'text-green-800' : 'text-red-800' }}">
+                   {{ $inscription['value']=='true' ? 'Abierta' : 'Cerrada' }}
                    </td>
                  </tr>
                @endforeach

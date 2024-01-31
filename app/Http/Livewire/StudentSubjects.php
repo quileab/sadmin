@@ -6,7 +6,6 @@ use Livewire\Component;
 
 class StudentSubjects extends Component
 {
-
     public $student = null; // model class
     public $careers;
     public $career_id;
@@ -33,9 +32,21 @@ class StudentSubjects extends Component
 
     public function updatedCareerId(){
         $this->subjects=$this->student->subjects_status($this->career_id);
+        foreach($this->subjects as $key=>$subject){
+            $this->subjects[$key]['owed']='';
+        }
     }
 
     public function toggleSubject($key){
+        $owed=$this->student->can_take($key,'course');
+        if(!$owed==[]){
+           $this->subjects[$key]['owed']="<strong>Debe regularizar</strong><hr />";
+           foreach($owed as $subject){
+               $this->subjects[$key]['owed'].=$subject.'<br />';
+           }
+           $this->subjects[$key]['selected']=false;
+           return; 
+        }
         //set user_subjects table value to 1 if subject is selected
         if ($this->subjects[$key]['selected']) {
             $this->student->enroll($key,false);

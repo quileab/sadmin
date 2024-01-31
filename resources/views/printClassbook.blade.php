@@ -26,6 +26,11 @@
     border:1px solid;
     padding:0.4rem 0.5rem;
   }
+  
+  table tr{
+    page-break-inside: avoid !important;
+  }
+
 
   .right{
     text-align:right;

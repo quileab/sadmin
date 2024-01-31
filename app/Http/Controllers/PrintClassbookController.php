@@ -6,18 +6,23 @@ use Illuminate\Http\Request;
 
 class PrintClassbookController extends Controller
 {
-    function show(Request $request, $subject=null){
+    function printClassbooks(Request $request, $subject=null){
         if(!$subject && !$request->subject){
             abort(404);
         }
         if(!$subject) {
             $subject=$request->subject;
         }
-
+        $dateFrom=session('cycle').'-01-01';
+        $dateTo=session('cycle').'-12-31';
+ 
         $config = \App\Models\Config::where('group', 'main')->get()->pluck('value', 'id')->toArray();
-        $classbooks=\App\Models\Classbook::where('subject_id',$subject)->get();
+        $classbooks=\App\Models\Classbook::where('subject_id',$subject)
+            ->whereBetween('date_id',[$dateFrom,$dateTo])
+            ->get();
         $grades=\App\Models\Grade::where('subject_id',$subject)
             ->where('user_id',auth()->user()->id)
+            ->whereBetween('date_id',[$dateFrom,$dateTo])
             ->get();
 
         // if classbooks empty, return 404
