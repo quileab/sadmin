@@ -28,7 +28,7 @@ class TeacherSubjects extends Component
         $this->user = \App\Models\User::find(session('bookmark'));
         // get all careers from careers table
         $this->careers = \App\Models\Career::all();
-        // $this->career = first career from careers table
+        $this->career=$this->careers->first();
         $this->updateSubjects($this->career->id);
     }
 
