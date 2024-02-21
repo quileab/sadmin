@@ -108,7 +108,7 @@
                    @csrf
                    Materia <select name="subject" class="border border-gray-400 shadow-md w-full">
                      @foreach ($subjects as $subject)
-                       <option value='{{ $subject['id'] }}'>{{ $subject['name'] }}</option>
+                       <option value='{{ $subject['id'] }}'>{{ $subject['id'] }} » {{ $subject['name'] }}</option>
                      @endforeach
                    </select>
                    @if (Session::has('error'))

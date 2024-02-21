@@ -14,7 +14,7 @@ use Livewire\Component;
 class UserPaymentComponent extends Component
 {
     // record payment
-    public $uid;
+    public $uid, $paymentId;
 
     public $payment = 0;
 
@@ -38,6 +38,7 @@ class UserPaymentComponent extends Component
     public $readyToLoad = false;
 
     public $openModal = false;
+    public $modifyPaymentModal = false;
 
     public $hasCounter;
 
@@ -177,7 +178,6 @@ class UserPaymentComponent extends Component
     {
         if ($this->payment > $this->totalDebt - $this->totalPaid) {
             $this->emit('toast', 'El pago ingresado es MAYOR que la DEUDA', 'warning');
-
             return;
         }
 
@@ -258,4 +258,44 @@ class UserPaymentComponent extends Component
             'Content-Disposition' => 'inline; filename="'.$filename.'"',
         ]));
     }
+
+    public function setAlterPayment($userPayment)
+    {
+        // alter amount to pay or remove payment
+        $this->paymentId= $userPayment['id'];
+        $this->totalDebt = $userPayment['amount'];
+        $this->totalPaid = $userPayment['paid'];
+        $this->paymentDescription = $userPayment['title'].'/ '.
+            date_format(date_create($userPayment['date']),'m/Y');
+        $this->paymentAmount = $userPayment['amount'];
+        $this->modifyPaymentModal = true;
+    }
+
+    public function modifyAmount($paymentId){
+        $payment = UserPayments::find($paymentId);
+        $this->totalDebt=floatval($this->totalDebt);
+        $payment->paid=floatval($payment->paid);
+        if ($this->totalDebt<$payment->paid){
+            $this->emit('toast', 'El pago realizado sería mayor que la deuda', 'warning');
+            return;
+        }
+        
+        $payment->amount = $this->totalDebt;
+        $payment->save();
+        $this->modifyPaymentModal = false;
+        $this->updateInfo();
+    }
+
+    public function deletePayment($paimentId){
+        $payment = UserPayments::find($paimentId);
+        if($payment->paid>0) {
+            $this->emit('toast', 'Existe un pago realizado', 'warning');
+            return;
+        }
+
+        $payment->delete();
+        $this->modifyPaymentModal = false;
+        $this->updateInfo();
+    }
+
 }

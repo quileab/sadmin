@@ -7,7 +7,7 @@ $nav_links = [
       'permission'=>'menu.dashboard',
     ],
     [
-      'name' => 'Usuarios/Alumnos',
+      'name' => '🧑‍🎓 Usuarios/Alumnos',
       'route' => route('students'),
       'active' => request()->routeIs('students'),
       'permission'=>'menu.students',
@@ -49,7 +49,7 @@ $nav_links = [
       'permission'=>'menu.inscriptions',
     ],
     [
-      'name' => 'Calendarios',
+      'name' => '📆 Calendarios',
       'route' => route('calendars'),
       'active' => request()->routeIs('calendars'),
       'permission'=>'menu.calendars',
@@ -61,27 +61,33 @@ $nav_links = [
       'permission'=>'menu.books',
     ],
     [
-      'name' => 'Info Tarjetas',
+      'name' => '📰 Info Tarjetas',
       'route' => route('infocards'),
       'active' => request()->routeIs('infocards'),
       'permission'=>'menu.infocards',
     ],
     [
-      'name' => 'Planes de Pago',
+      'name' => '💵 Pagos y Planes',
       'route' => route('payplans'),
       'active' => request()->routeIs('payplans'),
       'permission'=>'menu.payplans',
     ],
     [
-      'name' => 'Roles & Permisos',
+      'name' => '🪪 Roles & Permisos',
       'route' => route('permissions'),
       'active' => request()->routeIs('permissions'),
       'permission'=>'menu.security',
     ],
     [
-      'name' => 'Configuración',
+      'name' => '🔧 Configuración',
       'route' => route('configs'),
       'active' => request()->routeIs('configs'),
+      'permission'=>'menu.config',
+    ],
+    [
+      'name' => '⚙️ Mantenimiento',
+      'route' => route('maintenance'),
+      'active' => request()->routeIs('maintenance'),
       'permission'=>'menu.config',
     ],
 ];

@@ -65,7 +65,42 @@
     </x-slot>
   </x-jet-dialog-modal>
 
-  <div class="max-w-6xl mx-auto mb-2 overflow-hidden bg-gray-200 rounded-md shadow-md">
+  {{-- Formulario Modificación importe/Borrar --}}
+  <x-jet-dialog-modal icon='edit' wire:model="modifyPaymentModal">
+    <x-slot name="title">
+      <small>ID Pago: </small><strong>{{ $paymentId }}</strong> » 
+      <strong>{{ $user->lastname }}, {{ $user->firstname }}</strong>
+    </x-slot>
+
+    <x-slot name="content">
+      <div class="flex items-center justify-evenly">
+
+        <p>Modificar importe a pagar: <strong>{{ $paymentDescription }}</strong>
+           <br />A Pagar: <strong>$ {{ number_format($paymentAmount,2) }}</strong>
+           <br />Pagado: <strong>$ {{ number_format($totalPaid,2) }}</strong>
+        </p>
+        <x-jet-input type="number" wire:model.defer="totalDebt" />
+        <button wire:click="modifyAmount({{$paymentId}})"
+          class="px-4 py-2 m-1 text-sm text-white uppercase bg-green-800 rounded-md ">
+          Modificar
+        </button>      
+      </div>
+      
+    </x-slot>
+    
+    <x-slot name="footer">
+      <div class="flex justify-between">
+        <x-jet-danger-button wire:click="deletePayment({{ $paymentId }})">
+          Eliminar
+        </x-jet-danger-button>
+        <x-jet-secondary-button wire:click="$toggle('modifyPaymentModal')" wire:loading.attr="disabled">
+          Salir
+        </x-jet-secondary-button>
+      </div>
+    </x-slot>
+  </x-jet-dialog-modal>
+
+  <div class="mb-2 overflow-hidden bg-gray-200 rounded-md shadow-md">
     <div class="flex items-center justify-between w-full px-4 py-2 text-white d2c">
       <h1 class="inline-block">
         <strong>{{ $user->lastname }}</strong>, {{ $user->firstname }}
@@ -100,8 +135,10 @@
       $bgColor = ($userPayment->paid < $userPayment->amount && $userPayment->paid > 0) ? 'bg-amber-600' : $bgColor;
       @endphp
        
+       <button wire:click="setAlterPayment({{$userPayment}})">
         <div class="inline-block w-32 m-1 overflow-hidden text-sm text-white uppercase bg-gray-700 rounded-md shadow-lg">
-          <div class="{{$bgColor}} w-full text-center p-1">{{ $userPayment->title }}
+          <div class="{{$bgColor}} w-full text-center p-1">
+            {{ $userPayment->title }}
             <p class="text-xs text-gray-200">{{ \Carbon\Carbon::parse($userPayment->date)->format('m-Y') }}</p>
           </div>
           <div class="px-2 py-1">
@@ -111,6 +148,7 @@
             </div>
           </div>
         </div>
+      </button>
       @endforeach
     </div>
     <div class="container px-3 py-1 mx-auto my-3 text-lg text-right bg-gray-300 md:px-6">

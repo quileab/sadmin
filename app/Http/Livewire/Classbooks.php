@@ -74,8 +74,14 @@ class Classbooks extends Component
             ]);
             //set defaults
             $this->date_id=today()->toDateString();
+            // count classes of current 'cycle' setted in session('cycle')
             $this->classnr=\App\Models\Classbook::where('subject_id',$this->subject_id)
-                ->max('ClassNr')+1;
+                ->whereBetween(
+                    'date_id', [session('cycle').'-01-01',session('cycle').'-12-31']
+                )->count()+1;
+            
+            // $this->classnr=\App\Models\Classbook::where('subject_id',$this->subject_id)
+            //     ->max('ClassNr')+1;
             $this->openModal=true;
             }
         else{ // update

@@ -98,6 +98,7 @@ class User extends Authenticatable
             });
     }
 
+    // Returns Regular or Final subject data with grade
     public function subjects_status($career_id){
         // temp_subjects: all subjects in career array[id=>name]
         if(!$career_id){

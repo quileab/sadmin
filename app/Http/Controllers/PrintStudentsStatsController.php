@@ -115,4 +115,35 @@ class PrintStudentsStatsController extends Controller
         return view('printStudentsReportCard', compact(['grades','student','data']));
     }
 
+    public function paymentsReport($dateFrom, $dateTo, $search=null)
+    {
+        //purge $search as filterwords (globally)
+        $this->filterWords = trim($search);
+        $this->filterWords = strip_tags($search);
+        $this->filterWords = stripslashes($search);
+        $this->filterWords = htmlspecialchars($search);
+
+        $records=\App\Models\PaymentRecord::whereBetween('created_at', [$dateFrom.' 00:00:00', $dateTo.' 23:59:59'])
+            ->with('user');
+        if ($this->filterWords!='') {
+            $records = $records
+            ->whereHas('user', function($q) {
+                $q->where('lastname', 'like', '%' . $this->filterWords . '%')
+                    ->orWhere('firstname', 'like', '%' . $this->filterWords . '%');
+            });
+        }
+        $records = $records->get();
+        //dd($records->get()->toArray());
+       
+        $total=0;
+        foreach ($records as $record) {
+            $total+=$record['paymentAmount'];
+        }
+        $data['total']=$total;
+        $data['dateFrom']=$dateFrom;
+        $data['dateTo']=$dateTo;
+        $data['search']=$search;
+
+        return view('printPayments', compact(["records","data"]));
+    }
 }

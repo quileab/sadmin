@@ -5,16 +5,18 @@
     </h2>
   </x-slot>
 
-  <div class="bg-gray-100 rounded-md shadow-md overflow-hidden max-w-4xl mx-auto mb-0 mt-4">
+  <div class="bg-gray-100 rounded-md shadow-md overflow-hidden w-full">
     <div class="w-full d2c px-4 py-3 text-white">
       <h1 class="inline-block">Importar Usuarios</h1>
     </div>
 
-    <div class="container mt-3 mx-auto px-4 md:px-12">
+    <div class="container mt-3 mx-auto mx-4">
       <form action="{{ route('students-import-bulk') }}" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
+        <div class="mx-4 my-1">
         <label for="file">Seleccione el archivo a importar</label>
         <input type="file" name="file" id="file" accept=".csv" class="form-input">
+        </div>
         <div class="flex mt-2 p-1 bg-gray-300 rounded-md justify-between">
           <select name="role" class="border border-gray-400 mx-1">
             <option value="">Seleccione un Rol</option>

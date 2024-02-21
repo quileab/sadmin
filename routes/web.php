@@ -35,13 +35,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         }
         $logs = [];
         $maintenance=[
-            'Cache'=>'cache:clear',
+            'DebugBar'=>'debugbar:clear',
+            'Storage Link'=>'storage:link',
             'Config'=>'config:clear',
             'Optimize Clear'=>'optimize:clear',
             'Optimize'=>'optimize',
-            'DebugBar'=>'debugbar:clear',
-            'Storage Link'=>'storage:link',
             'Route Clear'=>'route:clear',
+            'Cache'=>'cache:clear',
         ];
         foreach ($maintenance as $key => $value) {
             try {
@@ -51,6 +51,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
                 $logs[$key]='❌';
             }
         }
+        //recreate cache dot env
+
         return view('clearMaintenance', compact('logs'));    
     });
 
@@ -70,9 +72,16 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             session(['cycle'=>Config::where('id', 'cycle')->first()->value ?? date("Y")]);
         }
 
+        //dd($dashInfo['careers']);
         // get student subjects inscriptions
         if (auth()->user()->hasRole('student')){
-        $subjects=Auth::user()->enrolled_subjects()->get(['id','name','career_id'])->toArray();
+        //$subjects=Auth::user()->enrolled_subjects()->get(['id','name','career_id'])->toArray();
+        //dd($subjects);    
+            $subjects=[];
+            foreach($dashInfo['careers'] as $career){
+                $subjects=array_merge($subjects,$career->subjects()->get(['id','name','career_id'])->toArray());
+                //dd($subjects);
+            }
         }
         else{
             $subjects=[];
@@ -216,8 +225,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // TODO: quick grade component -> delete
     // Route::get('/quickgrade', \App\Http\Livewire\Quickgrade::class)->name('quickgrade');
     Route::get('/quickgrade', \App\Http\Livewire\Inscription\InscriptionsDetail::class)->name('quickgrade');
+    Route::get('/maintenance', \App\Http\Livewire\Maintenance::class)->name('maintenance');
     Route::get('/printClassbooks/{subject?}', [PrintClassbookController::class,'printClassbooks'])->name('printclassbooks');
     Route::get('/printStudentsAttendance/{subject}', [PrintStudentsStatsController::class,'listAttendance'])->name('printStudentsAttendance');
     Route::get('/printStudentsStats/{student}/{subject}', [PrintStudentsStatsController::class,'studentClasses'])->name('printStudentsStats');
     Route::get('/printStudentsReportCard/{student}', [PrintStudentsStatsController::class,'studentReportCard'])->name('printStudentsReportCard');
+    Route::get('/printStudentsPayments/{dateFrom?}/{dateTo?}/{search?}', [PrintStudentsStatsController::class,'paymentsReport'])->name('printStudentsPayments');
 });

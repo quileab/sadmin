@@ -51,7 +51,7 @@ class PrintClassbookController extends Controller
         $data=[];
         $data['subject']=\App\Models\Subject::find($subject);
         $data['user']=auth()->user();
-        if(auth()->user()->hasRole('student')) {
+        if(auth()->user()->hasRole(['student','teacher'])) {
             $data['attendance']=number_format(100*$attendance/$totalAttendance, 2).'%';
         }
 

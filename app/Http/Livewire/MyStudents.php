@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class MyStudents extends Component
 {
-    public $Me;
+    public $Me,$student;
     public $mySubjects; 
     public $myStudents;
     public $studentData;
@@ -20,6 +20,7 @@ class MyStudents extends Component
 
     // UI attibutes
     public $openModal=false;
+    public $quickGradeModal=false;
     public $updating=false;
     // Form attributes
     public $Dgrade=0;
@@ -84,7 +85,6 @@ class MyStudents extends Component
         $this->subject_id=$subject_id;
         // get all students in Grades table for this subject and date='2000-01-01'
         $students=\App\Models\Subject::find($subject_id)->Students();
-
         return $students;
     }
 
@@ -145,10 +145,12 @@ class MyStudents extends Component
         ]);
         $kind=$grade==1 ? 'info':'error';
         $this->emit('toast', 'Actualizado ('.$grade.')', $kind);
-        $this->openModal=false;        
+        $this->openModal=false;   
+        $this->quickGradeModal=false;     
     }
 
     public function save(){
+      //dd($this->Dgrade,$this->Dattendance,$this->Dname);
       try {
         $grade=new \App\Models\Grade();
         $result=$grade::create([
@@ -166,6 +168,7 @@ class MyStudents extends Component
             //report($e)
         }
         $this->openModal=false;
+        $this->quickGradeModal=false;
     }        
 
     public function edit($user_id){
@@ -190,6 +193,34 @@ class MyStudents extends Component
           $this->updating=true;
         }
         $this->openModal=true;
+    }
+
+    public function openQuickGrade($id){
+        $this->user_id=$id;
+        $this->student=$this->myStudents->find($id)->toArray();
+
+        $grade=\App\Models\Grade::where('user_id',$id)
+        ->where('subject_id',$this->subject_id)
+        ->where('date_id',$this->classDate)
+        ->first();
+        if($grade==null){
+          // new
+          $this->Dapproved=false;
+          $this->Dgrade=0;
+          $this->Dattendance=0;
+          $this->Dname='REGULAR';
+          $this->updating=false;
+        }else{
+          // update  
+          $this->Dapproved=$grade->approved;
+          $this->Dgrade=$grade->grade;
+          $this->Dattendance=$grade->attendance;
+          $this->Dname=$grade->name;
+          $this->updating=true;
+        }
+
+        //dd($this->myStudents->find($id), $this->classDate, $this->studentData, $this->student);
+        $this->quickGradeModal=true;
     }
 
 }

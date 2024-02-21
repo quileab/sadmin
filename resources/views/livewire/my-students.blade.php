@@ -55,6 +55,52 @@
     </x-slot>
   </x-jet-dialog-modal>
 
+  <x-jet-dialog-modal wire:model="quickGradeModal">
+    <x-slot name="title">
+      {{ $student['lastname'] ?? '' }}, {{ $student['firstname'] ?? ''}}
+    </x-slot>
+    <x-slot name="content">
+      <div class="flex flex-wrap justify-between">
+        <div class="w-1/4">
+          <x-jet-label value="Fecha" /></abbr>
+          <x-jet-input type="date" wire:model.defer='classDate' readonly class="w-full" />
+        </div>
+        <div class="w-1/4">
+          <x-jet-label value="Calificación" /></abbr>
+          <x-jet-input type="number" wire:model.defer='Dgrade' min="0" step="5" max="100" class="w-full" />
+          <x-jet-input-error for="Dgrade" />
+        </div>
+        <div>
+        <x-jet-label value="Observaciones" />
+        <select wire:model="Dname">
+            <option value="REGULAR">REGULAR</option>
+            <option value="FINAL">FINAL</option>
+            <option value="TP">Trabajo Práctico</option>
+            <option value="EVALUACION">Evaluación</option>
+        </select>
+        </div>
+      </div>
+
+    </x-slot>
+    <x-slot name="footer">
+      <div class="flex justify-between">
+        @if ($errors->any())
+          <div class="text-yellow-300">Verifique la información ingresada</div>
+        @endif
+
+        @if ($updating)
+        <x-jet-button wire:click="update" wire:loading.attr="disabled" wire:target="save">
+          Actualizar
+        </x-jet-button>
+        @else
+        <x-jet-button wire:click="save" wire:loading.attr="disabled" wire:target="save">
+          Guardar
+        </x-jet-button>
+        @endif
+        <x-jet-danger-button wire:click="$set('quickGradeModal',false)">Cancelar</x-jet-danger-button>
+      </div>
+    </x-slot>
+  </x-jet-dialog-modal>
 
   <div class="w-full d2c px-4 py-1 flex justify-between">
     <h1 class="py-1 mr-3">
@@ -115,12 +161,18 @@
       <tbody>
         @foreach ($myStudents as $key => $myStudent)
           <tr wire:key='att-{{ $loop->index }}'>
-            <td class="border px-4 py-2 hover:bg-gray-800 hover:text-white">
+            <td class="flex flex-1 justify-between border px-4 py-2 hover:bg-gray-800 hover:text-white">
               <a href="printStudentsStats/{{$myStudent->id}}/{{$subject_id}}" target="_blank" class="flex">
               <x-svg.documentFull />&nbsp;
               {{ ucwords(mb_strtolower($myStudent->lastname,'UTF-8')) }},              
               {{ ucwords(mb_strtolower($myStudent->firstname,'UTF-8')) }}
               </a>
+              @if (session()->has('message'))
+              <x-jet-button wire:click="openQuickGrade({{ $myStudent->id }})">
+              <x-svg.check /> Calif. Rápida
+              </x-jet-danger-button>
+              @endif
+            
             </td>
             @if (!session()->has('message'))
             <td class="border px-4 py-2 text-right">

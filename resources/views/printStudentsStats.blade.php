@@ -97,7 +97,7 @@ body {
 }
 
 </style>   
-  <div class="dontPrint" style="width:100%; text-align:right; padding:0.4rem; margin-bottom:1rem; background-color: #ddd; border:3px solid #aaa;">
+  <div class="dontPrint" style="position:relative; top:0px; left:0px; width:100%; text-align:right; padding:0.4rem; margin-bottom:1rem; background-color: #ddd; border:3px solid #aaa;">
     <button type="button" onclick="window.print();return false;"
       style=".">🖨️ Imprimir</button>
     <button type="button" onclick="window.close();return false;"
@@ -157,7 +157,11 @@ body {
     <tr>
       <td>Promedio de Asistencias</td>
       <td></td>
-      <td class="right">{{ceil($data['sumAttendance']/$data['classCount'])}}%</td>
+      <td class="right">
+        @if($data['classCount']>0)
+        {{ceil($data['sumAttendance']/$data['classCount'])}}%
+        @endif
+      </td>
     </tr>
     <tr>
       <td>Evaluaciones</td>
