@@ -7,7 +7,7 @@ $nav_links = [
       'permission'=>'menu.dashboard',
     ],
     [
-      'name' => '🧑‍🎓 Usuarios/Alumnos',
+      'name' => '🎓 Usuarios/Alumnos',
       'route' => route('students'),
       'active' => request()->routeIs('students'),
       'permission'=>'menu.students',
@@ -73,7 +73,7 @@ $nav_links = [
       'permission'=>'menu.payplans',
     ],
     [
-      'name' => '🪪 Roles & Permisos',
+      'name' => '🗝️ Roles & Permisos',
       'route' => route('permissions'),
       'active' => request()->routeIs('permissions'),
       'permission'=>'menu.security',

@@ -40,7 +40,7 @@ class StudentsComponent extends Component
     public $direction = 'asc';
     public $openModal = false;
     public $readyToLoad = false;
-    public $globalSearch = null;
+    public $globalSearch = true;
 
     // TODO: leave just one
     public $formAction = 'store';

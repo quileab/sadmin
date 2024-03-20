@@ -138,8 +138,9 @@
       <x-jet-button wire:click="create">Nuevo Ingreso</x-jet-button>
       <br>
       <div class="bg-gray-800 text-gray-100 rounded my-1 pb-1 px-2">
-        <label><input type="checkbox" wire:model="globalSearch"> <span class="uppercase text-xs">GLOBAL por
-            ROL</span></label>
+        <label><input type="checkbox" wire:model="globalSearch">
+          <span class="uppercase text-xs">GLOBAL por ROL</span>
+        </label>
       </div>
     </div>
   </div>
